@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/write.css">
+</head>
+<body>
+<!--헤더푸터 연결-->
+    <script>
+        fetch("../../main/header.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("header").innerHTML = data;
+
+            // header.html 안의 스크립트 실행 강제
+            const scripts = document.getElementById("header").querySelectorAll("script");
+            scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            });
+          });
+
+       
+        fetch("../../main/footer.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("footer").innerHTML = data;
+          });
+    </script>
+    <div id="header"></div> 
+    
+    <div id="content" class="cs_qna_write_wrap">
+        <h1>문의하기</h1>
+        <div class="cs_sub_nav">
+            <ul>
+                <li class="on"><a href="#">회원</a></li>
+                <li><a href="#">쿠폰/이벤트</a></li>
+                <li><a href="#">주문/결제</a></li>
+                <li><a href="#">배송</a></li>
+                <li><a href="#">취소/반품/교환</a></li>
+                <li><a href="#">여행/숙박/항공</a></li>
+                <li><a href="#">안전거래</a></li>
+            </ul>
+        </div>
+        <div class="qna_write_form">
+            <div class="form_row">
+                <label for="qna_type">문의유형</label>
+                <div class="select_group">
+                    <select id="qna_type">
+                        <option>1차 문의유형</option>
+                    </select>
+                    <select id="qna_subtype">
+                        <option>2차 선택</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form_row">
+                <label for="qna_title">제목</label>
+                <input type="text" id="qna_title" placeholder="제목을 입력해주세요.">
+            </div>
+            <div class="form_row">
+                <label for="qna_content">내용</label>
+                <textarea id="qna_content" placeholder="내용을 입력해주세요."></textarea>
+            </div>
+            <div class="btn_area">
+                <button class="btn_cancel">취소하기</button>
+                <button class="btn_submit" style="background-color: black !important; border:1px solid;">등록하기</button>
+            </div>
+        </div>
+    </div>
+<div id="footer"></div>
+</body>
+</html>

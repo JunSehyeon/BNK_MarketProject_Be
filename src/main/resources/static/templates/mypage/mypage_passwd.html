@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>비밀번호 확인</title>
+  <style>
+    .inner{width:1270px; background:#fff;}
+    .title-row{display:flex; justify-content:center; margin-top:40px;}
+    .sec-title{font-weight:800; margin-right:auto; margin-left:73px; margin-bottom:10px;}
+    /* 기존 페이지와 동일한 kv 테이블 */
+    .kv{width:900px; border-collapse:collapse; font-size:14px; border-top:1px solid gray;}
+    .kv td{border-bottom:1px solid #eee; padding:10px 13px; vertical-align:middle;}
+    .kv td:first-child{height:45px; background:#f2f2f2; text-align:center; width:130px;}
+    .btn{border:none; background:#000; color:#fff; width:95px; height:30px; cursor:pointer;}
+    .btn-danger{background:#760c0c;}
+    .btn-wide{width:190px; height:34px;}
+    .pw-input{
+      width:260px; height:34px; border:none; border-bottom:1px solid #dddddd; outline:none;
+      padding:0 8px;
+    }
+    .guide{color:#555; font-size:13px; line-height:1.5; margin:6px 0 2px;}
+    .error{color:#d00; font-size:12px; margin-top:6px; min-height:16px;}
+    .actions{display:flex; gap:8px; margin-top:16px;}
+    .right{display:flex; justify-content:flex-end; width:900px;}
+    /* 접근성 */
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;}
+  </style>
+</head>
+<body>
+    <!--헤더푸터 연결-->
+    <script>
+        fetch("../main/header.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("header").innerHTML = data;
+
+            // header.html 안의 스크립트 실행 강제
+            const scripts = document.getElementById("header").querySelectorAll("script");
+            scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            });
+          });
+
+       
+        fetch("../main/footer.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("footer").innerHTML = data;
+          });
+    </script>
+  <!-- 공용 헤더/푸터를 쓰면 필요 시 fetch 로드 -->
+  <main>
+    <div id="header"></div>
+    <div style="background-color: #f6f5f5; border-bottom: 1px solid #dddddd;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="width:1270px; font-size:15px; height:70px; display: flex; align-items: center; ">
+                    <div style="font-weight: 800; margin-left:73px;">나의 쇼핑 정보</div>
+                    <div style="display: flex; margin-left:auto; margin-right:40px;">
+                        <div style="width:70px;border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">주문</div>
+                            <div>2</div>
+                        </div>
+                        <div style="width:70px; border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">쿠폰</div>
+                            <div>1</div>
+                        </div>
+                        <div style="width:70px;border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">포인트</div>
+                            <div>1,000</div>
+                        </div>
+                        <div style="width:70px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">문의</div>
+                            <div>1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <div style="width:1270px; font-size:15px; display: flex;">
+                <div style=" width:200px; padding-left:70px; padding-top:30px; border-right:1px solid #dddddd;">
+                    <div style="margin-bottom:15px;"><a href="#">전체주문내역</a></div>
+                    <div style="margin-bottom:15px; "><a href="#">포인트내역</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">쿠폰</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">나의리뷰</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">문의하기</a></div>
+                    <div ><a href="#" style=" font-weight: 800;">나의설정</a></div>
+                </div>
+                <div style="width: 100%;">
+                    <div style="margin-top:30px; display: flex; justify-content: center;">
+                        <div>
+                          <img src="/images/mypage_mainBanner11.jpg" alt="" style="width:400px;">
+                          <div style="font-size:10px;">Image by <a href="https://www.freepik.com" target="_blank" style="color:inherit; text-decoration:none;">Freepik</a></div>
+                        </div>
+                    </div>
+                    <div class="inner" style="width:900px; margin-left:100px; margin-top:100px;">
+                    <div class="title-row">
+                        <div class="sec-title" style="margin-left:0px;">비밀번호 확인</div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <!-- 안내 문구 -->
+                        <table class="kv" style="margin-top:6px;">
+                        <tr>
+                            <td>안내</td>
+                            <td>
+                            <div id="action-title" style="font-weight:700; margin-bottom:6px;">정보 수정 전 확인</div>
+                            <div id="action-desc" class="guide">수정 내용을 저장하기 전에 본인 확인을 위해 현재 비밀번호를 입력해 주세요.</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>사용자 ID</td>
+                            <td id="masked-id">chh****</td>
+                        </tr>
+                        <tr>
+                            <td>현재 비밀번호</td>
+                            <td style="padding-top:20px;">
+                            <input id="password" type="password" class="pw-input" placeholder="현재 비밀번호 입력" autocomplete="current-password">
+                            <button type="button" id="toggle" class="btn" style="width:70px; height:30px; margin-left:6px;">보기</button>
+                            <div class="error" id="err"></div>
+                            </td>
+                        </tr>
+                        </table>
+                    </div>
+                    <div style="width: 900px; margin-left:0px;">
+                        <div class="guide" style="margin-bottom:10px; margin-top:10px;">※ 공용 PC에서는 비밀번호 자동저장을 피해주세요.</div>
+                        <!-- 하단 큰 버튼 (기존 페이지 톤 맞춤) -->
+                        <div class="right" style="margin-top:20px; display: flex; flex-direction: column; margin-left: 515px;">
+                            <div>
+                                <button type="button" class="btn btn-wide" id="btn-confirm-bottom">확인</button>
+                                <button type="button" onclick="location.href='./mypage_setUp.html'" class="btn btn-wide" id="btn-cancel" style=" background:#666; border:none;">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:60px;"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <script>
+    // ===== 파라미터별 문구/경로 =====
+    const params = new URLSearchParams(location.search);
+    const action = params.get('action') || 'edit'; // edit | pw | withdraw
+    const FLOW = {
+        edit     : { title:'정보 수정 전 확인', desc:'수정 내용을 저장하기 전에 본인 확인을 위해 현재 비밀번호를 입력해 주세요.', next:'/mypage/complete-edit.html' },
+        pw       : { title:'비밀번호 변경 전 확인', desc:'현재 비밀번호 확인 후 변경 페이지로 이동합니다.', next:'/mypage/change-password.html' },
+        withdraw : { title:'회원 탈퇴 전 확인',   desc:'탈퇴 진행 전 본인 확인을 위해 비밀번호를 입력해 주세요.', next:'/mypage/withdraw-confirm.html' }
+    };
+    const f = FLOW[action] || FLOW.edit;
+
+    document.getElementById('action-title').textContent = f.title;
+    document.getElementById('action-desc').textContent  = f.desc;
+
+    // ===== 사용자 ID 마스킹 (프로젝트에서 실제 ID로 치환) =====
+    (function(){
+        const realId = 'chh03ab'; // TODO: 서버에서 주입
+        const masked = realId.length>3 ? realId.slice(0,3) + '*'.repeat(realId.length-3) : realId.replace(/.(?=.)/g,'*');
+        document.getElementById('masked-id').textContent = masked;
+    })();
+
+    // ===== 비밀번호 보기/숨기기 =====
+    const pw = document.getElementById('password');
+    document.getElementById('toggle')?.addEventListener('click', function(){
+        const isPw = pw.type === 'password';
+        pw.type = isPw ? 'text' : 'password';
+        this.textContent = isPw ? '숨기기' : '보기';
+        pw.focus();
+    });
+
+    const err = document.getElementById('err');
+    const showErr = (m='') => err.textContent = m;
+
+    // ===== 서버 검증 자리 (샘플) =====
+    async function verifyPassword(p){
+        // 실제 서비스에서는 서버 검증으로 교체
+        await new Promise(r=>setTimeout(r,200));
+        return p === '1234'; // 데모: 제거 필수
+    }
+
+    async function submit(){
+        const v = pw.value.trim();
+        showErr('');
+        if(!v){ showErr('비밀번호를 입력해 주세요.'); pw.focus(); return; }
+        if(v.length < 4){ showErr('비밀번호가 너무 짧습니다.'); pw.focus(); return; }
+
+        // 존재하는 확인 버튼만 수집
+        const btns = Array.from(document.querySelectorAll('#btn-confirm, #btn-confirm-bottom'));
+        btns.forEach(b => { b.disabled = true; b.textContent = '확인 중...'; });
+
+        try{
+        const ok = await verifyPassword(v);
+        if(!ok){ showErr('비밀번호가 일치하지 않습니다.'); return; }
+        location.href = f.next;
+        }catch(e){
+        showErr('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        }finally{
+        btns.forEach(b => { b.disabled = false; b.textContent = '확인'; });
+        }
+    }
+
+    // 이벤트 바인딩도 "있을 때만"
+    document.getElementById('btn-confirm-bottom')?.addEventListener('click', submit);
+    document.getElementById('btn-confirm')?.addEventListener('click', submit); // 상단 버튼이 다시 생기면 작동
+    document.getElementById('btn-cancel')?.addEventListener('click', () => history.back());
+    pw.addEventListener('keydown', e => { if(e.key === 'Enter') submit(); });
+    </script>
+    <div style="margin-top:100px;"></div>
+    <div id="footer"></div>
+</body>
+</html>

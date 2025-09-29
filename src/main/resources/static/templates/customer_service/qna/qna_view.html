@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/qnadetail.css">>
+</head>
+<body>
+<!--헤더푸터 연결-->
+    <script>
+        fetch("../../main/header.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("header").innerHTML = data;
+
+            // header.html 안의 스크립트 실행 강제
+            const scripts = document.getElementById("header").querySelectorAll("script");
+            scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            });
+          });
+
+       
+        fetch("../../main/footer.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("footer").innerHTML = data;
+          });
+    </script>
+    <div id="header"></div>
+
+    <div id="content" class="cs_qna_view_wrap">
+        <h1>ASK NICHIYA</h1>
+        <div class="cs_sub_nav">
+            <ul>
+                <li class="on"><a href="#">회원</a></li>
+                <li><a href="#">쿠폰/이벤트</a></li>
+                <li><a href="#">주문/결제</a></li>
+                <li><a href="#">배송</a></li>
+                <li><a href="#">취소/반품/교환</a></li>
+                <li><a href="#">여행/숙박/항공</a></li>
+                <li><a href="#">안전거래</a></li>
+            </ul>
+        </div>
+        <div class="qna_view_area">
+            <div class="qna_section question">
+                <h3>[가입] 가입 문의내용</h3>
+                <p class="date">chb** 22.11.21</p>
+                <div class="content">
+                    <p>회원가입하고 싶어요. 어떻게해야하나요?</p>
+                </div>
+            </div>
+            <div class="qna_section answer">
+                <h3>답변 문의내용</h3>
+                <div class="content">
+                    <p>안녕하세요, 회원님 회원가입하시려면 ...</p>
+                </div>
+            </div>
+            <div class="btn_area">
+                <a href="qna_list.html" class="btn_list">목록</a>
+            </div>
+        </div>
+    </div>
+<div id="footer"></div>
+</body>
+</html>

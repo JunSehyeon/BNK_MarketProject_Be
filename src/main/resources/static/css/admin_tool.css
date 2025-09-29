@@ -1,0 +1,203 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  height: 100%;
+
+    
+}
+
+/*  header  */
+
+.top-header {
+  
+  position: fixed;   /* 스크롤해도 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;     /* aside(1000)보다 위 */
+  background: #fff;  /* 투명 방지 */
+  box-sizing: border-box; 
+}
+
+
+.header-top {
+    height: 35px;
+    background: #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+}
+
+/* 로고 박스 */
+.logo-box img{
+    width: 170px;     
+    height: 33px;     
+    display: block;   
+    margin-left: 10px;
+    margin-top: 30px;
+    background: #fff;
+    padding: 8px 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* 메뉴 */
+.top-menu {
+    
+    position: absolute;
+    top: 18px;
+    right: 35px;
+    display: flex;
+    gap: 10px;
+}
+
+.top-menu a {
+    color: #2b4f81;
+    text-decoration: underline;       /* 밑줄 표시 */
+    text-underline-offset: 3px;       /* 글자와 밑줄 간격 */
+    text-decoration-thickness: 1px; 
+    font-size: 16px;
+}
+
+/* 흰색 영역 */
+.header-bottom {
+    padding: 0;
+    background: #f2f2f2;
+    height: 30px; 
+}
+/*  header 끝  */
+
+
+
+
+
+/* aside */
+
+.admin-aside{ 
+   width:220px;
+   height:100vh; 
+   background:#fff; 
+   position:fixed;
+   top: 95px; 
+   box-sizing:border-box; 
+   bottom: 10;
+   left: 0; 
+  }
+.menu-box{ width:170px; position:absolute; top:0; right:0; box-sizing:border-box }
+
+.menu-list{ list-style:none; margin:0; padding:0 }
+.submenu {
+  list-style: none;  
+  margin: 0;          
+  padding: 0;         
+}
+
+/* 토글 라디오 숨김 */
+.acc{ position:absolute; opacity:0; pointer-events:none }
+
+/* 상위 행(환경설정 등) */
+.parent{
+  display:flex; align-items:center; gap:12px; width:100%;
+  padding:12px 14px; box-sizing:border-box;
+  background:#dcdcdc; color:#111; font-size:14px; font-weight:700; cursor:pointer
+}
+.parent .chev{ margin-left:auto; transition:transform .15s }
+
+/* 서브메뉴 기본 숨김 */
+.submenu{ display:none; background:#f0f0f0; padding:10px 14px }
+.submenu a{ display:block; padding:6px 0; color:#222; text-decoration:none; font-weight:600 }
+.submenu a::before{ content:"- "; color:#666; margin-right:4px }
+.submenu a.active{ text-decoration:underline; text-underline-offset:3px }
+
+/* 열림 상태: 해당 라디오가 체크되면 같은 li 안의 서브메뉴 표시 */
+.acc:checked + .parent + .submenu{ display:block }
+/* 화살표 회전 */
+.acc:checked + .parent .chev{ transform:rotate(180deg) }
+
+/* 아이콘 */
+.ico{ width:18px; height:18px; object-fit:contain; display:inline-block }
+
+/* aside 끝   */
+
+
+
+
+/*  main  */
+
+  main {
+    margin-left: 20px;
+    padding: 140px, 20px, 60px;
+    height: 1500px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-header {
+    position: fixed;       
+    max-width: 1610px;   
+    margin: 0 auto;     
+    width: 100%;
+    top: 100px;
+    margin-left: 200px;  
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 8px 16px;
+    box-sizing: border-box;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+  }
+
+  .breadcrumb {
+    font-size: 13px;
+    margin-left: 30px;
+    color: #555;
+  }
+
+  .breadcrumb span {
+    font-weight: bold;
+    color: #000;
+    
+  }
+
+  .divider {
+  position: fixed;
+  top: 140px;              
+  left: 220px;
+  right: 0;
+  border: none;
+  border-top: 2px solid #000;
+  width: 1610px;
+  box-sizing: border-box;
+  }
+
+  
+
+
+  /*  main끝  */
+
+
+
+
+
+footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;  
+  width:100%;
+  height:50px;
+  background:#7f7f7f;
+  color:#eaeaea;
+  display:flex;                
+  align-items:center;          
+  justify-content:flex-start; 
+  padding:0 16px 0 24px;       
+  box-sizing:border-box;
+  font-size:13px;
+}

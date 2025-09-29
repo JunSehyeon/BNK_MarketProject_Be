@@ -1,0 +1,105 @@
+.cs_faq_list_wrap {
+    overflow: hidden;
+    padding: 0 20px; /* 양옆 여백 추가 가능 */
+    box-sizing: border-box;
+    max-width: 1200px;  /* 전체 폭 제한하고 가운데 정렬 */
+    margin: 0 auto;
+}
+
+.cs_faq_list_wrap .faq_list_area {
+    width: 100%; /* 전체 폭 사용 */
+    float: none; /* float 제거 */
+    box-sizing: border-box;
+}
+
+.cs_faq_list_wrap .faq_section {
+    margin-bottom: 30px;
+}
+
+.cs_faq_list_wrap .faq_section h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.cs_faq_list_wrap .faq_item {
+    border-bottom: 1px solid #ddd;
+}
+
+.cs_faq_list_wrap .faq_item .faq_q {
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    background-color: #fff;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+}
+
+.cs_faq_list_wrap .faq_item .faq_q:before {
+    content: 'Q.';
+    color: #007bff;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.cs_faq_list_wrap .faq_item .faq_q:after {
+    content: '+';
+    position: absolute;
+    right: 15px;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.cs_faq_list_wrap .faq_item.active .faq_q:after {
+    content: '-';
+}
+
+.cs_faq_list_wrap .faq_item .faq_a {
+    padding: 20px 15px;
+    background-color: #f9f9f9;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.cs_faq_list_wrap .faq_item .faq_a p {
+    margin: 0;
+}
+
+/* 세부사항 */
+.faq_item {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+    .faq_q {
+      font-weight: bold;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-size: 15px;
+    }
+    .faq_a {
+      display: none;
+      padding: 10px 0;
+      color: #555;
+    }
+    .faq_item.open .faq_a {
+      display: block;
+    }
+    .btn_area {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .btn_more {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }

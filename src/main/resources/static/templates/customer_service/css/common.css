@@ -1,0 +1,294 @@
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    background-color: #f8f8f8;
+}
+
+#wrap {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#content {
+    padding: 30px;
+    min-height: 600px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.btn_area {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.btn_area .btn_write, .btn_area .btn_cancel, .btn_area .btn_submit, .btn_area .btn_list, .btn_area .btn_more {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn_area .btn_write {
+    background-color: #555;
+    color: #fff;
+    border-color: #555;
+}
+
+.btn_area .btn_submit {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.red {
+    color: #ff0000;
+}
+
+/* Sub Navigation (사이드 메뉴) */
+.cs_sub_nav {
+    float: left;
+    width: 180px;
+}
+
+.cs_sub_nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cs_sub_nav li a {
+    display: block;
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none;
+    color: #555;
+}
+
+.cs_sub_nav li.on a,
+.cs_sub_nav li a:hover {
+    background-color: gray !important;
+    color: white !important;
+}
+
+/* notice sub nav 색깔 수정전
+ .cs_sub_nav li.on a, .cs_sub_nav li a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+    font-weight: bold;
+} */
+
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ddd;
+    color: #555;
+    text-decoration: none;
+    margin: 0 2px;
+}
+
+.pagination a.on {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+/* cs/index.jsp 스타일 */
+.cs_main_wrap {
+    text-align: center;
+}
+
+.cs_main_wrap h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: #444;
+}
+
+.cs_main_wrap .cs_section {
+    max-width: 900px;
+    margin: 0 auto 40px;
+}
+
+.cs_main_wrap .section_title {
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid #555;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: left;
+}
+
+.cs_main_wrap .section_title .more_link {
+    font-size: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-decoration: none;
+    color: #0f71d3;
+    font-weight: bold;
+}
+
+.cs_main_wrap .section_list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cs_main_wrap .section_list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dotted #ccc;
+}
+
+.cs_main_wrap .section_list a {
+    text-decoration: none;
+    color: #333;
+    flex-grow: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cs_main_wrap .section_list .date,
+.cs_main_wrap .section_list .writer {
+    font-size: 13px;
+    color: #999;
+    flex-shrink: 0;
+    margin-left: 15px;
+}
+
+/* 자주하는 질문 아이콘 섹션 */
+.cs_main_wrap .faq_category {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.cs_main_wrap .faq_category a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: #555;
+    flex: 1;
+    padding: 20px 10px;
+    /* index의 faq border 제거
+    border: 1px solid #ddd;*/
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.cs_main_wrap .faq_category a:hover {
+    background-color: #f5f5f5;
+}
+
+.cs_main_wrap .faq_category img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+.cs_main_wrap .faq_category span {
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.cs_main_wrap .qna_section .btn_area {
+    text-align: right;
+    margin-top: 15px;
+}
+
+.cs_main_wrap .qna_section .btn_write {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #555;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.cs_sub_nav {
+  width: 100%;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.cs_sub_nav ul {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.cs_sub_nav ul li {
+  flex: 1; /* ← 화면 가로를 각 항목이 1/n 로 균등 분할 */
+  text-align: center;
+  border-right: 1px solid #ddd;
+}
+
+.cs_sub_nav ul li:last-child {
+  border-right: none;
+}
+
+.cs_sub_nav ul li a {
+  display: block;
+  padding: 15px 0;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  background-color: #fff;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.cs_sub_nav ul li.on a,
+.cs_sub_nav ul li a:hover {
+  background-color: gray;
+  color: white;
+}
+

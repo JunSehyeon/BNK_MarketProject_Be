@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mypage_setUp</title>
+    <!-- 모달 전용 스타일 -->
+  <style>
+    /* 전체 오버레이 */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      display: none;
+      z-index: 9998;
+    }
+    .modal-backdrop.is-open { display: block; }
+
+    /* 모달 박스 */
+    .modal {
+      position: fixed; inset: 0;
+      display: none;
+      place-items: center;
+      z-index: 9999;
+    }
+    .modal.is-open { display: grid; }
+
+    .modal-dialog {
+      width: 860px; max-width: calc(100% - 40px);
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    /* 상단 바 */
+    .modal-header {
+      background: #2f7ee6; color:#fff;
+      padding: 4px 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-header .date { font-weight: 400; opacity:.9; margin-left: 12px; }
+    .modal-close {
+      appearance: none; border: 0; background: transparent;
+      color:#fff; font-size: 20px; cursor: pointer; padding: 4px 8px;
+    }
+    /* 본문 */
+    .modal-body { padding: 0; }
+    .section {
+      padding: 14px 18px;
+    }
+    .section-title {
+      font-weight: 700; margin-bottom: 8px;
+    }
+    table.order-info {
+      width: 100%; border-collapse: collapse; font-size: 14px;
+    }
+    .order-info th, .order-info td {
+      border-bottom: 1px solid #eee; padding: 10px; vertical-align: middle;
+    }
+    .order-info thead th {
+      background: #dedede; color:#fff; font-size: 12px; height: 38px;
+    }
+    .thumb { width: 120px; }
+    .price {
+      font-size: 18px; font-weight: 800; margin-top: 8px;
+    }
+    .right { text-align: right; white-space: nowrap; }
+    /* 배송정보 표 */
+    .kv { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .kv td { border-bottom: 1px solid #eee; padding: 10px; padding-left: 13px; }
+    .kv td:first-child {height: 45px; background-color: #f2f2f2; text-align: center; width: 130px; }
+    /* 접근성 포커스 트랩용 */
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+    /* ===== 리뷰 모달 보강 ===== */
+    .review-form { padding: 18px; }
+    .review-grid { width:100%; border-collapse: collapse; font-size:14px; }
+    .review-grid td { border-bottom:1px solid #eee; padding:10px; }
+    .review-grid td:first-child { width:120px; text-align:center; background:#f2f2f2; }
+    .review-title {
+      border:none; border-bottom:1px solid gray; width:270px; outline:none;
+      height:34px; padding:6px 8px; box-sizing:border-box;
+    }
+    .review-textarea {
+      width:100%; resize:none; outline:none; padding:8px; box-sizing:border-box; height:160px;
+    }
+    .review-actions { display:flex; justify-content:center; gap:10px; margin-top:16px; }
+    .char-count { font-size:12px; color:#666; text-align:right; margin-top:6px; }
+
+    /* 별점: 기본은 빈 별(☆), 선택/호버 시 채움(★) */
+    .rating { display:inline-flex; flex-direction: row-reverse; gap:4px; }
+    .rating input { position:absolute; opacity:0; }
+    .rating label { cursor:pointer; font-size:22px; line-height:1; }
+
+    /* 기본은 빈 별 */
+    .rating label::before { content: '☆'; }
+
+    /* 선택된 값과 그 왼쪽(시각적 기준)까지 채움 */
+    .rating input:checked ~ label::before { content: '★'; }
+
+    /* 마우스 올렸을 때 미리보기(호버 구간까지 채움) */
+    .rating label:hover::before,
+    .rating label:hover ~ label::before { content: '★'; }
+    /* 페이지네이션 */
+        /* 게시판 아래버튼 부분 */
+        .prev-page{
+            background-color: white;
+            border: none;
+            margin-right: 15px;
+            width: 50px;
+            height: 30px;
+        }
+        .next-page{
+            background-color: white;
+            border: none;
+            margin-left: 15px;
+            width: 50px;
+            height: 30px;
+            margin-right:3px;
+        }
+        
+        /* 게시판 아래버튼 부분 끝 */
+  </style>
+  <!-- 카카오(다음) 우편번호 서비스 -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+    <!--헤더푸터 연결-->
+    <script>
+        fetch("../main/header.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("header").innerHTML = data;
+
+            // header.html 안의 스크립트 실행 강제
+            const scripts = document.getElementById("header").querySelectorAll("script");
+            scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            });
+          });
+
+       
+        fetch("../main/footer.html")
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById("footer").innerHTML = data;
+          });
+    </script>
+    <main>
+        <div id="header"></div>
+        <div style="background-color: #f6f5f5; border-bottom: 1px solid #dddddd;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="width:1270px; font-size:15px; height:70px; display: flex; align-items: center; ">
+                    <div style="font-weight: 800; margin-left:73px;">나의 쇼핑 정보</div>
+                    <div style="display: flex; margin-left:auto; margin-right:40px;">
+                        <div style="width:70px;border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">주문</div>
+                            <div>2</div>
+                        </div>
+                        <div style="width:70px; border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">쿠폰</div>
+                            <div>1</div>
+                        </div>
+                        <div style="width:70px;border-right:1px solid #dddddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">포인트</div>
+                            <div>1,000</div>
+                        </div>
+                        <div style="width:70px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="margin-bottom:8px;">문의</div>
+                            <div>1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <div style="width:1270px; font-size:15px; display: flex;">
+                <div style=" width:200px; padding-left:70px; padding-top:30px; border-right:1px solid #dddddd;">
+                    <div style="margin-bottom:15px;"><a href="#">전체주문내역</a></div>
+                    <div style="margin-bottom:15px; "><a href="#">포인트내역</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">쿠폰</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">나의리뷰</a></div>
+                    <div style="margin-bottom:15px;"><a href="#">문의하기</a></div>
+                    <div ><a href="#" style=" font-weight: 800;">나의설정</a></div>
+                </div>
+                <div style="width: 100%;">
+                    <div style="margin-top:30px; display: flex; justify-content: center;">
+                        <div>
+                          <img src="/images/mypage_mainBanner10.jpg" alt="" style="width:400px;">
+                          <div style="font-size:10px;">Image by <a href="https://www.freepik.com" target="_blank" style="color:inherit; text-decoration:none;">Freepik</a></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top:40px;">
+                        <div style="display: flex; margin-top:30px;">
+                            <div style="font-weight: 800; margin-right:840px; margin-bottom:10px;">나의설정</div>
+                        </div>
+
+                        <table class="kv" style="border-top:1px solid gray;  width:900px;">
+                            <tr><td>사용자 ID</td><td>chh03ab</td></tr>
+                            <tr><td>비밀번호</td><td><button onclick="location.href='./mypage_passwd.html'" style="border:none; background-color: black; color:white; width: 95px;height: 30px;">비밀번호수정</button></td></td></tr>
+                            <tr><td>이름</td><td>김철학</td></tr>
+                            <tr><td>생년월일</td><td>1983년 05월 03일</td></tr>
+                            <tr><td>Email</td>
+                                <td>
+                                    <form action="" method="post">
+                                        <input type="text" name="firstEmail" style="padding-right:5px;padding-left:5px; padding-bottom:4px; border:none; border-bottom:1px solid #dddddd; outline: none; width:130px; margin-right: 10px;">@<input type="text" name="secondEmail" style="padding-right:5px;padding-left:5px; padding-bottom:4px;margin-left:10px; width:100px; border:none; border-bottom:1px solid #dddddd; outline: none; margin-right: 10px;">
+                                        <select name="email" id=""  style="border:none; border-bottom:1px solid #dddddd; outline: none; margin-right: 10px; padding-right:5px;padding-left:5px; padding-bottom:4px;">
+                                            <option value="select">직접 입력</option>
+                                            <option value="naver">naver.com</option>
+                                            <option value="daum">daum.com</option>
+                                            <option value="google">google.com</option>
+                                            <option value="nate">nate.com</option>
+                                        </select>
+                                        <input type="submit" value="수정하기" style="width: 70px;height: 30px;border:none; background-color: black; color: white; outline: none;">
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr><td>휴대폰</td>
+                                <td>
+                                    <form action="" method="post">
+                                        <input type="text" name="firstPhone" style="border:none; border-bottom:1px solid #dddddd; outline: none; width:55px;margin-right: 10px; padding-right:5px;padding-left:16px; padding-bottom:4px;"> - <input type="text" name="secondPhone" style="margin-left: 10px;outline: none;border:none; border-bottom:1px solid #dddddd;width:55px;margin-right: 10px; padding-right:5px;padding-left:13px; padding-bottom:4px;"> - <input type="text" name="thirdPhone" style="margin-left: 10px;border:none; border-bottom:1px solid #dddddd;outline: none;width:55px;margin-right: 10px; padding-right:5px;padding-left:13px; padding-bottom:4px;">
+                                        <input type="submit" value="수정하기" style="width: 70px;height: 30px;border:none; background-color: black; color:white;outline: none;">
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>주소</td>
+                                <td>
+                                    <div><input type="text" readonly placeholder="우편번호" style="border:none; border-bottom:1px solid #dddddd;outline: none;margin-right: 10px; padding-right:5px;padding-left:5px; padding-bottom:4px;margin-top: 8px;"> <button type="button" id="btn-postcode" style="width: 70px;height: 30px;border:none; background-color: black; color:white;">주소검색</button></div>
+                                    <div><input type="text" readonly placeholder="기본주소검색" style="border:none; border-bottom:1px solid #dddddd; width:400px;outline: none; margin-right: 10px; padding-right:5px;padding-left:5px; padding-bottom:4px;margin-top: 8px;"></div>
+                                    <div><input type="text" placeholder="상세주소입력" style="border:none; border-bottom:1px solid #dddddd; width:400px;outline: none; margin-right: 10px; padding-right:5px;padding-left:5px; padding-bottom:4px;margin-top: 8px;"></div>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid gray;">
+                                <td>탈퇴</td>
+                                <td><button onclick="location.href='./mypage_passwd.html'" style="background-color: #760c0c; color:white; border:none; font-weight: 300; width:70px; font-size: 12px; height:28px;">탈퇴하기</button></td>
+                            </tr>
+                        </table>
+                        <div style="margin-top:20px;">
+                            <input type="submit" value="수정하기" onclick="location.href='./mypage_passwd.html'" style="border:none; background-color: black; color:white; font-weight: 300; width:190px; height:34px;">
+                        </div>
+                    </div>
+                    </div>
+                    <div style="margin-bottom:50px;"></div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                        // =====================
+                        // 사용자 ID 마스킹
+                        // =====================
+                        const idCell = document.querySelector("table.kv tr:nth-child(1) td:nth-child(2)");
+                        if (idCell && idCell.innerText) {
+                            const userId = idCell.innerText.trim();
+                            if (userId.length > 3) {
+                            const maskedId = userId.slice(0, 3) + "*".repeat(userId.length - 3);
+                            idCell.innerText = maskedId;
+                            }
+                        }
+
+                        // =====================
+                        // 이름 마스킹 (김철학 → 김*학)
+                        // =====================
+                        const nameRow = document.querySelector("table.kv tr:nth-child(3) td:nth-child(2)");
+                        if (nameRow && nameRow.innerText) {
+                            const name = nameRow.innerText.trim();
+                            if (name.length >= 3) {
+                            const maskedName = name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
+                            nameRow.innerText = maskedName;
+                            } else if (name.length === 2) {
+                            const maskedName = name[0] + "*";
+                            nameRow.innerText = maskedName;
+                            }
+                        }
+
+                        // =====================
+                        // 이메일 도메인 선택 반영
+                        // =====================
+                        // ===== 이메일 편집 제어 =====
+                        const emailForm   = document.querySelector('table.kv tr td form'); // 첫 번째 form(이메일)
+                        if (!emailForm) return;
+
+                        const localInput  = emailForm.querySelector('input[name="firstEmail"]');
+                        const domainInput = emailForm.querySelector('input[name="secondEmail"]');
+                        const domainSelect= emailForm.querySelector('select[name="email"]');
+                        const emailButton = emailForm.querySelector('input[type="submit"]');
+
+                        let isEditingEmail = false; // 수정 모드 아님(기본)
+
+                        // 초기: 언제나 읽기 전용
+                        function lockEmail() {
+                            localInput.readOnly  = true;
+                            domainInput.readOnly = true;
+                        }
+
+                        // 수정 모드일 때만 select 상태에 맞춰 도메인 입력 가능/불가를 전환
+                        function applyDomainFromSelect() {
+                            const val = domainSelect.value;
+                            const selectedText = domainSelect.options[domainSelect.selectedIndex].textContent.trim();
+
+                            // 선택한 옵션 값은 표시해 주되,
+                            // 편집 모드가 아닐 땐 readOnly 유지
+                            if (val !== 'select') domainInput.value = selectedText;
+
+                            if (isEditingEmail) {
+                            localInput.readOnly = false;
+                            if (val === 'select') {
+                                domainInput.readOnly = false;  // 직접 입력 허용
+                            } else {
+                                domainInput.readOnly = true;   // 옵션 고정
+                            }
+                            } else {
+                            // 편집 모드가 아니면 모두 잠금
+                            lockEmail();
+                            }
+                        }
+
+                        // 셀렉트 변경 시 동작
+                        domainSelect.addEventListener('change', applyDomainFromSelect);
+
+                        // "수정하기" 버튼: 편집 모드 ON
+                        emailButton.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            isEditingEmail = true;
+                            applyDomainFromSelect(); // 현재 select 상태로 반영
+                            localInput.focus();
+                        });
+
+                        // 페이지 최초 로드 시 잠금 유지(프리필이 있어도 수정 불가)
+                        lockEmail();
+                        // 값 표시는 유지하되, 편집 불가 상태 유지
+                        applyDomainFromSelect();
+
+
+                        // =====================
+                        // 휴대폰 수정하기 버튼 처리
+                        // =====================
+                        const phoneForm = document.querySelectorAll('table.kv tr td form')[1]; // 두 번째 form
+                        if (phoneForm) {
+                            const phoneInputs = phoneForm.querySelectorAll('input[type="text"]');
+                            const phoneButton = phoneForm.querySelector('input[type="submit"]');
+
+                            // 처음엔 읽기 전용
+                            phoneInputs.forEach(input => input.readOnly = true);
+
+                            // 수정하기 버튼 클릭 시 편집 가능
+                            phoneButton.addEventListener("click", function (e) {
+                            e.preventDefault();
+                            phoneInputs.forEach(input => input.readOnly = false);
+                            phoneInputs[0].focus();
+                            });
+                        }
+                        // =====================
+                        // 주소검색(카카오 우편번호) - 기본 팝업 버전
+                        // =====================
+                        const addressRow = Array.from(document.querySelectorAll('table.kv tr'))
+                        .find(tr => tr.firstElementChild && tr.firstElementChild.textContent.trim() === '주소');
+
+                        if (addressRow) {
+                        const zipInput   = addressRow.querySelector('input[placeholder="우편번호"]');
+                        const addr1Input = addressRow.querySelector('input[placeholder="기본주소검색"]');
+                        const addr2Input = addressRow.querySelector('input[placeholder="상세주소입력"]');
+                        const searchBtn  = document.getElementById('btn-postcode');
+
+                        if (addr1Input) addr1Input.readOnly = true; // 기본주소는 검색 결과만 입력
+
+                        function openPostcodePopup() {
+                            // 팝업(카카오 기본 스타일)으로 열기
+                            new daum.Postcode({
+                            oncomplete: function (data) {
+                                // 도로명 우선, 없으면 지번 사용
+                                const baseAddr = data.roadAddress || data.jibunAddress || data.address || '';
+                                // 추가주소(법정동/건물명)
+                                let extra = '';
+                                if (data.bname && /[동|로|가]$/.test(data.bname)) extra += data.bname;
+                                if (data.buildingName) extra += (extra ? ', ' : '') + data.buildingName;
+                                const fullAddr = extra ? `${baseAddr} (${extra})` : baseAddr;
+
+                                if (zipInput)   zipInput.value = data.zonecode; // 5자리
+                                if (addr1Input) addr1Input.value = fullAddr;
+                                if (addr2Input) { addr2Input.value = ''; addr2Input.focus(); }
+                                // 기본 팝업은 주소 선택 시 자동으로 닫힙니다.
+                            }
+                            }).open(); // 기본 팝업 창으로 열림
+                        }
+
+                        if (searchBtn) {
+                            searchBtn.addEventListener('click', function (e) {
+                            e.preventDefault(); // form submit 방지
+                            openPostcodePopup();
+                            });
+                        }
+                        }
+                        });
+                        </script>
+                        <!-- (1) 프리필용 더미 데이터: 나중에 서버에서 값을 넣어주세요 -->
+                        <script id="user-payload" type="application/json">
+                        {
+                        "email": "kimcheolhak@example.com",
+                        "phone": "010-2345-6789"
+                        }
+                        </script>
+
+                        <!-- (2) 프리필 스크립트: 위 JSON을 읽어 input에 채워 넣기 -->
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        // JSON 데이터 읽기
+                        var payloadEl = document.getElementById('user-payload');
+                        var data = {};
+                        try { data = JSON.parse((payloadEl && payloadEl.textContent) ? payloadEl.textContent.trim() : '{}'); }
+                        catch(e){ data = {}; }
+
+                        /* 이메일 프리필(값만 세팅, 잠금은 건들지 않음) */
+                        var emailForm = document.querySelector('table.kv tr td form'); // 첫 번째 form(이메일)
+                        if (emailForm && data.email) {
+                            var localInput  = emailForm.querySelector('input[name="firstEmail"]');
+                            var domainInput = emailForm.querySelector('input[name="secondEmail"]');
+                            var domainSelect= emailForm.querySelector('select[name="email"]');
+
+                            var parts = String(data.email).split('@');
+                            var local  = parts[0] || '';
+                            var domain = parts[1] || '';
+
+                            if (localInput)  localInput.value  = local;
+                            if (domainInput) domainInput.value = domain;
+
+                            // 셀렉트는 표시만 맞춰주고, readOnly는 절대 바꾸지 않음
+                            if (domainSelect) {
+                            var matched = Array.from(domainSelect.options).find(function(opt){
+                                return opt.textContent.trim() === domain;
+                            });
+                            domainSelect.value = matched ? matched.value : 'select';
+                            }
+                        }
+
+                        /* 휴대폰 프리필(값만 세팅) */
+                        var phoneForm = document.querySelectorAll('table.kv tr td form')[1];
+                        if (phoneForm && data.phone) {
+                            var inputs = phoneForm.querySelectorAll('input[type="text"]');
+                            var cleaned = String(data.phone).replace(/[^\d-]/g, '');
+                            var seg = cleaned.split('-');
+                            if (inputs[0]) inputs[0].value = seg[0] || '';
+                            if (inputs[1]) inputs[1].value = seg[1] || '';
+                            if (inputs[2]) inputs[2].value = seg[2] || '';
+                        }
+                        });
+                        </script>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:100px;"></div>
+        <div id="footer"></div>
+    </main>
+</body>
+</html>

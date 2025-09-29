@@ -1,0 +1,84 @@
+.cs_notice_list_wrap, .cs_qna_list_wrap {
+    overflow: hidden;
+}
+
+.cs_notice_list_wrap .cs_list_table, .cs_qna_list_wrap .qna_list_area {
+    
+    width: 100%;
+}
+
+.cs_notice_list_wrap .total_count {
+    text-align: right;
+    margin: 0 auto;              /* 가로 가운데 정렬 */
+    width: 100%;
+    max-width: 980px;            /* 기존 너비 유지(원하면 줄이거나 늘리기) */
+    box-sizing: border-box;
+    overflow: visible;  /* 필요하면 변경 (기존 overflow:hidden 영향 확인용) */
+}
+
+.cs_notice_list_wrap .total_count .count {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.cs_notice_list_wrap .cs_list_table .title a {
+    width: 100%;
+    display: block;
+    text-align: left;
+    color: #333;
+    text-decoration: none;
+}
+
+.cs_qna_list_wrap .qna_list_area .status_pending {
+    color: #ff9900;
+    font-weight: bold;
+}
+
+.cs_qna_list_wrap .qna_list_area .status_complete {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.cs_qna_list_wrap .qna_list_area .btn_write {
+    float: right;
+    margin-top: 20px;
+}
+
+/* //////////////////////////////////////
+   
+    2025-09-27  테이블 쏠림 수정사항
+    202-09-28 table 100%로 수정
+/////////////////////////////////////// */
+
+
+/* Q&A 전체 영역을 가운데 정렬 */
+.cs_qna_list_wrap .qna_list_area {
+    width: 100%;
+    /* max-width: 980px; */
+    margin: 0 auto;   /* 가로 가운데 정렬 */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.cs_qna_list_wrap .qna_section {
+    width: 100%;
+    /* max-width: 980px; */
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+
+}
+
+/* 테이블 자체 가운데 정렬 */
+.cs_qna_list_wrap .qna_section table {
+    margin: 0 auto;       /* 테이블을 수평 가운데 */
+    border-collapse: collapse;
+    width: 100%;           /* 원하는 비율 (980px 안에서 80%) */
+    text-align: center;   /* 셀 안 글자 가운데 */
+}
+
+.cs_qna_list_wrap .qna_section th,
+.cs_qna_list_wrap .qna_section td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
