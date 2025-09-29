@@ -562,26 +562,29 @@
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
+                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
+                th:each="user:${dtoList}">
                   <td><input type="checkbox"></td>
-                  <td>5</td>
-                  <td>xxx...</td>
-                  <td>정우성</td>
-                  <td>M</td>
-                  <td>
+                  <td th:text="${user.id}"></td>
+                  <td th:text="${user.user_id}">xxx...</td>
+                  <td th:text="${user.rep}">정우성</td>
+                  <td th:text="${user.gender}">M</td>
+                  <td >
                     <select style="height: 30px; border: 1px solid #e2e2e2;">
-                      <option>VVIP</option>
-                      <option>VIP</option>
-                      <option>GOLD</option>
-                      <option>SILVER</option>
-                      <option>FAMILY</option>
+                      <option th:selected="${user.grade} == 'VVIP'">VVIP</option>
+                      <option th:selected="${user.grade} == 'VIP'">VIP</option>
+                      <option th:selected="${user.grade} == 'GOLD'">GOLD</option>
+                      <option th:selected="${user.grade} == 'SILVER'">SILVER</option>
+                      <option th:selected="${user.grade} == 'FAMILY'">FAMILY</option>
                     </select>
                   </td>
-                  <td>15,000</td>
-                  <td>xxxxx@...</td>
-                  <td>010-1234-1001</td>
-                  <td>0000-00-00 00:00:00</td>
-                  <td><span style="color:green; font-weight:500;">정상</span></td>
+                  <td th:text="${user.point}">15,000</td>
+                  <td th:text="${user.email}">xxxxx@...</td>
+                  <td th:text="${user.tel}">010-1234-1001</td>
+                  <td th:text="${user.created_at}">0000-00-00 00:00:00</td>
+                  <td><span style="color:green; font-weight:500;" th:text="${user.look}"
+                  th:style="${user.look == '정상' ? 'color:green;' :
+                  (user.look == '중지' ? 'color:red;' : 'color:#555;')}">정상</span></td>
                   <td>
                     <a href="#" class="openModalLink">수정</a> | 
                     <a href="#" class="openModalLink">중지</a>
