@@ -245,7 +245,7 @@
                 </svg>
             </button>
             <div style="margin-left:3%;">
-                <img src="/images/logo.png" alt="" style="width:270px;">
+                <img th:src="@{/images/logo.png}" alt="" style="width:270px;">
             </div>
             <div style="margin-top:27px; margin-left:auto; margin-right:3%; flex:1; max-width:30%;">
                 <ul style="list-style-type: none; padding: 0; margin:0; display:flex; gap:40px; float:right; margin-right:100px;">
@@ -557,25 +557,22 @@
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>5</td><td>(주)다니와</td><td>정우성</td><td>112-12-12345</td><td>2024-서울강남-04433</td><td>010-1234-1001</td>
-                  <td style="color:green;">● 운영 중</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>4</td><td>(주)맛남</td><td>이정재</td><td>112-12-12344</td><td>2024-서울강남-04438</td><td>010-1234-1002</td>
-                  <td style="color:red;">● 운영 중지</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>3</td><td>(주)컴퓨존</td><td>장동건</td><td>112-12-12343</td><td>2024-서울강남-04429</td><td>010-1234-1003</td>
-                  <td style="color:red;">● 운영 중지</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>2</td><td>누리쿠도</td><td>조인성</td><td>112-12-12342</td><td>2024-부산진구-01139</td><td>010-1234-1004</td>
-                  <td style="color:blue;">● 운영 준비</td><td>[ 재개 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>1</td><td>굿바디스포츠</td><td>강동원</td><td>112-12-12341</td><td>2024-서울강남-04425</td><td>010-1234-1005</td>
-                  <td style="color:green;">● 운영 중</td><td>[ 승인 ]</td>
+                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
+                th:each="user:${dtoList}">
+                    <td><input type="checkbox"></td>
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.busname}">(주)다니와</td>
+                    <td th:text="${user.rep}">정우성</td>
+                    <td th:text="${user.cornum}">112-12-12345</td>
+                    <td th:text="${user.comnum}">2024-서울강남-04433</td>
+                    <td th:text="${user.tel}">010-1234-1001</td>
+                    <td style="color:green;"
+                        th:text="'● ' + ${user.manage}"
+                        th:style="${user.manage == '운영 중' ? 'color:green;' :
+                        (user.manage == '운영 중지' ? 'color:red;' :
+                        (user.manage == '운영 준비' ? 'color:blue;' : ''))}"
+                    ></td>
+                    <td>[ [[${user.look}]] ]</td>
                 </tr>
               </tbody>
             </table>
@@ -742,7 +739,7 @@
   
     </script>
     <footer style="padding:20px; background-color: #808080; width:100%; height:62px; color:white;">
-        Copyright ©NICHIYA.co.kr All rights reserved. NICHIYA ADMINISTRATOR Version 5.4.1.2
+        Copyright ©NICHIYA.co.kr All rights reserved. [[${appInfo.appName}]] ADMINISTRATOR Version [[${appInfo.appVersion}]]
     </footer>
 </body>
 </html>

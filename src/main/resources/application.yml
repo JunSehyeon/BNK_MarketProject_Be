@@ -2,7 +2,7 @@
 spring:
   application:
     name: NICHIYA
-    version: ${version}
+    version: ${version:unknown}
   profiles:
     active: prod
 
@@ -13,6 +13,8 @@ mybatis:
 
 server:
   port: 8080
+  servlet:
+    context-path: /NICHIYA
 
 # ===== local =====
 ---
