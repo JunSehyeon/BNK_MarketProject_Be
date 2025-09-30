@@ -1,5 +1,8 @@
 # ===== common (local/prod 공통) =====
 spring:
+  application:
+    name: NICHIYA
+    version: ${version:unknown}
   profiles:
     active: prod
 
@@ -10,6 +13,8 @@ mybatis:
 
 server:
   port: 8080
+  servlet:
+    context-path: /NICHIYA
 
 # ===== local =====
 ---
