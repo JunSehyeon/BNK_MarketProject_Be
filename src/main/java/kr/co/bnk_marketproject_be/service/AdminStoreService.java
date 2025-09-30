@@ -22,7 +22,7 @@ public class AdminStoreService {
     private final ModelMapper modelMapper;
 
     public List<AdminStoreDTO> findAdminStoreAll(){
-        return adminStoreRepository.findAll()
+        return adminStoreRepository.findByBoardType("storelist")
                 .stream()
                 .map(entity -> modelMapper.map(entity, AdminStoreDTO.class))
                 .toList();

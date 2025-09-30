@@ -23,4 +23,9 @@ public class AdminStoreController {
         model.addAttribute("dtoList",dtoList);
         return "admin/admin_store_list";
     }
+
+    @GetMapping("/article/shop/search")
+    public String adminStoreSearch(Model model){
+        return null;
+    }
 }
