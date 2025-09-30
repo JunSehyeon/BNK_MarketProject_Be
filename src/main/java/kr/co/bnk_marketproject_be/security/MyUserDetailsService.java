@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
+//@Service
 public class MyUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
