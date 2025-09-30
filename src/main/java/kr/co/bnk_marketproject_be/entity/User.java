@@ -1,11 +1,8 @@
 package kr.co.bnk_marketproject_be.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.Id;
 
 @Getter
 @Setter
@@ -13,6 +10,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 @Table(name="USERS")
 public class User{
 
@@ -20,7 +18,7 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int user_id;
+    private String user_id;
     private String email;
     private String password;
     private String name;
@@ -28,7 +26,7 @@ public class User{
     private String address;
 
     @Builder.Default // 기본 초기화값은 뭘로?
-    private String role;
+    private String role = "member";
 
     @CreationTimestamp
     private String created_at;
