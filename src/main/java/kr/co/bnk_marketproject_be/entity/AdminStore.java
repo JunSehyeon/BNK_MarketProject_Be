@@ -25,4 +25,8 @@ public class AdminStore {
     private String tel;
     private String manage;
     private String look;
+
+    // 추가 필드
+    @Column(name = "BOARD_TYPE")
+    private String boardType;
 }
