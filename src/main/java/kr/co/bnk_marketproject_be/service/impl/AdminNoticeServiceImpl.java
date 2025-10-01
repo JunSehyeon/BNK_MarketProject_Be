@@ -20,16 +20,17 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     public List<AdminNoticeDTO> getLatest(int limit) {
         var page = PageRequest.of(0, limit);
 
-        // CREATED_AT 컬럼이 VARCHAR2이므로 정렬은 PK(ID) 역순으로 하는 게 안전
-        var list = repo.findByBoardTypeOrderByIdDesc("NOTICE", page);
+        // ✅ boardType 인자 제거
+        var list = repo.findAllByOrderByIdDesc(page);
 
         return list.stream()
                 .map(n -> AdminNoticeDTO.builder()
                         .id(n.getId())
                         .title(n.getTitle())
-                        .createdAt(n.getCreatedAt())   // 문자열 그대로 DTO에 전달
-                        .build()
-                )
+                        .createdAt(n.getCreatedAt())   // 현재는 문자열 그대로
+                        .userId(n.getUserId())
+                        .pinned(false)                 // 템플릿에서 참조하므로 기본값 세팅
+                        .build())
                 .toList();
     }
 }

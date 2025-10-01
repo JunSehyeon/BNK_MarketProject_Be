@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface AdminNoticeRepository extends JpaRepository<AdminNotice, Long> {
 
-    // 날짜문자열이 'YYYY-MM-DD HH24:MI:SS' 등 정렬 가능한 포맷이면 ↓ 이거 사용
-    List<AdminNotice> findByBoardTypeOrderByCreatedAtDesc(String boardType, Pageable pageable);
-
-    // 만약 CREATED_AT 포맷이 제각각이면 ↓ 이걸로 (PK 최신순)
-    List<AdminNotice> findByBoardTypeOrderByIdDesc(String boardType, Pageable pageable);
+    List<AdminNotice> findAllByOrderByIdDesc(Pageable pageable);
+    // 날짜 문자열 정렬이 가능하면 아래도 추가로
+    List<AdminNotice> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }
 

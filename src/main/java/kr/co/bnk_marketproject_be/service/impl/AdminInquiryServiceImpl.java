@@ -21,13 +21,15 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         var page = PageRequest.of(0, limit);
 
         // CREATED_AT이 문자열이므로 정렬 안전하게 PK 역순 권장
-        var list = repo.findByBoardTypeOrderByIdDesc("QNA", page);
+        var list = repo.findByBoardTypeOrderByIdDesc("inquiry",page);
 
         return list.stream()
                 .map(q -> AdminInquiryDTO.builder()
                         .id(q.getId())
                         .title(q.getTitle())
                         .createdAt(q.getCreatedAt())   // 문자열 그대로 전달
+                        .qnaStatus("NEW")
+                        .userId(q.getUserId())
                         .build())
                 .toList();
     }
