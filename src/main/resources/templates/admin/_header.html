@@ -224,7 +224,7 @@
             </svg>
         </button>
         <div style="margin-left:3%;">
-            <img src="/images/logo.png" alt="" style="width:270px;">
+            <img th:src="@{/images/logo.png}" alt="" style="width:270px;">
         </div>
         <div style="margin-top:27px; margin-left:auto; margin-right:3%; flex:1; max-width:30%;">
             <ul style="list-style-type: none; padding: 0; margin:0; display:flex; gap:40px; float:right; margin-right:100px;">
@@ -305,6 +305,27 @@
             }
             .menu-grid li{ list-style: none; }
             #header{ display: contents; }
+            /* 페이지네이션 */
+            /* 게시판 아래버튼 부분 */
+            .prev-page{
+                background-color: white;
+                border: none;
+                margin-right: 15px;
+                width: 50px;
+                height: 30px;
+                cursor: pointer;
+            }
+            .next-page{
+                background-color: white;
+                border: none;
+                margin-left: 15px;
+                width: 50px;
+                height: 30px;
+                margin-right:3px;
+                cursor: pointer;
+            }
+
+            /* 게시판 아래버튼 부분 끝 */
         </style>
 
         <div style="display: flex; margin-left:20%; margin-top:1%; width:100%;">

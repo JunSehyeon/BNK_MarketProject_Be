@@ -1,0 +1,310 @@
+<div th:replace="~{admin/_header.html}"></div>
+
+    <main style="display: flex; justify-content: center; border-top:1px solid #e2e2e2;">
+        <div>
+        <aside class="euro-nav" aria-label="관리자 사이드 메뉴" style="">
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">환경설정</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">기본설정</a></li>
+                <li class="euro-nav__item"><a href="#">배너관리</a></li>
+                <li class="euro-nav__item"><a href="#">약관관리</a></li>
+                <li class="euro-nav__item"><a href="#">카테고리</a></li>
+                <li class="euro-nav__item"><a href="#">버전관리</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">상점관리</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item is-active"><a href="#">상점목록</a></li>
+                <li class="euro-nav__item"><a href="#">매출현황</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">회원관리</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">회원목록</a></li>
+                <li class="euro-nav__item"><a href="#">포인트관리</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">상품관리</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">상품목록</a></li>
+                <li class="euro-nav__item"><a href="#">상품등록</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">주문관리</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">주문현황</a></li>
+                <li class="euro-nav__item"><a href="#">배송현황</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">쿠폰관리</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">쿠폰목록</a></li>
+                <li class="euro-nav__item"><a href="#">쿠폰발급현황</a></li>
+            </ul>
+            </section>
+
+            <section class="euro-nav__group">
+            <h4 class="euro-nav__title" style="">고객센터</h4>
+            <ul class="euro-nav__list">
+                <li class="euro-nav__item"><a href="#">공지사항</a></li>
+                <li class="euro-nav__item"><a href="#">자주묻는질문</a></li>
+                <li class="euro-nav__item"><a href="#">문의하기</a></li>
+                <li class="euro-nav__item"><a href="#">채용하기</a></li>
+            </ul>
+            </section>
+        </aside>
+
+        </div>
+        <div style="width:940px; border-left:1px solid #e2e2e2;">
+            <div style="margin-left:60px;">
+                <div style="display: flex;">
+                    <div style="font-size: 20px; font-weight: 800; margin-top:16px; margin-bottom:5px;">상점목록</div>
+                    <div style="margin-left: auto; margin-top:auto; margin-bottom:4px;font-size: 12px;">HOME > 상점관리 > <span style="font-weight: 800;">상점목록</span></div>
+                </div>
+                <hr style="border:none; border-top:1px solid gray; margin-top:0px;">
+                <div style="padding-left:10px;">
+                <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
+                    <form th:action="@{/admin/shop/search}" method="get" style="display: flex; ">
+                        <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                            <option value="busname">상호명</option>
+                            <option value="rep">대표자</option>
+                            <option value="cornum">사업자등록번호</option>
+                            <option value="tel">연락처</option>
+                        </select>
+                        <input type="text" name="keyword" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                        <input type="submit" value="검색" style="width:50px; height:28px; color:white; background-color: black; border:none; font-size: 12px !important;">
+                    </form>
+                </div>
+                
+            <!-- 2. 테이블 -->
+            <table style="width:100%; border-collapse:collapse; text-align:center; font-size:14px;">
+              <thead>
+                <tr style="border-top:2px solid #000; border-bottom:1px solid #ccc; background:#fafafa; height:50px;">
+                  <th style="padding:8px;"><input type="checkbox"></th>
+                  <th>번호</th>
+                  <th>상호명</th>
+                  <th>대표</th>
+                  <th>사업자등록번호</th>
+                  <th>통신판매업번호</th>
+                  <th>연락처</th>
+                  <th>운영</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
+                th:each="admin, stat:${pageResponseDTO.dtoList}">
+                    <td><input type="checkbox"></td>
+                    <td >[[${pageResponseDTO.startNo - stat.index}]]</td>
+                    <td th:text="${admin.busname}">(주)다니와</td>
+                    <td th:text="${admin.rep}">정우성</td>
+                    <td th:text="${admin.cornum}">112-12-12345</td>
+                    <td th:text="${admin.comnum}">2024-서울강남-04433</td>
+                    <td th:text="${admin.tel}">010-1234-1001</td>
+                    <td style="color:green;"
+                        th:text="'● ' + ${admin.manage}"
+                        th:style="${admin.manage == '운영 중' ? 'color:green;' :
+                        (admin.manage == '운영 중지' ? 'color:red;' :
+                        (admin.manage == '운영 준비' ? 'color:blue;' : ''))}"
+                    ></td>
+                    <td>[ [[${admin.look}]] ]</td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="display: flex; margin-top:25px;">
+                    <button style="border:none; background-color: #760c0c; color:white; font-size: 10px; font-weight: 300; height:25px; width:62px;">선택삭제</button>
+                    <button id="openModalBtn"
+                      style="margin-left:auto; border:none; background-color: black; color:white; font-size: 10px; font-weight: 300; height:25px; width:62px;">
+                      상점등록
+                    </button>
+                </div>
+                <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
+                    <input th:if="${pageResponseDTO.prev}"
+                           th:onclick="|location.href='@{/admin/shop/search(pg=${pageResponseDTO.start - 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
+                           type="button" class="prev-page" value="< 이전">
+
+                    <th:block th:if="${pageResponseDTO.end >= pageResponseDTO.start}"
+                            th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                        <input th:onclick="|location.href='@{/admin/shop/search(pg=${num}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
+                               th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
+                                type="button"
+                                th:value="${num}" />
+                    </th:block>
+
+                    <input th:if="${pageResponseDTO.next}"
+                            th:onclick="|location.href='@{/admin/shop/search(pg=${pageResponseDTO.end + 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
+                            type="button" class="next-page" value="다음 >" style="">
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <style>
+        .current{
+            border:1px solid #333;
+            background-color: #333;
+            color: white;
+            height: 30px;
+            width: 30px;
+            margin-right:7px;
+            line-height:1;
+        }
+        .num {
+            cursor: pointer;
+            border:1px solid #ddd;
+            color: #555;
+            height: 30px;
+            width: 30px;
+            margin-right:7px;
+            line-height:1;
+        }
+        .euro-nav__list {
+            max-height: 0;                /* 기본은 접힘 */
+            overflow: hidden;             /* 안 보이게 */
+            transition: max-height 0.15s ease;
+        }
+
+            .euro-nav__group.open .euro-nav__list {
+            max-height: 500px;            /* 펼쳐졌을 때 (충분히 크게 설정) */
+        }
+    </style>
+
+    <div id="shopModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>상점 등록</h2>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form>
+            <label>아이디 <input type="text" placeholder="영문, 숫자 4~12자 설정"></label>
+            <label>비밀번호 <input type="password" placeholder="영문, 숫자, 특수문자 8~12자 설정"></label>
+            <label>비밀번호 확인 <input type="password"></label>
+            
+            <label>상호명 <input type="text" placeholder="상호명입력예시 (주)"></label>
+            <label>대표 <input type="text" placeholder="이름입력"></label>
+            <label>사업자등록번호 <input type="text" placeholder="포함 12자리 입력"></label>
+            <label>통신판매업번호 <input type="text" placeholder="포함 12자리 입력"></label>
+            <label>전화번호 <input type="text" placeholder="전화번호입력"></label>
+            <label>팩스 <input type="text" placeholder="팩스번호입력"></label>
+            
+            <label>주소</label>
+            <input type="text" placeholder="우편번호검색"><br>
+            <input type="text" placeholder="기본주소입력"><br>
+            <input type="text" placeholder="상세주소입력">
+
+            <button type="submit" style="background:#4CAF50; color:#fff; border:none; padding:10px 20px; margin-top:15px; cursor:pointer;">
+              등록하기
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <style>
+      /* 모달 스타일 */
+      .modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+      .modal-content { background:#fff; width:500px; padding:20px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+      .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; margin-bottom:15px; }
+      .modal-header .close { font-size:22px; font-weight:bold; cursor:pointer; }
+      .modal-body label { display:block; margin-bottom:10px; }
+      .modal-body input { width:100%; padding:6px 8px; margin-top:4px; border:1px solid #aaa; border-radius:4px; }
+    </style>
+
+    <script>
+      // ===== 상점등록 모달 =====
+      const modal = document.getElementById("shopModal");
+      const openModalBtn = document.getElementById("openModalBtn");
+      const closeModalBtn = document.querySelector(".modal .close");
+
+      // 열기
+      openModalBtn.addEventListener("click", () => {
+        modal.style.display = "flex";
+      });
+
+      // 닫기(X)
+      closeModalBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      // 배경 클릭 시 닫기
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+
+    <style>
+        .euro-nav__list {
+            max-height: 0;                /* 기본은 접힘 */
+            overflow: hidden;             /* 안 보이게 */
+            transition: max-height 0.15s ease;
+        }
+
+            .euro-nav__group.open .euro-nav__list {
+            max-height: 500px;            /* 펼쳐졌을 때 (충분히 크게 설정) */
+        }
+    </style>
+    <script>
+        // 아코디언: 클릭 시 높이를 실제 내용 높이로 애니메이션
+  document.querySelectorAll('.euro-nav__title').forEach(title => {
+    title.style.cursor = 'pointer'; // 클릭 가능 시각화(선택)
+    title.addEventListener('click', () => {
+      const group = title.parentElement;
+      const list  = group.querySelector('.euro-nav__list');
+
+      const isOpen = group.classList.contains('open');
+
+      if (isOpen) {
+        // 닫기: 현재 높이를 고정 -> 0으로
+        list.style.maxHeight = list.scrollHeight + 'px';
+        // 강제 리플로우로 트랜지션 시작점 확정
+        list.offsetHeight; 
+        list.style.maxHeight = '0px';
+        group.classList.remove('open');
+      } else {
+        // 열기: 0 -> 내용 높이
+        group.classList.add('open');
+        list.style.maxHeight = list.scrollHeight + 'px';
+
+        // 애니메이션 끝나면 inline max-height 제거(자연스런 레이아웃)
+        const onEnd = (e) => {
+          if (e.propertyName === 'max-height') {
+            list.style.maxHeight = 'none';
+            list.removeEventListener('transitionend', onEnd);
+          }
+        };
+        list.addEventListener('transitionend', onEnd);
+      }
+    });
+  });
+
+  const groups = document.querySelectorAll('.euro-nav__group');
+  document.querySelectorAll('.euro-nav__title').forEach(title => {
+    title.addEventListener('click', () => {
+      groups.forEach(g => {
+        if (g !== title.parentElement && g.classList.contains('open')) {
+          const l = g.querySelector('.euro-nav__list');
+          l.style.maxHeight = l.scrollHeight + 'px';
+          l.offsetHeight;
+          l.style.maxHeight = '0px';
+          g.classList.remove('open');
+        }
+      });
+    }, {capture:true});
+  });
+  
+    </script>
+<div th:replace="~{admin/_footer.html}"></div>

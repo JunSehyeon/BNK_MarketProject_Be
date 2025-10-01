@@ -23,8 +23,6 @@ public class QAdminMember extends EntityPathBase<AdminMember> {
 
     public final StringPath created_at = createString("created_at");
 
-    public final StringPath email = createString("email");
-
     public final StringPath gender = createString("gender");
 
     public final StringPath grade = createString("grade");
@@ -38,8 +36,6 @@ public class QAdminMember extends EntityPathBase<AdminMember> {
     public final StringPath rep = createString("rep");
 
     public final StringPath tel = createString("tel");
-
-    public final StringPath user_id = createString("user_id");
 
     public QAdminMember(String variable) {
         super(AdminMember.class, forVariable(variable));

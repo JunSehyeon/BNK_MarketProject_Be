@@ -510,6 +510,14 @@
 
             // 취소 버튼 (원하면 변경)
             cancelBtn?.addEventListener('click', () => history.back());
+
+            nextBtn.addEventListener('click', () => {
+                if (!nextBtn.disabled) {
+                    // 필수 동의 모두 완료된 상태에서만 이동
+                    window.location.href = '/NICHIYA/member/register';
+                }
+            });
+
         })();
     </script>
 

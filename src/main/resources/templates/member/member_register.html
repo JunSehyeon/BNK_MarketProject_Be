@@ -393,32 +393,83 @@
             btnSubmit.disabled = !allValid;
         }
 
-        // ---------- 인증(모의) ----------
-        const pseudoSend = () => new Promise(res => setTimeout(res, 500));
+        // ---------- 인증(수정) ----------
+        //const pseudoSend = () => new Promise(res => setTimeout(res, 500));
 
         document.getElementById("btnSendEmail").addEventListener("click", async () => {
-            if (!validateEmailField()) { emailStatus.textContent = "이메일 형식을 확인해 주세요."; emailStatus.className = "error"; return; }
-            await pseudoSend();
-            emailCode = String(Math.floor(100000 + Math.random() * 900000));
-            console.log("[DEV] email code:", emailCode);
-            emailVerifyWrap.classList.remove("hidden");
-            emailStatus.textContent = "인증번호를 전송했습니다. 메일함을 확인해 주세요.";
-            emailStatus.className = "success";
-        });
+            const email = emailInput.value.trim();
 
-        document.getElementById("btnCheckEmail").addEventListener("click", () => {
-            const input = document.getElementById("emailCode").value.trim();
-            if (input && input === emailCode) {
-                emailVerified = true;
-                emailStatus.textContent = "이메일 인증 완료";
-                emailStatus.className = "success";
-            } else {
-                emailVerified = false;
-                emailStatus.textContent = "인증번호가 일치하지 않습니다.";
+            console.log("email: " + email);
+
+            if (!validateEmailField()) {
+                emailStatus.textContent = "이메일 형식을 확인해 주세요.";
+                emailStatus.className = "error";
+                return;
+            }
+
+            try {
+                const res = await fetch("/NICHIYA/email/send", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email })
+                });
+
+                    console.log("email: " + email);
+
+                if (res.ok) {
+                    emailVerifyWrap.classList.remove("hidden");
+                    emailStatus.textContent = "인증번호를 이메일로 전송했습니다.";
+                    emailStatus.className = "success";
+                } else {
+                    emailStatus.textContent = "이메일 전송에 실패했습니다.";
+                    emailStatus.className = "error";
+                }
+            } catch (err) {
+                console.error(err);
+                emailStatus.textContent = "서버 오류로 전송 실패.";
                 emailStatus.className = "error";
             }
+        });
+
+
+        document.getElementById("btnCheckEmail").addEventListener("click", async () => {
+            const input = document.getElementById("emailCode").value.trim();
+            if (!input) {
+                emailStatus.textContent = "인증번호를 입력해 주세요.";
+                emailStatus.className = "error";
+                return;
+            }
+
+            try {
+                const res = await fetch("/NICHIYA/email/code", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code: input })
+                    // 만약 백엔드가 다른 포트/도메인이라면 아래처럼 절대경로 + credentials 필요할 수 있음:
+                    // credentials: 'include'
+                });
+
+                const body = await res.json();
+
+                if (res.ok && body.isMatched) {
+                    emailVerified = true;
+                    emailStatus.textContent = "이메일 인증 완료";
+                    emailStatus.className = "success";
+                } else {
+                    emailVerified = false;
+                    emailStatus.textContent = "인증번호가 일치하지 않습니다.";
+                    emailStatus.className = "error";
+                }
+            } catch (err) {
+                console.error(err);
+                emailVerified = false;
+                emailStatus.textContent = "서버 오류로 검증 실패.";
+                emailStatus.className = "error";
+            }
+
             updateSubmitState();
         });
+
 
         document.getElementById("btnSendSms").addEventListener("click", async () => {
             if (!validatePhoneField()) { phoneStatus.textContent = "휴대폰 번호를 정확히 입력해 주세요."; phoneStatus.className = "error"; return; }

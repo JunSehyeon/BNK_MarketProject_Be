@@ -1,6 +1,9 @@
 package kr.co.bnk_marketproject_be.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -10,7 +13,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 @Table(name="SELLERS")
 public class Seller{
 
@@ -24,7 +26,6 @@ public class Seller{
     private String biz_registration_number;
     private String mail_order_number;
 
-    @CreationTimestamp
     private String created_at;
     private String updated_at;
 
