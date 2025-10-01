@@ -65,11 +65,12 @@ tasks.named('test') {
 def querydslDir = "src/main/generated"
 
 sourceSets {
-    main.java.srcDirs querydslDir
+    main.java.srcDir querydslDir
 }
 
-tasks.withType(JavaCompile) {
-    options.generatedSourceOutputDirectory = file(querydslDir)
+tasks.withType(JavaCompile).configureEach {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+    doFirst { delete(querydslDir) }
 }
 
 clean {

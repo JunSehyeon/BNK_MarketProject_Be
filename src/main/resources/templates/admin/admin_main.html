@@ -81,172 +81,297 @@
   </div>
 
   <!-- 운영현황 -->
+
   <div class="title-line" style="padding-top: 20px; padding-bottom: 5px;"><b>운영현황</b></div>
-  <table class="status-table">
-    <tr>
-      <th>입금대기</th>
-      <th>배송준비</th>
-      <th>취소요청</th>
-      <th>교환요청</th>
-      <th style="border-right: none;">반품요청</th>
-    </tr>
-    <tr>
-      <td class="value">101</td>
-      <td class="value">124</td>
-      <td class="value">14</td>
-      <td class="value">7</td>
-      <td class="value" style="border-right: none;">24</td>
-    </tr>
-    <tr class="status-gap"></tr>
-    <tr>
-      <th>주문건수</th>
-      <th>주문금액</th>
-      <th>회원가입</th>
-      <th>방문자 수</th>
-      <th style="border-right: none;">문의 게시물</th>
-    </tr>
-    <tr>
-      <td class="value">131</td>
-      <td class="value">3,700,000</td>
-      <td class="value">232</td>
-      <td class="value">2,500</td>
-      <td class="value" style="border-right: none;">25</td>
-    </tr>
-    <tr>
-      <td colspan="5" style="padding:0; border: none;">
-        <table style="width:100%; border-collapse:collapse; text-align:center; table-layout: fixed;">
-          <tr>
-            <td>오늘</td><td>60</td>
-            <td>오늘</td><td style="text-align: center;padding-left: 0;padding-right: 0;">1,200,000</td>
-            <td>오늘</td><td>102</td>
-            <td>오늘</td><td>1,200</td>
-            <td>오늘</td><td style="border-right: none;">12</td>
-          </tr>
-          <tr>
-            <td>어제</td><td>71</td>
-            <td>어제</td><td style="text-align: center;padding-left: 0;padding-right: 0;">2,500,000</td>
-            <td>어제</td><td>130</td>
-            <td>어제</td><td>1,300</td>
-            <td>어제</td><td style="border-right: none;">13</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-    <div class="board-wrapper" style="margin-bottom: 50px;">      
+    <table class="status-table">
+        <tr>
+            <th>입금대기</th>
+            <th>배송준비</th>
+            <th>취소요청</th>
+            <th>교환요청</th>
+            <th style="border-right: none;">반품요청</th>
+        </tr>
+        <tr>
+            <td class="value" id="v_pending"></td>
+            <td class="value" id="v_ready"></td>
+            <td class="value" id="v_cancel"></td>
+            <td class="value" id="v_exchange"></td>
+            <td class="value" id="v_return" style="border-right: none;"></td>
+        </tr>
+
+        <tr class="status-gap"></tr>
+
+        <tr>
+            <th>주문건수</th>
+            <th>주문금액</th>
+            <th>회원가입</th>
+            <th>방문자 수</th>
+            <th style="border-right: none;">문의 게시물</th>
+        </tr>
+        <tr>
+            <td class="value" id="v_order_cnt"></td>
+            <td class="value" id="v_order_amt"></td>
+            <td class="value" id="v_signup"></td>
+            <td class="value" id="v_visit"></td>
+            <td class="value" id="v_qna" style="border-right: none;"></td>
+        </tr>
+
+        <!-- 오늘/어제 비교 표 (하단 작은 표) -->
+        <tr>
+            <td colspan="5" style="padding:0; border: none;">
+                <table style="width:100%; border-collapse:collapse; text-align:center; table-layout: fixed;">
+                    <tr>
+                        <td>오늘</td><td id="t_order_cnt_today"></td>
+                        <td>오늘</td><td id="t_order_amt_today" style="text-align:center;padding-left:0;padding-right:0;"></td>
+                        <td>오늘</td><td id="t_signup_today"></td>
+                        <td>오늘</td><td id="t_visit_today"></td>
+                        <td>오늘</td><td id="t_qna_today" style="border-right:none;"></td>
+                    </tr>
+                    <tr>
+                        <td>어제</td><td id="t_order_cnt_yday"></td>
+                        <td>어제</td><td id="t_order_amt_yday" style="text-align:center;padding-left:0;padding-right:0;"></td>
+                        <td>어제</td><td id="t_signup_yday"></td>
+                        <td>어제</td><td id="t_visit_yday"></td>
+                        <td>어제</td><td id="t_qna_yday" style="border-right:none;"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div class="board-wrapper" style="margin-bottom: 50px;">
 
     <!-- 공지사항 -->
     <div class="board-section">
-      <div style="padding-top: 20px; padding-bottom: 5px;"><b>공지사항</b></div>
-      <hr style="margin-top: 10px;">
-      <ul>
-        <li>[ 안내 ] 해외결제사칭문자주의 <span>22.10.31</span></li>
-        <li>[ 안내 ] 로젠택배반품 / 교환수거지 <br>...<span style="padding-top: 10px;">22.10.31</span></li>
-        <li>[ 안내 ] 위치정보이용약관개정 <br>공지<span pan style="padding-top: 10px;">22.10.31</span></li>
-        <li>[ 안내 ] 구매회원이용약관개정공지 <span>22.10.31</span></li>
-        <li style="border-bottom: 1px solid #ccc;">[ 안내 ] 씨티은행시스템점검에따 <br>...<span pan style="padding-top: 10px;">22.10.31</span></li>
-      </ul>
+        <div style="padding-top: 20px; padding-bottom: 5px;"><b>공지사항</b></div>
+        <hr style="margin-top: 10px;">
+
+        <ul>
+            <!-- 데이터 없는 경우 -->
+            <li th:if="${#lists.isEmpty(notices)}" style="justify-content:center; color:#888;">
+                등록된 공지사항이 없습니다.
+            </li>
+
+            <!-- 데이터 있는 경우 -->
+            <li th:each="n : ${notices}">
+                <span th:text="${n.pinned} ? '📌 ' : ''"></span>
+                <a th:href="@{/admin/notice/{id}(id=${n.id})}"
+                   th:text="${n.title}">공지 타이틀</a>
+                <span th:text="${n.createdAt}"></span>
+            </li>
+        </ul>
     </div>
 
-    <!-- 고객문의 -->
-    <div class="board-section">
-      <div style="padding-top: 20px; padding-bottom: 5px;"><b>고객문의</b></div>
-      <hr style="margin-top: 10px;">
-      <ul>
-        <li>[ 가입 ] 가입문의내용 <span>chn** 22.10.31</li>
-        <li>[ 탈퇴 ] 탈퇴문의내용 <span>chn** 22.10.31</span></li>
-        <li>[ 회원정보 ] 회원정보문의내용 <span>chn** 22.10.31</span></li>
-        <li>[ 회원정보 ] 회원정보문의내용 <span>chn** 22.10.31</span></li>
-        <li style="border-bottom: 1px solid #ccc;">[ 회원정보 ] 회원정보문의내용 <span>chn** 22.10.31</span></li>
-      </ul>
-    </div>  
-  </div>  
-  </div>
-  <script>
-    // 바 차트
-    new Chart(document.getElementById('barChart'), {
-      type: 'bar',
-      data: {
-        labels: ['10-10', '10-11', '10-12', '10-13', '10-14'],
-        datasets: [
-          { label: '주문', data: [5.3, 9, 3.5, 4.4, 4.5], backgroundColor: '#4A90E2' },
-          { label: '결제', data: [3.3, 7, 1.8, 2.8, 2.8], backgroundColor: '#D0021B' },
-          { label: '취소', data: [1, 2, 2, 1, 1], backgroundColor: '#7ED321' }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { 
-          legend: { labels: { boxWidth: 12, boxHeight: 12 } },
-          title: { display: false }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 10,
-            ticks: { display: false },
-            grid: {
-              drawTicks: false,
-              borderColor: '#ccc'
-            }
-          },
-          x: {
-            grid: {
-              display: false,
-              drawBorder: false
-            },            
-            barPercentage: 0.4,      
-            categoryPercentage: 0.6  
-          }
-        }
-      },
-      plugins: [{
-        id: 'rightBorder',
-        afterDraw(chart) {
-          const { ctx, chartArea: { top, bottom, right } } = chart;
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(right, top);
-          ctx.lineTo(right, bottom);
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = '#ccc';
-          ctx.stroke();
-          ctx.restore();
-        }
-      }]
-    });
 
-    // 파이 차트
-    new Chart(document.getElementById('pieChart'), {
-      type: 'pie',
-      data: {
-        labels: ['가전', '식품', '의류', '기타'],
-        datasets: [{
-          data: [55, 25, 10, 10],
-          backgroundColor: ['#4A90E2', '#D0021B', '#7ED321', '#8977AD']
-        }]
-      },
-      options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { 
-        title: { display: true, text: '주요매출' },
-        legend: { 
-          position: 'bottom',
-          labels: {
-            boxWidth: 10,   
-            boxHeight: 10,  
-            padding: 15,    
-            font: {
-              size: 12      
-            }
+        <!-- 고객문의 -->
+        <div class="board-section">
+            <div style="padding-top:20px; padding-bottom:5px;"><b>고객문의</b></div>
+            <hr style="margin-top:10px;">
+            <ul>
+                <li th:if="${#lists.isEmpty(inquiries)}" style="justify-content:center; color:#888;">
+                    등록된 문의가 없습니다.
+                </li>
+
+                <li th:each="q : ${inquiries}">
+                    <span th:text="${q.qnaStatus == 'NEW' ? '[ 미답변 ]' : '[ 답변완료 ]'}"></span>
+                    <a th:href="@{/admin/qna/{id}(id=${q.id})}"
+                       th:text="${q.title}">문의 제목</a>
+                    <span th:text="${q.userId}">user</span>
+                    <span th:text="${q.createdAt}">25.09.30</span>
+                </li>
+            </ul>
+        </div>
+
+  </div>
+  </div>
+      <script>
+          /* ========== 차트 렌더 함수들 ========== */
+          let _barChart = null;
+          let _pieChart = null;
+
+          // daily: [{ date:'YYYY-MM-DD', orders: number, payments: number, cancels: number }, ...]
+          function renderBarChart(daily) {
+              const labels   = daily.map(d => (String(d.date || '')).slice(5));          // 'MM-DD'
+              const orders   = daily.map(d => Number(d.orders   ?? 0));
+              const payments = daily.map(d => Number(d.payments ?? 0));
+              const cancels  = daily.map(d => Number(d.cancels  ?? 0));
+
+              const ctx = document.getElementById('barChart').getContext('2d');
+              if (_barChart && typeof _barChart.destroy === 'function') _barChart.destroy();
+
+              _barChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels,
+                      datasets: [
+                          { label: '주문', data: orders,   backgroundColor: '#4A90E2' },
+                          { label: '결제', data: payments, backgroundColor: '#D0021B' },
+                          { label: '취소', data: cancels,  backgroundColor: '#7ED321' }
+                      ]
+                  },
+                  options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                          legend: { labels: { boxWidth: 12, boxHeight: 12 } },
+                          title: { display: false }
+                      },
+                      scales: {
+                          y: {
+                              beginAtZero: true,
+                              ticks: { display: false },
+                              grid: { drawTicks: false, borderColor: '#ccc' }
+                          },
+                          x: {
+                              grid: { display: false, drawBorder: false },
+                              barPercentage: 0.4,
+                              categoryPercentage: 0.6
+                          }
+                      }
+                  },
+                  plugins: [{
+                      id: 'rightBorder',
+                      afterDraw(chart) {
+                          const { ctx, chartArea: { top, bottom, right } } = chart;
+                          ctx.save();
+                          ctx.beginPath();
+                          ctx.moveTo(right, top);
+                          ctx.lineTo(right, bottom);
+                          ctx.lineWidth = 1;
+                          ctx.strokeStyle = '#ccc';
+                          ctx.stroke();
+                          ctx.restore();
+                      }
+                  }]
+              });
           }
-        }
-      }
-    }
-  });
-  </script>
+
+          // categories: [{ category:'가전', amount: number }, ...]
+          function renderPieChart(categories) {
+              const pieCanvas = document.getElementById('pieChart');
+              const box = pieCanvas.closest('.chart-box');
+
+              // 데이터 없음 처리
+              if (!Array.isArray(categories) || categories.length === 0) {
+                  // 기존 차트가 있었다면 정리
+                  if (_pieChart && typeof _pieChart.destroy === 'function') _pieChart.destroy();
+                  _pieChart = null;
+                  // 안내 UI
+                  box.innerHTML = `
+        <div style="display:grid;place-items:center;height:100%;
+                    color:#888;font-size:14px;border:1px dashed #ddd;border-radius:8px;">
+          카테고리별 매출 데이터가 없습니다
+        </div>`;
+                  return;
+              }
+
+              // 혹시 “데이터 없음” UI가 있었다면 캔버스로 복원
+              if (!box.querySelector('canvas')) {
+                  const canvas = document.createElement('canvas');
+                  canvas.id = 'pieChart';
+                  canvas.style.width = '100%';
+                  canvas.style.height = '100%';
+                  box.innerHTML = '';
+                  box.appendChild(canvas);
+              }
+
+              const labels = categories.map(c => c.category);
+              const data   = categories.map(c => Number(c.amount || 0));
+
+              const ctx = document.getElementById('pieChart').getContext('2d');
+              if (_pieChart && typeof _pieChart.destroy === 'function') _pieChart.destroy();
+
+              _pieChart = new Chart(ctx, {
+                  type: 'pie',
+                  data: {
+                      labels,
+                      datasets: [{
+                          data,
+                          backgroundColor: [
+                              '#4A90E2','#D0021B','#7ED321','#8977AD',
+                              '#F5A623','#50E3C2','#9013FE'
+                          ]
+                      }]
+                  },
+                  options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                          title: { display: true, text: '주요매출' },
+                          legend: {
+                              position: 'bottom',
+                              labels: { boxWidth: 10, boxHeight: 10, padding: 15, font: { size: 12 } }
+                          }
+                      }
+                  }
+              });
+          }
+
+          /* ========== 데이터 로드 & 바인딩 ========== */
+          (function () {
+              const ctxPath = '/NICHIYA';
+
+              const toLocalISO = (d) => {
+                  const p = n => String(n).padStart(2,'0');
+                  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+              };
+
+              const todayStart     = new Date(); todayStart.setHours(0,0,0,0);
+              const tomorrowStart  = new Date(todayStart); tomorrowStart.setDate(tomorrowStart.getDate()+1);
+              const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate()-1);
+
+              function bindTotals(data){
+                  document.getElementById('v_pending').textContent  = data.pendingPayment ?? 0;
+                  document.getElementById('v_ready').textContent    = data.shippingReady ?? 0;
+                  document.getElementById('v_cancel').textContent   = data.cancelRequest ?? 0;
+                  document.getElementById('v_exchange').textContent = data.exchangeRequest ?? 0;
+                  document.getElementById('v_return').textContent   = data.returnRequest ?? 0;
+
+                  document.getElementById('v_order_cnt').textContent = data.orderCount ?? 0;
+                  document.getElementById('v_order_amt').textContent = Number(data.orderAmount||0).toLocaleString();
+                  document.getElementById('v_signup').textContent    = data.userSignups ?? 0;
+                  document.getElementById('v_visit').textContent     = data.visitors ?? 0;
+                  document.getElementById('v_qna').textContent       = data.qnaCount ?? 0;
+              }
+              function bindToday(data){
+                  document.getElementById('t_order_cnt_today').textContent = data.orderCount ?? 0;
+                  document.getElementById('t_order_amt_today').textContent = Number(data.orderAmount||0).toLocaleString();
+                  document.getElementById('t_signup_today').textContent    = data.userSignups ?? 0;
+                  document.getElementById('t_visit_today').textContent     = data.visitors ?? 0;
+                  document.getElementById('t_qna_today').textContent       = data.qnaCount ?? 0;
+              }
+              function bindYesterday(data){
+                  document.getElementById('t_order_cnt_yday').textContent = data.orderCount ?? 0;
+                  document.getElementById('t_order_amt_yday').textContent = Number(data.orderAmount||0).toLocaleString();
+                  document.getElementById('t_signup_yday').textContent    = data.userSignups ?? 0;
+                  document.getElementById('t_visit_yday').textContent     = data.visitors ?? 0;
+                  document.getElementById('t_qna_yday').textContent       = data.qnaCount ?? 0;
+              }
+
+              async function fetchStats(from, to){
+                  const q = `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+                  const res = await fetch(`${ctxPath}/api/admin/ops-stats${q}`);
+                  if(!res.ok) throw new Error('stats api error');
+                  return res.json();
+              }
+
+              (async () => {
+                  // 오늘 집계
+                  const today = await fetchStats(toLocalISO(todayStart), toLocalISO(tomorrowStart));
+                  bindTotals(today);
+                  bindToday(today);
+
+                  // 차트: 백엔드 필드명이 daily 또는 dailyStats 로 올 수 있음
+                  const daily = today.daily ?? today.dailyStats ?? [];
+                  renderBarChart(Array.isArray(daily) ? daily : []);
+                  renderPieChart(today.categorySales ?? []);
+
+                  // 어제 집계
+                  const yday = await fetchStats(toLocalISO(yesterdayStart), toLocalISO(todayStart));
+                  bindYesterday(yday);
+              })().catch(console.error);
+          })();
+      </script>
+
   </main>
   <style>
         .euro-nav__list {
@@ -309,4 +434,89 @@
   });
   
     </script>
+
+  <script>
+      (function(){
+          const ctxPath = '/NICHIYA'; // context-path 사용 중이면 유지, 없다면 '' 로
+
+          // 로컬 시간 기반 "YYYY-MM-DDTHH:mm:ss" 문자열
+          const toLocalISO = (d) => {
+              const p = n => String(n).padStart(2,'0');
+              return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+          };
+
+          const todayStart   = new Date(); todayStart.setHours(0,0,0,0);
+          const tomorrowStart= new Date(todayStart); tomorrowStart.setDate(tomorrowStart.getDate()+1);
+          const yesterdayStart=new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate()-1);
+
+          // 공통 바인더
+          function bindTotals(data){
+              // 상단 두 줄(집계)
+              document.getElementById('v_pending').textContent  = data.pendingPayment;
+              document.getElementById('v_ready').textContent    = data.shippingReady;
+              document.getElementById('v_cancel').textContent   = data.cancelRequest;
+              document.getElementById('v_exchange').textContent = data.exchangeRequest;
+              document.getElementById('v_return').textContent   = data.returnRequest;
+
+              document.getElementById('v_order_cnt').textContent = data.orderCount;
+              document.getElementById('v_order_amt').textContent = Number(data.orderAmount||0).toLocaleString();
+              document.getElementById('v_signup').textContent    = data.userSignups;
+              document.getElementById('v_visit').textContent     = data.visitors;   // 방문자 로직 붙이면 교체
+              document.getElementById('v_qna').textContent       = data.qnaCount;
+          }
+
+          // 오늘/어제 표 바인딩
+          function bindToday(data){
+              document.getElementById('t_order_cnt_today').textContent = data.orderCount;
+              document.getElementById('t_order_amt_today').textContent = Number(data.orderAmount||0).toLocaleString();
+              document.getElementById('t_signup_today').textContent    = data.userSignups;
+              document.getElementById('t_visit_today').textContent     = data.visitors;
+              document.getElementById('t_qna_today').textContent       = data.qnaCount;
+          }
+          function bindYesterday(data){
+              document.getElementById('t_order_cnt_yday').textContent = data.orderCount;
+              document.getElementById('t_order_amt_yday').textContent = Number(data.orderAmount||0).toLocaleString();
+              document.getElementById('t_signup_yday').textContent    = data.userSignups;
+              document.getElementById('t_visit_yday').textContent     = data.visitors;
+              document.getElementById('t_qna_yday').textContent       = data.qnaCount;
+          }
+
+          async function fetchStats(from, to){
+              const q = `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+              const res = await fetch(`${ctxPath}/api/admin/ops-stats${q}`);
+              if(!res.ok) throw new Error('stats api error');
+              return res.json();
+          }
+
+          (async () => {
+              // 1) 오늘 집계 → 상단 집계 + 오늘 행
+              const today = await fetchStats(toLocalISO(todayStart), toLocalISO(tomorrowStart));
+              console.log("오늘 데이터:", today);
+
+              bindTotals(today);
+              bindToday(today);
+
+              // === 여기서 차트 랜더링 ===
+              if (today.dailyStats) {
+                  console.log("dailyStats 있음:", today.dailyStats);
+                  renderBarChart(today.dailyStats);          // 일별 주문/결제/취소
+              } else {
+                  console.warn("dailyStats 없음!");
+              }
+
+              if (today.categorySales) {
+                  console.log("categorySales 있음:", today.categorySales);
+                  renderPieChart(today.categorySales);       // 카테고리별 매출
+              } else {
+                  console.warn("categorySales 없음!");
+              }
+
+              // 2) 어제 집계 → 어제 행
+              const yday = await fetchStats(toLocalISO(yesterdayStart), toLocalISO(todayStart));
+              console.log("어제 데이터:", yday);
+              bindYesterday(yday);
+          })()
+      .catch(console.error);
+      })();
+  </script>
 <div th:replace="~{admin/_footer.html}"></div>
