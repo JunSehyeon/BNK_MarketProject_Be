@@ -5,18 +5,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
-    // 사용자 정의 쿼리배서드
-    public int countByUser_id(int user_id);
+    // 사용자 정의 쿼리매서드
+    public User findByUserId(String userId);
+
+    //public int countByUser_id(String user_id);
     public int countByEmail(String email);
     public int countByName(String name);
     public int countByPhone(String phone);
 
+    boolean existsByUserId(String userId);      // 아이디 중복 확인
+    boolean existsByEmail(String email);       // 이메일 중복 확인
+    boolean existsByPhone(String phone);       // 전화번호 중복 확인
+
 }
-
-
-
-
-
 

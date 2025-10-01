@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin_store_list</title>
+    <title>admin_member_list</title>
 </head>
 <body>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,6 +200,7 @@
     outline:2px solid var(--z-black);
     outline-offset:2px;
   }
+
   /* 페이지네이션 */
         /* 게시판 아래버튼 부분 */
         .prev-page{
@@ -221,7 +222,6 @@
         }
         
         /* 게시판 아래버튼 부분 끝 */
-
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -249,9 +249,9 @@
             </div>
             <div style="margin-top:27px; margin-left:auto; margin-right:3%; flex:1; max-width:30%;">
                 <ul style="list-style-type: none; padding: 0; margin:0; display:flex; gap:40px; float:right; margin-right:100px;">
-                    <li><a href="#" style="text-decoration: none; color:black; font-size:14px;">홈</a></li>
-                    <li><a href="#" style="text-decoration: none; color:black; font-size:14px;">로그아웃</a></li>
-                    <li><a href="#" style="text-decoration: none; color:black; font-size:14px;">고객센터</a></li>
+                    <li><a href="/admin/admin_main.html" style="text-decoration: none; color:black; font-size:14px;">홈</a></li>
+                    <li><a href="/admin/admin_main.html" style="text-decoration: none; color:black; font-size:14px;">로그아웃</a></li>
+                    <li><a href="/admin/announcement_list.html" style="text-decoration: none; color:black; font-size:14px;">고객센터</a></li>
                 </ul>
             </div>
         </div>
@@ -265,6 +265,7 @@
         </div>
         <style>
             /* 우측 서브항목 기본은 숨김 + 페이드 트랜지션 준비 */
+            
             .sub {
                 opacity: 0;
                 transform: translateY(6px);
@@ -467,20 +468,19 @@
                 <li class="euro-nav__item"><a href="#">버전관리</a></li>
             </ul>
             </section>
-
             <section class="euro-nav__group">
             <h4 class="euro-nav__title" style="">상점관리</h4>
             <ul class="euro-nav__list">
-                <li class="euro-nav__item is-active"><a href="#">상점목록</a></li>
-                <li class="euro-nav__item"><a href="#">매출현황</a></li>
+                <li class="euro-nav__item"><a href="/admin/store_list.html">상점목록</a></li>
+                <li class="euro-nav__item"><a href="/admin/sale_status.html">매출현황</a></li>
             </ul>
             </section>
 
             <section class="euro-nav__group">
             <h4 class="euro-nav__title" style="">회원관리</h4>
             <ul class="euro-nav__list">
-                <li class="euro-nav__item"><a href="#">회원목록</a></li>
-                <li class="euro-nav__item"><a href="#">포인트관리</a></li>
+                <li class="euro-nav__item is-active"><a href="/admin/member_list.html">회원목록</a></li>
+                <li class="euro-nav__item"><a href="/admin/point_management.html">포인트관리</a></li>
             </ul>
             </section>
 
@@ -511,81 +511,94 @@
             <section class="euro-nav__group">
             <h4 class="euro-nav__title" style="">고객센터</h4>
             <ul class="euro-nav__list">
-                <li class="euro-nav__item"><a href="#">공지사항</a></li>
-                <li class="euro-nav__item"><a href="#">자주묻는질문</a></li>
+                <li class="euro-nav__item"><a href="/admin/announcement_list.html">공지사항</a></li>
+                <li class="euro-nav__item"><a href="/admin/questions_list.html">자주묻는질문</a></li>
                 <li class="euro-nav__item"><a href="#">문의하기</a></li>
                 <li class="euro-nav__item"><a href="#">채용하기</a></li>
             </ul>
             </section>
         </aside>
+                </div>
+                <div style="border-left:1px solid #e2e2e2;"></div>
+                <!-- 오른쪽 콘텐츠 영역 -->
+          <div style="margin-left:40px; width:900px; height:1000px; border:none; padding:20px; box-sizing:border-box; font-family:'Noto Sans KR', sans-serif;">
 
-        </div>
-        <div style="width:940px; border-left:1px solid #e2e2e2;">
-            <div style="margin-left:60px;">
-                <div style="display: flex;">
-                    <div style="font-size: 20px; font-weight: 800; margin-top:16px; margin-bottom:5px;">상점목록</div>
-                    <div style="margin-left: auto; margin-top:auto; margin-bottom:4px;font-size: 12px;">HOME > 상점관리 > <span style="font-weight: 800;">상점목록</span></div>
+            <!-- 제목 + 경로 -->
+            <div style="display: flex;">
+                    <div style="font-size: 20px; font-weight: 800; margin-top:16px; margin-bottom:5px;">회원목록</div>
+                    <div style="margin-left: auto; margin-top:auto; margin-bottom:4px;font-size: 12px;">HOME > 회원관리 > <span style="font-weight: 800;">회원목록</span></div>
                 </div>
                 <hr style="border:none; border-top:1px solid gray; margin-top:0px;">
                 <div style="padding-left:10px;">
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
                     <form action="" method="post" style="display: flex; ">
                         <select name="select" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
-                            <option value="name">상호명</option>
-                            <option value="representative">대표자</option>
-                            <option value="number">사업자등록번호</option>
-                            <option value="hp">연락처</option>
+                            <option value="id">아이디</option>
+                            <option value="name">이름</option>
+                            <option value="email">이메일</option>
+                            <option value="phone">휴대폰</option>
                         </select>
-                        <input type="text" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                        <input type="text" placeholder="키워드입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                         <input type="submit" value="검색" style="width:50px; height:28px; color:white; background-color: black; border:none; font-size: 12px !important;">
                     </form>
                 </div>
-                
+
             <!-- 2. 테이블 -->
             <table style="width:100%; border-collapse:collapse; text-align:center; font-size:14px;">
               <thead>
-                <tr style="border-top:2px solid #000; border-bottom:1px solid #ccc; background:#fafafa; height:50px;">
+                <tr style="border-top:2px solid #000; border-bottom:1px solid #ccc; background:#fafafa; height:60px;">
                   <th style="padding:8px;"><input type="checkbox"></th>
                   <th>번호</th>
-                  <th>상호명</th>
-                  <th>대표</th>
-                  <th>사업자등록번호</th>
-                  <th>통신판매업번호</th>
-                  <th>연락처</th>
-                  <th>운영</th>
+                  <th>아이디</th>
+                  <th>이름</th>
+                  <th>성별</th>
+                  <th>등급</th>
+                  <th>포인트</th>
+                  <th>이메일</th>
+                  <th>휴대폰</th>
+                  <th>가입일</th>
+                  <th>상태</th>
                   <th>관리</th>
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>5</td><td>(주)다니와</td><td>정우성</td><td>112-12-12345</td><td>2024-서울강남-04433</td><td>010-1234-1001</td>
-                  <td style="color:green;">● 운영 중</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>4</td><td>(주)맛남</td><td>이정재</td><td>112-12-12344</td><td>2024-서울강남-04438</td><td>010-1234-1002</td>
-                  <td style="color:red;">● 운영 중지</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>3</td><td>(주)컴퓨존</td><td>장동건</td><td>112-12-12343</td><td>2024-서울강남-04429</td><td>010-1234-1003</td>
-                  <td style="color:red;">● 운영 중지</td><td>[ 중단 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>2</td><td>누리쿠도</td><td>조인성</td><td>112-12-12342</td><td>2024-부산진구-01139</td><td>010-1234-1004</td>
-                  <td style="color:blue;">● 운영 준비</td><td>[ 재개 ]</td>
-                </tr>
-                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                  <td><input type="checkbox"></td><td>1</td><td>굿바디스포츠</td><td>강동원</td><td>112-12-12341</td><td>2024-서울강남-04425</td><td>010-1234-1005</td>
-                  <td style="color:green;">● 운영 중</td><td>[ 승인 ]</td>
+                <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
+                th:each="user:${dtoList}">
+                  <td><input type="checkbox"></td>
+                  <td th:text="${user.id}"></td>
+                  <td th:text="${user.user_id}">xxx...</td>
+                  <td th:text="${user.rep}">정우성</td>
+                  <td th:text="${user.gender}">M</td>
+                  <td >
+                    <select style="height: 30px; border: 1px solid #e2e2e2;">
+                      <option th:selected="${user.grade} == 'VVIP'">VVIP</option>
+                      <option th:selected="${user.grade} == 'VIP'">VIP</option>
+                      <option th:selected="${user.grade} == 'GOLD'">GOLD</option>
+                      <option th:selected="${user.grade} == 'SILVER'">SILVER</option>
+                      <option th:selected="${user.grade} == 'FAMILY'">FAMILY</option>
+                    </select>
+                  </td>
+                  <td th:text="${user.point}">15,000</td>
+                  <td th:text="${user.email}">xxxxx@...</td>
+                  <td th:text="${user.tel}">010-1234-1001</td>
+                  <td th:text="${user.created_at}">0000-00-00 00:00:00</td>
+                  <td><span style="color:green; font-weight:500;" th:text="${user.look}"
+                  th:style="${user.look == '정상' ? 'color:green;' :
+                  (user.look == '중지' ? 'color:red;' : 'color:#555;')}">정상</span></td>
+                  <td>
+                    <a href="#" class="openModalLink">수정</a> | 
+                    <a href="#" class="openModalLink">중지</a>
+                  </td>
                 </tr>
               </tbody>
             </table>
 
+            <!-- 3. 하단 버튼 영역 -->
             <div style="display: flex; margin-top:25px;">
-                    <button style="border:none; background-color: #760c0c; color:white; font-size: 10px; font-weight: 300; height:25px; width:62px;">선택삭제</button>
-                    <button id="openModalBtn"
-                      style="margin-left:auto; border:none; background-color: black; color:white; font-size: 10px; font-weight: 300; height:25px; width:62px;">
-                      상점등록
-                    </button>
+              <button id="openModalBtn" 
+                style="border:none; background-color: black; color:white; font-size: 10px; font-weight: 300; height:25px; width:62px;">
+                선택수정
+              </button>
                 </div>
                 <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
                     <form action="" method="" style="">
@@ -601,7 +614,131 @@
             </div>
         </div>
         </div>
+        
     </main>
+
+      <div id="shopModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>선택 수정</h2>
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+            <form>
+              <table class="edit-table">
+                <tbody>
+                  <tr>
+                    <th>아이디</th>
+                    <td><input type="text" value="abc1234" readonly></td>
+                  </tr>
+                  <tr>
+                    <th>이름</th>
+                    <td><input type="text" value="홍길동"></td>
+                  </tr>
+                  <tr>
+                    <th>성별</th>
+                    <td>
+                      <label class="radio-label">
+                        <input type="radio" name="gender" checked>
+                        <span class="radio-custom"></span> 남
+                      </label>
+                      <label class="radio-label" style="margin-left:20px;">
+                        <input type="radio" name="gender">
+                        <span class="radio-custom"></span> 여
+                      </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>등급</th>
+                    <td>
+                      <input type="text" value="FAMILY" readonly>
+                      <span style="color:#666; margin-left:10px; font-size:13px;">등급 수정은 회원 목록에서 선택수정 가능</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>상태</th>
+                    <td><span style="color:green;">정상</span></td>
+                  </tr>
+                  <tr>
+                    <th>EMAIL</th>
+                    <td><input type="email" value="abc1234@gmail.com"></td>
+                  </tr>
+                  <tr>
+                    <th>휴대폰</th>
+                    <td><input type="text" value="010-1234-1001"></td>
+                  </tr>
+                  <tr>
+                    <th>우편번호</th>
+                    <td>
+                      <input type="text" value="12345" style="width:150px; display:inline-block;">
+                      <button type="button" style="margin-left:6px;">검색</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>기본주소</th>
+                    <td><input type="text" value="부산광역시 부산진구 부전동 123"></td>
+                  </tr>
+                  <tr>
+                    <th>상세주소</th>
+                    <td><input type="text" value="OO 빌딩 3층 301호"></td>
+                  </tr>
+                  <tr>
+                    <th>가입일</th>
+                    <td>0000-00-00 00:00:00</td>
+                  </tr>
+                  <tr>
+                    <th>최근로그인날짜</th>
+                    <td>0000-00-00 00:00:00</td>
+                  </tr>
+                  <tr>
+                    <th>기타</th>
+                    <td><textarea placeholder="회원에 대한 기타 정보 입력"></textarea></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="text-align:center; margin-top:20px;">
+                <button type="submit" class="btn-submit">수정하기</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+        .modal-content { background:#fff; width:650px; padding:20px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+        .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; margin-bottom:15px; }
+        .modal-header .close { font-size:22px; font-weight:bold; cursor:pointer; }
+        .edit-table { width:100%; border-collapse:collapse; }
+        .edit-table th { width:120px; text-align:left; padding:8px; background:#f9f9f9; font-weight:500; }
+        .edit-table td { padding:8px; }
+        .edit-table input, .edit-table textarea, .edit-table select {
+          width:100%; padding:6px 8px; border:1px solid #aaa; border-radius:4px; font-size:14px;
+        }
+        .edit-table textarea { height:60px; resize:none; }
+        .btn-submit {
+          background:#4CAF50; color:#fff; border:none; padding:10px 20px; font-size:15px; border-radius:4px; cursor:pointer;
+        }
+
+        /* === 라디오 버튼 커스텀 === */
+        .radio-label input[type="radio"] { display: none; }
+        .radio-custom {
+          width: 18px; height: 18px;
+          border: 2px solid #777;
+          border-radius: 50%;
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 6px;
+          position: relative;
+          cursor: pointer;
+        }
+        .radio-label input[type="radio"]:checked + .radio-custom {
+          border-color: #444;
+          background-color: #32527B;   /* 파란색 원 */
+          box-shadow: inset 0 0 0 4px #fff; /* 안쪽 흰 원 효과 */
+        }
+      </style>
+
 
     <style>
         .euro-nav__list {
@@ -614,50 +751,8 @@
             max-height: 500px;            /* 펼쳐졌을 때 (충분히 크게 설정) */
         }
     </style>
-
-    <div id="shopModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>상점 등록</h2>
-          <span class="close">&times;</span>
-        </div>
-        <div class="modal-body">
-          <form>
-            <label>아이디 <input type="text" placeholder="영문, 숫자 4~12자 설정"></label>
-            <label>비밀번호 <input type="password" placeholder="영문, 숫자, 특수문자 8~12자 설정"></label>
-            <label>비밀번호 확인 <input type="password"></label>
-            
-            <label>상호명 <input type="text" placeholder="상호명입력예시 (주)"></label>
-            <label>대표 <input type="text" placeholder="이름입력"></label>
-            <label>사업자등록번호 <input type="text" placeholder="포함 12자리 입력"></label>
-            <label>통신판매업번호 <input type="text" placeholder="포함 12자리 입력"></label>
-            <label>전화번호 <input type="text" placeholder="전화번호입력"></label>
-            <label>팩스 <input type="text" placeholder="팩스번호입력"></label>
-            
-            <label>주소</label>
-            <input type="text" placeholder="우편번호검색"><br>
-            <input type="text" placeholder="기본주소입력"><br>
-            <input type="text" placeholder="상세주소입력">
-
-            <button type="submit" style="background:#4CAF50; color:#fff; border:none; padding:10px 20px; margin-top:15px; cursor:pointer;">
-              등록하기
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <style>
-      /* 모달 스타일 */
-      .modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-      .modal-content { background:#fff; width:500px; padding:20px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
-      .modal-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; margin-bottom:15px; }
-      .modal-header .close { font-size:22px; font-weight:bold; cursor:pointer; }
-      .modal-body label { display:block; margin-bottom:10px; }
-      .modal-body input { width:100%; padding:6px 8px; margin-top:4px; border:1px solid #aaa; border-radius:4px; }
-    </style>
-
     <script>
-      // ===== 상점등록 모달 =====
+      // ===== 선택수정 모달 =====
       const modal = document.getElementById("shopModal");
       const openModalBtn = document.getElementById("openModalBtn");
       const closeModalBtn = document.querySelector(".modal .close");
@@ -679,7 +774,6 @@
         }
       });
     </script>
-
     <style>
         .euro-nav__list {
             max-height: 0;                /* 기본은 접힘 */
