@@ -18,15 +18,20 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String user_id;
-    private String email;
+    @Column(name = "user_id")
+    private String userId;
     private String password;
     private String name;
+    private String gender;
+    private String birth;
+    private String email;
     private String phone;
+    private String postcode;
     private String address;
+    private String detailAddress;
 
-    @Builder.Default // 기본 초기화값은 뭘로?
-    private String role = "member";
+    @Builder.Default
+    private String role = "MEMBER";
 
     @CreationTimestamp
     private String created_at;

@@ -383,7 +383,7 @@
 
         <div class="actions">
             <button type="button" class="btn outline" id="btnCancel">취소</button>
-            <button type="submit" class="btn solid" id="btnNext" disabled>다음</button>
+            <button type="submit" class="btn solid" id="btnNext">다음</button>
         </div>
     </section>
 
@@ -393,7 +393,9 @@
             const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
             const agreeAll = $('#agreeAll');
+
             const nextBtn = $('#btnNext');
+
             const cancelBtn = $('#btnCancel');
 
             // 모든 동의 체크박스들(상위+하위 포함)
@@ -489,6 +491,14 @@
 
             // 취소 버튼 (원하면 변경)
             cancelBtn?.addEventListener('click', () => history.back());
+
+            nextBtn.addEventListener('click', () => {
+                if (!nextBtn.disabled) {
+                    // 필수 동의 모두 완료된 상태에서만 이동
+                    window.location.href = '/NICHIYA/member/registerSeller';
+                }
+            });
+
         })();
     </script>
 

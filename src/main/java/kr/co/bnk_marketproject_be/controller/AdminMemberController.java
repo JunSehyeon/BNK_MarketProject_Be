@@ -31,6 +31,7 @@ public class AdminMemberController {
         return "admin/admin_member_list";
     }
 
+
     @GetMapping("/admin/member/search")
     public String adminStoreSearch(PageRequestDTO pageRequestDTO, Model model){
 
@@ -41,4 +42,5 @@ public class AdminMemberController {
 
         return "admin/admin_member_searchList";
     }
+
 }
