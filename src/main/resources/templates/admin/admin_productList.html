@@ -101,7 +101,20 @@
                     <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
                     th:each="admin, stat:${pageResponseDTO.dtoList}">
                         <td><input type="checkbox"></td>
-                        <td style=""><img th:src="@{/{p}(p=${#strings.trim(admin.url).startsWith('/') ? #strings.trim(admin.url).substring(1) : #strings.trim(admin.url)})}" alt="" style="height:60px;vertical-align: middle;"></td>
+                        <td style="padding-left:9px;">
+                            <div style="width: 60px;         /* 고정 너비 */
+                                          height: 60px;        /* 고정 높이 */
+                                          overflow: hidden;    /* 영역 밖은 잘라냄 */
+                                          display: flex;
+                                          justify-content: center;
+                                          align-items: center;">
+                            <img th:src="@{/{p}(p=${#strings.trim(admin.url).startsWith('/') ? #strings.trim(admin.url).substring(1) : #strings.trim(admin.url)})}" alt=""
+                                          style="width: 100%;
+                                                  height: 100%;
+                                                  object-fit: cover;   /* 공간을 꽉 채우되 넘치면 잘림 */
+                                                  vertical-align: middle;">
+                            </div>
+                        </td>
                         <td th:text="${admin.product_code}"></td>
                         <td th:text="${admin.product_name}">상품명 #1</td>
                         <td th:text="${admin.price}">32,000</td>
