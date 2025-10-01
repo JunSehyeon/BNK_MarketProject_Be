@@ -26,7 +26,6 @@ public class Seller{
     private String biz_registration_number;
     private String mail_order_number;
 
-    @CreationTimestamp
     private String created_at;
     private String updated_at;
 

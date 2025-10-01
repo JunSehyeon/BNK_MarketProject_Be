@@ -1,6 +1,9 @@
 package kr.co.bnk_marketproject_be.controller;
 
 import kr.co.bnk_marketproject_be.dto.AdminMemberDTO;
+import kr.co.bnk_marketproject_be.dto.PageRequestDTO;
+import kr.co.bnk_marketproject_be.dto.PageResponseAdminMemberDTO;
+import kr.co.bnk_marketproject_be.dto.PageResponseDTO;
 import kr.co.bnk_marketproject_be.entity.AdminMember;
 import kr.co.bnk_marketproject_be.service.AdminMemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +22,25 @@ public class AdminMemberController {
     private final AdminMemberService adminMemberService;
 
     @GetMapping("/admin/member/list")
-    public String list(Model model) {
-        java.util.List<AdminMemberDTO> dtoList = adminMemberService.getAllmember();
-        model.addAttribute("dtoList", dtoList);
+    public String adminStoreList(Model model, PageRequestDTO pageRequestDTO) {
+
+        PageResponseAdminMemberDTO pageResponseDTO = adminMemberService.findAdminMemberAll(pageRequestDTO);
+
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+
         return "admin/admin_member_list";
     }
 
-    // 화면 작동되는지 보는 용도
-    @GetMapping("/temp/admin/member/list")
-    public String list2(Model model) {
-        java.util.List<AdminMemberDTO> dtoList = adminMemberService.getAllmember();
-        model.addAttribute("dtoList", dtoList);
-        return "admin/admin_member_list";
+
+    @GetMapping("/admin/member/search")
+    public String adminStoreSearch(PageRequestDTO pageRequestDTO, Model model){
+
+        log.info("pageRequestDTO:{}",pageRequestDTO);
+
+        PageResponseAdminMemberDTO pageResponseDTO = adminMemberService.findAdminMemberAll(pageRequestDTO);
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+
+        return "admin/admin_member_searchList";
     }
 
 }
