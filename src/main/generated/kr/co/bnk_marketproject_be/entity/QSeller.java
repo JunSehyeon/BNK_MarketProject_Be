@@ -29,11 +29,11 @@ public class QSeller extends EntityPathBase<Seller> {
 
     public final StringPath mail_order_number = createString("mail_order_number");
 
-    public final StringPath seller_id = createString("seller_id");
+    public final StringPath sellerId = createString("sellerId");
 
     public final StringPath updated_at = createString("updated_at");
 
-    public final NumberPath<Integer> user_id = createNumber("user_id", Integer.class);
+    public final NumberPath<Integer> userId = createNumber("userId", Integer.class);
 
     public QSeller(String variable) {
         super(Seller.class, forVariable(variable));

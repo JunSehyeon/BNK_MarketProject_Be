@@ -47,7 +47,7 @@ public class AdminProductRepositoryImpl implements AdminProductRepositoryCustom 
                 .leftJoin(qSeller)
                 .on(qProducts.sellers_id.eq(qSeller.id))
                 .leftJoin(qUser)
-                .on(qSeller.seller_id.eq(qUser.user_id))
+                .on(qSeller.sellerId.eq(qUser.userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qProducts.id.desc())
@@ -87,7 +87,7 @@ public class AdminProductRepositoryImpl implements AdminProductRepositoryCustom 
                     .leftJoin(qSeller)
                     .on(qProducts.sellers_id.eq(qSeller.id))
                     .leftJoin(qUser)
-                    .on(qSeller.seller_id.eq(qUser.user_id))
+                    .on(qSeller.sellerId.eq(qUser.userId))
                     .where(expression)
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -103,7 +103,7 @@ public class AdminProductRepositoryImpl implements AdminProductRepositoryCustom 
                     .leftJoin(qSeller)
                     .on(qProducts.sellers_id.eq(qSeller.id))
                     .leftJoin(qUser)
-                    .on(qSeller.seller_id.eq(qUser.user_id))
+                    .on(qSeller.sellerId.eq(qUser.userId))
                     .where(expression)
                     .fetchOne();
 

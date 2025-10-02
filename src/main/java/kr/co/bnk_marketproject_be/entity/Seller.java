@@ -1,9 +1,6 @@
 package kr.co.bnk_marketproject_be.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 @Table(name="SELLERS")
 public class Seller{
 
@@ -20,8 +18,8 @@ public class Seller{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int user_id;
-    private String seller_id;
+    private int userId;
+    private String sellerId;
     private String brand_name;
     private String biz_registration_number;
     private String mail_order_number;

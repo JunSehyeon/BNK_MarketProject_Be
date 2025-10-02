@@ -47,6 +47,7 @@ public class SecurityConfig {
 //        http.csrf(CsrfConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable())  // ← 이거 추가안하면 로그인개발안됩니다....
                 .formLogin(form -> form  // 기본 /login 페이지 사용
                         .permitAll()
                 )
@@ -58,8 +59,8 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
-                .username("a")               // 아이디
-                .password(passwordEncoder.encode("123")) // 비밀번호 고정
+                .username("aaaa")               // 아이디
+                .password(passwordEncoder.encode("1234")) // 비밀번호 고정
                 .roles("USER")                  // 권한
                 .build();
         return new InMemoryUserDetailsManager(user);

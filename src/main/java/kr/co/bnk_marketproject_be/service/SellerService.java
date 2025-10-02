@@ -25,8 +25,8 @@ public class SellerService {
 
     //    private int id;
 //
-//    private int user_id;
-//    private String seller_id;
+//    private int userId;
+//    private String sellerId;
 //    private String brand_name;
 //    private String biz_registration_number;
 //    private String mail_order_number;
@@ -44,9 +44,9 @@ public class SellerService {
         */
     }
 
-    public UserDTO getUser(String seller_id){
+    public UserDTO getUser(String sellerId){
 
-        Optional<User> optUser = sellerRepository.findById(seller_id);
+        Optional<User> optUser = sellerRepository.findById(sellerId);
 
         if(optUser.isPresent()){
 
@@ -60,14 +60,14 @@ public class SellerService {
         return null;
     }
     public void modify(UserDTO userDTO){}
-    public void remove(String user_id){}
+    public void remove(String userId){}
 
     public int countUser(String type, String value){
 
         int count = 0;
 
         /*
-        if(type.equals("user_id")){
+        if(type.equals("userId")){
             count = sellerRepository.countByUser_id(value);
         }else if(type.equals("name")){
             count = sellerRepository.countByName(value);

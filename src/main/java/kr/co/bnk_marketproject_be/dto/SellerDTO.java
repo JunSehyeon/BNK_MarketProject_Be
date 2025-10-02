@@ -12,8 +12,8 @@ import lombok.*;
 public class SellerDTO {
 
     private int id;
-    private int user_id;
-    private String seller_id;
+    private int userId;
+    private String sellerId;
     private String brand_name;
     private String biz_registration_number;
     private String mail_order_number;
