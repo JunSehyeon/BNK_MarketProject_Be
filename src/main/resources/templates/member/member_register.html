@@ -496,10 +496,28 @@
         });
 
         // ---------- 기타 이벤트 ----------
-        document.getElementById("btnCheckId").addEventListener("click", () => {
-            if (validateUserId()) {
-                idResult.textContent = "사용 가능한 아이디입니다. (중복확인: 임시 통과)";
-                idResult.className = "success";
+        document.getElementById("btnCheckId").addEventListener("click", async () => {
+            const id = elUserId.value.trim();
+            if (!validateUserId()) {
+                idResult.textContent = "아이디 형식을 확인하세요.";
+                idResult.className = "error";
+                return;
+            }
+
+            try {
+                const res = await fetch(`/NICHIYA/user/check-id?user_id=${encodeURIComponent(id)}`);
+                const body = await res.json();
+                if (res.ok && body.available) {
+                    idResult.textContent = "사용 가능한 아이디입니다.";
+                    idResult.className = "success";
+                } else {
+                    idResult.textContent = "이미 사용중인 아이디입니다.";
+                    idResult.className = "error";
+                }
+            } catch (e) {
+                console.error(e);
+                idResult.textContent = "서버 오류";
+                idResult.className = "error";
             }
             updateSubmitState();
         });
@@ -525,6 +543,8 @@
 
         // ---------- 제출 ----------
         form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
             const okNow =
                 emailVerified &&
                 phoneVerified &&
@@ -534,16 +554,42 @@
                 validateBirth();
 
             if (!okNow) {
-                e.preventDefault();
+
                 alert("필수 인증/입력 항목을 완료해 주세요.");
                 updateSubmitState();
                 return;
             }
 
-            // 실제 연동 시 fetch POST로 서버에 전송
-            e.preventDefault();
-            alert("회원가입 데이터가 전송됩니다 (DB 연동 예정).");
-            location.href = "/welcome";
+            const payload = {
+                userId: elUserId.value.trim(),
+                password: elPw.value,
+                name: elName.value.trim(),
+                gender: document.querySelector('input[name="gender"]:checked')?.value || null,
+                birth: elBirth.value,
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                postcode: document.getElementById("postcode").value,
+                address: document.getElementById("address").value,
+                detailAddress: document.getElementById("detailAddress").value
+            };
+
+            try {
+                const res = await fetch("/NICHIYA/user/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const body = await res.json();
+                if (res.ok && body.ok) {
+                    alert("회원가입이 완료되었습니다.");
+                    location.href = "/welcome";
+                } else {
+                    alert("회원가입 실패: " + (body.error || "알 수 없는 오류"));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("서버 오류로 가입 실패");
+            }
         });
     </script>
 </body>

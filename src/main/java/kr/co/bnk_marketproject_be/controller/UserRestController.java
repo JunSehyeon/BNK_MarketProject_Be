@@ -24,19 +24,31 @@ public class UserRestController {
         try {
             userService.register(userDTO);
             return ResponseEntity.ok(Map.of("success", true));
-        } catch (IllegalStateException ise) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", ise.getMessage()));
-        } catch (Exception e) {
-            log.error("register error", e);
-            return ResponseEntity.status(500).body(Map.of("success", false, "message", "서버 오류"));
+        }
+        catch (Exception e) {
+            log.error("Register failed", e);
+            return ResponseEntity.badRequest().body(Map.of("ok", false, "error", e.getMessage()));
         }
     }
 
-    // GET /user/check-id?user_id=xxx  (아이디 중복 체크)
+    // GET /user/check-id?user_id=xxx
     @GetMapping("/check-id")
-    public ResponseEntity<Map<String,Boolean>> checkId(@RequestParam("user_id") String userId) {
-        int count = userService.countUser("user_id", userId); // int 반환
-        boolean available = (count == 0); // 0이면 사용 가능
+    public ResponseEntity<Map<String, Boolean>> checkId(@RequestParam("user_id") String userId) {
+        boolean available = !userService.existsByUserId(userId);
+        return ResponseEntity.ok(Map.of("available", available));
+    }
+
+    // GET /user/check-email?email=xxx
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam("email") String email) {
+        boolean available = !userService.existsByEmail(email);
+        return ResponseEntity.ok(Map.of("available", available));
+    }
+
+    // GET /user/check-phone?phone=xxx
+    @GetMapping("/check-phone")
+    public ResponseEntity<Map<String, Boolean>> checkPhone(@RequestParam("phone") String phone) {
+        boolean available = !userService.existsByPhone(phone);
         return ResponseEntity.ok(Map.of("available", available));
     }
 }

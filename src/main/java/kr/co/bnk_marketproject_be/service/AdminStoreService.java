@@ -5,7 +5,6 @@ import kr.co.bnk_marketproject_be.dto.AdminStoreDTO;
 import kr.co.bnk_marketproject_be.dto.PageRequestDTO;
 import kr.co.bnk_marketproject_be.dto.PageResponseDTO;
 import kr.co.bnk_marketproject_be.entity.AdminStore;
-import kr.co.bnk_marketproject_be.repository.AdminStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
