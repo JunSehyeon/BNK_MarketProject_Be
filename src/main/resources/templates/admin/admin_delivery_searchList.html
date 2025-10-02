@@ -113,28 +113,27 @@
                               rec=${T(java.time.LocalDateTime).parse(admin.receipt, fmt)},
                               days=${T(java.time.temporal.ChronoUnit).DAYS.between(rec, now)}"
                             th:text="${days <= 1 ? '배송준비' : (days <= 3 ? '배송중' : '배송완료')}"
-                                th:style="${days <= 1 ? 'color:red;' :
+                            th:style="${days <= 1 ? 'color:red;' :
                                 (days <= 3 ? 'color:#4f95d1;' : 'color:#8ad7a6;')}">
-                            배송준비
-                        </td>
                         <td th:text="${admin.receipt}">0000-00-00 00:00:00</td>
                     </tr>
 
                 </table>
                     <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
                         <input th:if="${pageResponseDTO.prev}"
-                               th:onclick="|location.href='@{/admin/delivery/list(pg=${pageResponseDTO.start - 1})}'|"
+                               th:onclick="|location.href='@{/admin/delivery/search(pg=${pageResponseDTO.start - 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                type="button" class="prev-page" value="< 이전">
 
-                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                            <input th:onclick="|location.href='@{/admin/delivery/list(pg=${num})}'|"
+                        <th:block th:if="${pageResponseDTO.end >= pageResponseDTO.start}"
+                                  th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <input th:onclick="|location.href='@{/admin/delivery/search(pg=${num}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                    th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
                                    type="button"
                                    th:value="${num}" />
                         </th:block>
 
                         <input th:if="${pageResponseDTO.next}"
-                               th:onclick="|location.href='@{/admin/delivery/list(pg=${pageResponseDTO.end + 1})}'|"
+                               th:onclick="|location.href='@{/admin/delivery/search(pg=${pageResponseDTO.end + 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                type="button" class="next-page" value="다음 >" style="">
                     </div>
                     <style>
