@@ -24,6 +24,10 @@ public class AdminMemberDTO {
     private String created_at;
     private String look;
 
+    public String getCreated_at() {
+        return created_at.substring(0, 19);
+    }
+
     // 추가 필드
     @Column(name = "BOARD_TYPE")
     private String boardType;

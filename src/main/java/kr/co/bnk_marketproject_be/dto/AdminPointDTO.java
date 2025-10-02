@@ -20,6 +20,10 @@ public class AdminPointDTO {
     private String description;
     private String created_at;
 
+    public String getCreated_at() {
+        return created_at.substring(0, 19);
+    }
+
     // 추가 필드
     @Column(name = "BOARD_TYPE")
     private String boardType;
