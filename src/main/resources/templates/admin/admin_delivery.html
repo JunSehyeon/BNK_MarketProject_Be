@@ -74,13 +74,13 @@
                 <hr style="border:none; border-top:1px solid gray; margin-top:0px;">
                 <div style="padding-left:10px;">
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
-                    <form action="" method="post" style="display: flex; ">
-                        <select name="select" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                    <form th:action="@{/admin/deliver/search}" method="get" style="display: flex; ">
+                        <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                             <option value="invoice">송장번호</option>
-                            <option value="num">주문번호</option>
-                            <option value="who">수령인</option>
+                            <option value="order_code">주문번호</option>
+                            <option value="recipient">수령인</option>
                         </select>
-                        <input type="text" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                        <input type="text" name="keyword" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                         <input type="submit" value="검색" style="width:50px; height:28px; color:white; background-color: black; border:none; font-size: 12px !important;">
                     </form>
                 </div>
@@ -97,158 +97,61 @@
                         <th style="">배송상태</th>
                         <th style="">접수일</th>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122102315</a></td>
-                        <td>로젠택배</td>
-                        <td>10121211341</td>
-                        <td>김유신</td>
-                        <td>OOO</td>
-                        <td>3</td>
-                        <td style="">68,400</td>
-                        <td>무료</td>
-                        <td style="color:#4f95d1;">
+                    <tr th:each="admin, stat:${pageResponseDTO.dtoList}"
+                            style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
+                        <td><a href="#" style="font-weight: 800;"
+                        th:text="${admin.invoice}">10122102315</a></td>
+                        <td th:text="${admin.delicom}">로젠택배</td>
+                        <td th:text="${admin.order_code}">10121211341</td>
+                        <td th:text="${admin.recipient}">김유신</td>
+                        <td th:text="${admin.product_name}">OOO</td>
+                        <td th:text="${admin.item_count}">3</td>
+                        <td th:text="${admin.total_amount}">68,400</td>
+                        <td th:text="${admin.delichar}">무료</td>
+                        <td
+                                style="color:#4f95d1;">
                             배송준비
                         </td>
-                        <td>0000-00-00 00:00:00</td>
+                        <td th:text="${admin.receipt}">0000-00-00 00:00:00</td>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">30122102119</a></td>
-                        <td>한진택배</td>
-                        <td>10121211341</td>
-                        <td>김유신</td>
-                        <td>OOO</td>
-                        <td>1</td>
-                        <td style="">34,500</td>
-                        <td>3,000</td>
-                        <td style="color:#4f95d1;">
-                            배송준비
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122111517</a></td>
-                        <td>우체국</td>
-                        <td>10121211339</td>
-                        <td>장보고</td>
-                        <td>OOO</td>
-                        <td>2</td>
-                        <td style="">9,000</td>
-                        <td>3,500</td>
-                        <td style="color:#4f95d1;">
-                            배송 중
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122102315</a></td>
-                        <td>CJ 대한통운</td>
-                        <td>10121211338</td>
-                        <td>강감찬</td>
-                        <td>OOO</td>
-                        <td>1</td>
-                        <td style="">89,000</td>
-                        <td>무료</td>
-                        <td style="color:red;">
-                            반품요청
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">20122102515</a></td>
-                        <td>경동택배</td>
-                        <td>10121211337</td>
-                        <td>이순신</td>
-                        <td>OOO</td>
-                        <td>3</td>
-                        <td style="">260,000</td>
-                        <td>무료</td>
-                        <td style="color:#8bd8a7;">
-                            배송완료
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122102315</a></td>
-                        <td>로젠택배</td>
-                        <td>10121211341</td>
-                        <td>김유신</td>
-                        <td>OOO</td>
-                        <td>3</td>
-                        <td style="">68,400</td>
-                        <td>무료</td>
-                        <td style="color:#4f95d1;">
-                            배송준비
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">30122102119</a></td>
-                        <td>한진택배</td>
-                        <td>10121211341</td>
-                        <td>김유신</td>
-                        <td>OOO</td>
-                        <td>1</td>
-                        <td style="">34,500</td>
-                        <td>3,000</td>
-                        <td style="color:#4f95d1;">
-                            배송준비
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122111517</a></td>
-                        <td>우체국</td>
-                        <td>10121211339</td>
-                        <td>장보고</td>
-                        <td>OOO</td>
-                        <td>2</td>
-                        <td style="">9,000</td>
-                        <td>3,500</td>
-                        <td style="color:#4f95d1;">
-                            배송 중
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">10122102315</a></td>
-                        <td>CJ 대한통운</td>
-                        <td>10121211338</td>
-                        <td>강감찬</td>
-                        <td>OOO</td>
-                        <td>1</td>
-                        <td style="">89,000</td>
-                        <td>무료</td>
-                        <td style="color:red;">
-                            반품요청
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <td><a href="#" style="font-weight: 800;">20122102515</a></td>
-                        <td>경동택배</td>
-                        <td>10121211337</td>
-                        <td>이순신</td>
-                        <td>OOO</td>
-                        <td>3</td>
-                        <td style="">260,000</td>
-                        <td>무료</td>
-                        <td style="color:#8bd8a7;">
-                            배송완료
-                        </td>
-                        <td>0000-00-00 00:00:00</td>
-                    </tr>
+
                 </table>
-                <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
-                    <form action="" method="" style="">
-                        <input type="button" class="prev-page" value="< 이전">
+                    <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
+                        <input th:if="${pageResponseDTO.prev}"
+                               th:onclick="|location.href='@{/admin/delivery/list(pg=${pageResponseDTO.start - 1})}'|"
+                               type="button" class="prev-page" value="< 이전">
 
-                        <input type="button" value="1" style="border:1px solid #333; background-color: #333; color: white; height: 30px; width: 30px; margin-right:2px; line-height:1;">
-                        <input type="button" value="2" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; margin-right:2px; line-height:1;">
-                        <input type="button" value="3" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; line-height:1;">
+                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <input th:onclick="|location.href='@{/admin/delivery/list(pg=${num})}'|"
+                                   th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
+                                   type="button"
+                                   th:value="${num}" />
+                        </th:block>
 
-                        <input type="button" class="next-page" value="다음 >" style="">
-                    </form>
-                </div>
+                        <input th:if="${pageResponseDTO.next}"
+                               th:onclick="|location.href='@{/admin/delivery/list(pg=${pageResponseDTO.end + 1})}'|"
+                               type="button" class="next-page" value="다음 >" style="">
+                    </div>
+                    <style>
+                        .current{
+                            border:1px solid #333;
+                            background-color: #333;
+                            color: white;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                        .num {
+                            cursor: pointer;
+                            border:1px solid #ddd;
+                            color: #555;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                    </style>
                 <!-- 주문상세 콘텐츠 템플릿: '첫번째 사진' 영역 그대로 -->
 <template id="orderDetailTemplate">
   <!-- ↓↓↓ 여기부터 기존 “첫번째 사진” 영역 전체를 그대로 붙여넣기 ↓↓↓ -->

@@ -29,7 +29,7 @@ public class Orders {
 
     // 추가 필드 - users
     @Transient
-    private String user_id;
+    private String userId;
     @Transient
     private String user_name;
 
