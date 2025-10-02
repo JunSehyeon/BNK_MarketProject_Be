@@ -61,10 +61,19 @@ public class UserService {
     public void register(UserDTO userDTO) {
         // 1) 서버 세션에서 이메일/휴대폰 인증 확인
         if (sessionData == null || !sessionData.isVerified() || !sessionData.isSmsVerified()) {
-            throw new IllegalStateException("이메일 또는 휴대폰 인증을 완료해주세요.");
+            throw new IllegalStateException("이메일 인증을 완료해주세요.");
         }
 
-        // 2) 중복 검사 - Repository 메서드 이름에 맞춰 사용하세요
+        // 휴대폰 인증안되도 되게 하려고 추가한것
+        // 2) 휴대폰은 선택사항 — 전화번호가 들어온 경우만 SMS 인증 체크
+        if (userDTO.getPhone() != null && !userDTO.getPhone().trim().isEmpty()) {
+            if (!Boolean.TRUE.equals(sessionData.isSmsVerified())) {
+                throw new IllegalStateException("휴대폰 인증을 완료해주세요.");
+            }
+        }
+
+
+        // 3) 중복 검사 - Repository 메서드 이름에 맞춰 사용하세요
         // 예: existsByUserid / existsByEmail / existsByPhone 등
         if (userRepository.existsByUserId(userDTO.getUserId())) {
             throw new IllegalStateException("이미 사용중인 아이디입니다.");
@@ -72,11 +81,16 @@ public class UserService {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new IllegalStateException("이미 사용중인 이메일입니다.");
         }
-        if (userDTO.getPhone() != null && userRepository.existsByPhone(userDTO.getPhone())) {
-            throw new IllegalStateException("이미 사용중인 휴대폰 번호입니다.");
+        //if (userDTO.getPhone() != null && userRepository.existsByPhone(userDTO.getPhone())) {
+        //    throw new IllegalStateException("이미 사용중인 휴대폰 번호입니다.");
+        //}
+        if (userDTO.getPhone() != null && !userDTO.getPhone().trim().isEmpty()) {
+            if (userRepository.existsByPhone(userDTO.getPhone())) {
+                throw new IllegalStateException("이미 사용중인 휴대폰 번호입니다.");
+            }
         }
 
-        // 3) 비밀번호 암호화 및 DTO->Entity 변환 저장
+        // 4) 비밀번호 암호화 및 DTO->Entity 변환 저장
         String encoded = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(encoded);
 
@@ -90,7 +104,6 @@ public class UserService {
         sessionData.setVerified(false);
         sessionData.setSmsVerified(false);
     }
-
 
 
 
