@@ -77,7 +77,7 @@
                     <form th:action="@{/admin/order/search}" method="get" style="display: flex; ">
                         <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                             <option value="order_code">주문번호</option>
-                            <option value="user_id">주문자</option>
+                            <option value="userId">주문자</option>
                             <option value="name">주문자명</option>
                         </select>
                         <input type="text" name="keyword" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
@@ -100,7 +100,7 @@
                             style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
                         <td
                         ><a href="#" style="font-weight: 800;" th:text="${admin.order_code}">10121211341</a></td>
-                        <td th:text="${admin.user_id}">abc123</td>
+                        <td th:text="${admin.userId}">abc123</td>
                         <td th:text="${admin.user_name}">김유신</td>
                         <td th:text="${admin.orders_count}">2</td>
                         <td th:text="${admin.total_amount}">102,900</td>

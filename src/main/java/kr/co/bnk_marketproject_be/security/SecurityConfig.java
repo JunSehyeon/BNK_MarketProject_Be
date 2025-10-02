@@ -59,8 +59,8 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
-                .username("aaaa")               // 아이디
-                .password(passwordEncoder.encode("1234")) // 비밀번호 고정
+                .username("a")               // 아이디
+                .password(passwordEncoder.encode("123")) // 비밀번호 고정
                 .roles("USER")                  // 권한
                 .build();
         return new InMemoryUserDetailsManager(user);
