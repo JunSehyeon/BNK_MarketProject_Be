@@ -45,18 +45,18 @@ public class AdminOrderService {
         List<OrdersDTO> dtoList = tupleList.stream()
                 .map(tuple -> {
                     Orders orders = tuple.get(0, Orders.class);
-                    String user_id = tuple.get(1, String.class);
+                    String userId = tuple.get(1, String.class);
                     String user_name = tuple.get(2, String.class);
                     String method = tuple.get(3, String.class);
                     Long orders_count_long =  tuple.get(4, Long.class);
                     int orders_count = Math.toIntExact(orders_count_long); // int가 꼭 필요하면 변환
 
-                    orders.setUser_id(user_id);
+                    orders.setUserId(userId);
                     orders.setUser_name(user_name);
                     orders.setMethod(method);
                     orders.setOrders_count(orders_count);
 
-                    log.info("user_id={}",user_id);
+                    log.info("userId={}",userId);
                     log.info("user_name={}", user_name);
                     log.info("method={}", method);
                     log.info("orders_count={}", orders_count);

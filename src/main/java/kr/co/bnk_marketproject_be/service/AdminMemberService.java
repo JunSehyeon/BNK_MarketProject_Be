@@ -45,14 +45,14 @@ public class AdminMemberService {
                 .map(tuple -> {
                     AdminMember adminMember = tuple.get(0, AdminMember.class);
                     String name = tuple.get(1, String.class);
-                    String user_id = tuple.get(2, String.class);
+                    String userId = tuple.get(2, String.class);
                     String email = tuple.get(3, String.class);
                     String phone = tuple.get(4, String.class);
                     String address = tuple.get(5,String.class);
                     String role = tuple.get(6, String.class);
 
                     adminMember.setName(name);
-                    adminMember.setUser_id(user_id);
+                    adminMember.setUserId(userId);
                     adminMember.setEmail(email);
                     adminMember.setPhone(phone);
                     adminMember.setAddress(address);
