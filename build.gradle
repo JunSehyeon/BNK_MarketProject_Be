@@ -4,9 +4,16 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'kr.co.bnk_marketproject_be'
-version = '0.0.1-SNAPSHOT'
-description = 'BNK_MarketProject_Be'
+group = 'kr.co.sboard'
+version = '0.0.0-SNAPSHOT'
+description = 'sboard'
+
+processResources {
+    filesMatching('**/application.yaml'){
+        expand(project.properties)
+    }
+}
+
 
 java {
     toolchain {
@@ -65,12 +72,11 @@ tasks.named('test') {
 def querydslDir = "src/main/generated"
 
 sourceSets {
-    main.java.srcDir querydslDir
+    main.java.srcDirs querydslDir
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
-    doFirst { delete(querydslDir) }
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory = file(querydslDir)
 }
 
 clean {
