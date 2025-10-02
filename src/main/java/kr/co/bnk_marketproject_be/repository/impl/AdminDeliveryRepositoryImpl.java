@@ -45,23 +45,24 @@ public class AdminDeliveryRepositoryImpl implements AdminDeliveryRepositoryCusto
                 .where(QOrderItems.orderItems.orders_id.eq(QOrders.orders.id));
 
 
-        // 상품명 1개 (첫 상품)
+        // 최소 order_item id (주문별)
+        var minOiIdSub = JPAExpressions
+                .select(qOrderItems.id.min())
+                .from(qOrderItems)
+                .where(qOrderItems.orders_id.eq(qOrders.id));
+
+        // 최소 id의 상품명 1개
         var firstProductNameSub = JPAExpressions
                 .select(qProducts.product_name)
                 .from(qOrderItems)
                 .join(qProducts).on(qOrderItems.products_id.eq(qProducts.id))
-                .where(qOrderItems.orders_id.eq(qOrders.id))
-                .limit(1);
+                .where(qOrderItems.id.eq(minOiIdSub));
 
         List<Tuple> tupleList = jpaQueryFactory.select(qDeliveries,
                         qOrders.order_code, firstProductNameSub, qOrders.total_amount, itemCountWithDeliveryJoin)
                 .from(qDeliveries)
                 .leftJoin(qOrders)
                 .on(qDeliveries.orders_id.eq(qOrders.id))
-                .leftJoin(qOrderItems)
-                .on(qOrders.id.eq(qOrderItems.orders_id))
-                .leftJoin(qProducts)
-                .on(qOrderItems.products_id.eq(qProducts.id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qDeliveries.id.desc())
@@ -95,13 +96,18 @@ public class AdminDeliveryRepositoryImpl implements AdminDeliveryRepositoryCusto
             log.info("expression:{}", expression.toString());
         }
 
-        // 상품명 1개 (첫 상품)
+        // 최소 order_item id (주문별)
+        var minOiIdSub = JPAExpressions
+                .select(qOrderItems.id.min())
+                .from(qOrderItems)
+                .where(qOrderItems.orders_id.eq(qOrders.id));
+
+        // 최소 id의 상품명 1개
         var firstProductNameSub = JPAExpressions
                 .select(qProducts.product_name)
                 .from(qOrderItems)
                 .join(qProducts).on(qOrderItems.products_id.eq(qProducts.id))
-                .where(qOrderItems.orders_id.eq(qOrders.id))
-                .limit(1);
+                .where(qOrderItems.id.eq(minOiIdSub));
 
         var itemCountWithDeliveryJoin = JPAExpressions.select(QOrderItems.orderItems.orders_id.count())
                 .from(QOrderItems.orderItems)
@@ -114,10 +120,6 @@ public class AdminDeliveryRepositoryImpl implements AdminDeliveryRepositoryCusto
                 .from(qDeliveries)
                 .leftJoin(qOrders)
                 .on(qDeliveries.orders_id.eq(qOrders.id))
-                .leftJoin(qOrderItems)
-                .on(qOrders.id.eq(qOrderItems.orders_id))
-                .leftJoin(qProducts)
-                .on(qOrderItems.products_id.eq(qProducts.id))
                 .where(expression)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -126,15 +128,10 @@ public class AdminDeliveryRepositoryImpl implements AdminDeliveryRepositoryCusto
 
         // 전체 게시물 개수
         long total = jpaQueryFactory
-                .select(qDeliveries.count())
+                .select(qDeliveries.id.countDistinct())
                 .from(qDeliveries)
-                .leftJoin(qOrders)
-                .on(qDeliveries.orders_id.eq(qOrders.id))
-                .leftJoin(qOrderItems)
-                .on(qOrders.id.eq(qOrderItems.orders_id))
-                .leftJoin(qProducts)
-                .on(qOrderItems.products_id.eq(qProducts.id))
-                .where(expression)
+                .leftJoin(qOrders).on(qDeliveries.orders_id.eq(qOrders.id))
+                .where(expression) // 검색 쿼리에서만
                 .fetchOne();
 
         log.info("total:{}", total);

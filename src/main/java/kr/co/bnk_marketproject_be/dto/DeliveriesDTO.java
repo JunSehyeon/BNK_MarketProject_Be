@@ -24,6 +24,10 @@ public class DeliveriesDTO {
     private int delichar;
     private String receipt;
 
+    public String getReceipt() {
+        return receipt.substring(0, 19);
+    }
+
     // 추가 필드 - order_code(주문번호), total_amount(물품합계) - orders 테이블
     @Transient
     private String order_code;
