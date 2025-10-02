@@ -34,6 +34,18 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public boolean existsByUserId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
+    }
+
     public UserDTO getUser(String userId){
 
         User user = userRepository.findByUserId(userId);
@@ -69,7 +81,7 @@ public class UserService {
         userDTO.setPassword(encoded);
 
         User user = modelMapper.map(userDTO, User.class);
-        // 필요하면 기본 role 설정
+        // 필요하면 기본 role("MEMBER") 설정
         user.setRole("ROLE_USER");
 
         userRepository.save(user);
