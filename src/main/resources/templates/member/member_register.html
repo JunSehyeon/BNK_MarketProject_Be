@@ -385,7 +385,7 @@
         function updateSubmitState() {
             const allValid =
                 emailVerified &&
-                phoneVerified &&
+                // phoneVerified &&
                 validateUserId() &&
                 validatePassword() &&
                 validateName() &&
@@ -394,7 +394,7 @@
         }
 
         // ---------- 인증(수정) ----------
-        //const pseudoSend = () => new Promise(res => setTimeout(res, 500));
+        const pseudoSend = () => new Promise(res => setTimeout(res, 500));
 
         document.getElementById("btnSendEmail").addEventListener("click", async () => {
             const email = emailInput.value.trim();
@@ -542,12 +542,12 @@
         window.execDaumPostcode = execDaumPostcode;
 
         // ---------- 제출 ----------
-        form.addEventListener("submit", function (e) {
+        form.addEventListener("submit",async function (e) {
             e.preventDefault();
 
             const okNow =
                 emailVerified &&
-                phoneVerified &&
+                //phoneVerified &&
                 validateUserId() &&
                 validatePassword() &&
                 validateName() &&
