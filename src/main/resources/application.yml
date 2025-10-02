@@ -70,7 +70,6 @@ spring:
           ssl:
             trust: smtp.gmail.com
 
-
-
-
-
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: false
