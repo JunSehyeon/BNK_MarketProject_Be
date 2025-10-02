@@ -1,22 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>공지사항 보기</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!--헤더푸터 연결-->
-    <script>
-        fetch("../../main/footer.html")
-          .then(res => res.text())
-          .then(data => {
-            document.getElementById("footer").innerHTML = data;
-          });
-    </script>
+
     <style>
         html{ scrollbar-gutter: stable; }
         .icon-btn {
@@ -363,11 +352,16 @@
 
         <div class="cs_view_content">
             <div class="title_area">
-                <h3 id="notice-title">공지사항 제목</h3>
-                <p class="date" id="notice-date">날짜</p>
+                <h3 id="notice-title" th:text="${notice.title}">공지사항 제목</h3>
+                <p class="date" id="notice-date"
+                   th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">날짜</p>
             </div>
-            <br class="view_area">
-            <p id="notice-content">공지사항 내용을 불러오는 중입니다.</p>
+
+            <div class="view_area">
+                <p id="notice-content" th:text="${notice.content}">
+                    공지사항 내용을 불러오는 중입니다.
+                </p>
+            </div>
         </div>
 
         <div class="btn_area">
@@ -377,6 +371,7 @@
 
     <script>
         // 샘플 데이터 (실제 데이터는 서버에서 받아와야 함)
+        /* DB 연동 하드코딩 주석처리
         const notices = [
             { id:1, category: "안내", title: "해외결제사 정기점검주의", date: "2025.09.20", content: `안녕하세요. NICHITA입니다.<br>NICHITA 해외직구 결제 시 일부 해외카드 결제가 지연되고 있어 이용하실 때 이 점 양해 부탁드립니다.<br><br><strong><span style="color:red;">※피싱 관련 피해신고</span></strong><br>▶ 경찰청 사이버범죄수사 국 (국번없이) 1182<br>▶ KISA 인터넷침해대응센터 (국번없이) 1118<br>감사합니다.` },
             { id:2, category: "고객서비스", title: "고객센터 운영시간 변경", date: "2025.09.22", content: "고객센터 운영시간이 변경되었습니다. 자세한 내용은 고객센터로 문의 바랍니다." },
@@ -384,6 +379,7 @@
             { id:4, category: "위해상품", title: "리콜 공지사항", date: "2025.09.24", content: "위해상품 리콜 공지사항입니다." },
             { id:5, category: "이벤트당첨", title: "이벤트 당첨자 발표", date: "2025.09.25", content: "이벤트 당첨자 명단이 발표되었습니다." },
         ];
+         */
 
         // URL에서 id, category 파라미터 받기
         const urlParams = new URLSearchParams(window.location.search);
