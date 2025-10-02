@@ -56,4 +56,47 @@
 
     <!--    개별로 작성할 부분(덩어리 구분) -->
 
+    <sql id="searchCouponsNowWhere">
+        <where>
+            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
+                <choose>
+                    <when test="pageRequestDTO.searchType == 'issue_id'">
+                        AND A.issue_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'coupons_id'">
+                        AND A.coupons_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'coupon_name'">
+                        AND C.coupon_name LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'user_name'">
+                        AND U.user_name LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllCoupons" resultType="kr.co.bnk_marketproject_be.dto.CouponsDTO">
+        SELECT
+
+        FROM coupons_now A
+        JOIN coupons C
+        on A.coupons_id = C.id
+        JOIN users U
+        on A.users_id = U.user_id
+        <include refid="searchCouponsNowWhere"/>
+        ORDER BY A.id DESC
+        OFFSET #{pageRequestDTO.offset} ROWS
+        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+    </select>
+
+    <select id="selectCountTotal" resultType="int">
+        SELECT COUNT(*) FROM coupons_now A
+        JOIN coupons C
+        on A.coupons_id = C.id
+        JOIN users U
+        on A.users_id = U.user_id
+        <include refid="searchCouponsNowWhere"/>
+    </select>
 </mapper>
