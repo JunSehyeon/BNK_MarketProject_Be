@@ -21,9 +21,15 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath address = createString("address");
 
+    public final StringPath birth = createString("birth");
+
     public final StringPath created_at = createString("created_at");
 
+    public final StringPath detailAddress = createString("detailAddress");
+
     public final StringPath email = createString("email");
+
+    public final StringPath gender = createString("gender");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
@@ -33,11 +39,13 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath phone = createString("phone");
 
+    public final StringPath postcode = createString("postcode");
+
     public final StringPath role = createString("role");
 
     public final StringPath updated_at = createString("updated_at");
 
-    public final StringPath user_id = createString("user_id");
+    public final StringPath userId = createString("userId");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

@@ -34,9 +34,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserDTO getUser(String user_id){
+    public UserDTO getUser(String userId){
 
-        User user = userRepository.findByUserId(user_id);
+        User user = userRepository.findByUserId(userId);
 
         return modelMapper.map(user, UserDTO.class);
 
@@ -86,7 +86,7 @@ public class UserService {
         return null;
     }
     public void modify(UserDTO userDTO){}
-    public void remove(String user_id){}
+    public void remove(String userId){}
 
     public int countUser(String type, String value){
 
