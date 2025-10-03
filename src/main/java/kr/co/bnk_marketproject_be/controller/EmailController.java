@@ -20,13 +20,13 @@ public class EmailController {
     @PostMapping("/send")
     public ResponseEntity<Map<String, Object>> sendCode(@RequestBody Map<String, String> jsonData) {
         String email = jsonData.get("email");
-        log.info("Request sendCode for email = {}", email);
+        log.info(">>> EmailController.sendCode called, email={}", email);
 
         try {
             emailService.sendCode(email);
             return ResponseEntity.ok(Map.of("sent", true));
         } catch (Exception e) {
-            log.error("sendCode error", e);
+            log.error(">>> EmailController.sendCode failed", e);
             return ResponseEntity.status(500).body(Map.of("sent", false, "error", e.getMessage()));
         }
     }
@@ -35,9 +35,10 @@ public class EmailController {
     @PostMapping("/code")
     public ResponseEntity<Map<String, Boolean>> verify(@RequestBody Map<String, String> jsonData) {
         String code = jsonData.get("code");
-        log.info("Request verify code = {}", code);
+        log.info(">>> EmailController.verify called, code={}", code);
 
-        boolean result = emailService.verifyCode(code);
-        return ResponseEntity.ok(Map.of("isMatched", result));
+        //boolean result = emailService.verifyCode(code);
+        boolean ok = emailService.verifyCode(code);
+        return ResponseEntity.ok(Map.of("isMatched", ok));
     }
 }

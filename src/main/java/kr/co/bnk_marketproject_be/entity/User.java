@@ -18,6 +18,7 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    // DB 컬럼과의 매핑시 필요해서 넣음
     @Column(name = "user_id")
     private String userId;
     private String password;

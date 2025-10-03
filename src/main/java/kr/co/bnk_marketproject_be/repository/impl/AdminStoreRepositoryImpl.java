@@ -35,15 +35,15 @@ public class AdminStoreRepositoryImpl implements AdminStoreRepositoryCustom {
     @Override
     public Page<Tuple> selectAdminStoreAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminStore, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
-                            .from(qAdminStore)
-                            .join(qUser)
-                            .on(qAdminStore.rep.eq(qUser.name))
-                            .where(qAdminStore.boardType.eq("storelist"))
-                            .offset(pageable.getOffset())
-                            .limit(pageable.getPageSize())
-                            .orderBy(qAdminStore.id.desc())
-                            .fetch();
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminStore, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
+                .from(qAdminStore)
+                .join(qUser)
+                .on(qAdminStore.rep.eq(qUser.name))
+                .where(qAdminStore.boardType.eq("storelist"))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qAdminStore.id.desc())
+                .fetch();
 
         // 전체 게시물 개수
         long total = jpaQueryFactory
@@ -79,7 +79,7 @@ public class AdminStoreRepositoryImpl implements AdminStoreRepositoryCustom {
         // 기본 조건: boardType = 'storelist'
         BooleanExpression boardTypeExpr = qAdminStore.boardType.eq("storelist");
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminStore, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminStore, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
                 .from(qAdminStore)
                 .join(qUser)
                 .on(qAdminStore.rep.eq(qUser.name)) // 대표(명)과 사람이름 같으면

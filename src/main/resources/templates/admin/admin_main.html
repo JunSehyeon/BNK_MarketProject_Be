@@ -1,4 +1,70 @@
 <div th:replace="~{admin/_header.html}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* === 여기 전체를 네가 준 CSS로 교체 === */
+    html, body { scrollbar-gutter: stable; overflow-x: hidden; }
+    .title-line{display:flex;justify-content:space-between;align-items:center;margin-left:20px;}
+    .container{width:900px;display:flex;gap:30px;justify-content:center;margin-left:50px;}
+    .chart-box{flex:1;min-width:0;height:400px; position: relative;}
+    canvas{width: 100% !important;
+        height: 100% !important;}
+    .chart-legend{font-size:12px !important;}
+    .status-table{width:850px;border-collapse:collapse;text-align:center;font-size:14px;margin-top:10px;margin-left:30px;table-layout:fixed;}
+    .status-table th{border-top:2px solid #ccc;border-right:1px solid #ccc;padding-top:10px;}
+    .status-table td{border-bottom:1px solid #ccc;border-right:1px solid #ccc;padding:10px;}
+    .status-table td.value{color:#d0021b;font-weight:bold;}
+    .status-gap{height:15px;border:none;}
+    .board-wrapper{width:850px;display:flex;gap:20px;margin-left:30px;box-sizing:border-box;}
+    .board-section{flex:1;}
+    .board-section ul{list-style:none;padding:0;margin:0;}
+    .board-section li{display:flex;justify-content:space-between;border-bottom:1px solid #ccc;font-size:14px;padding:12px;}
+    .board-section li:last-child{border-bottom:0;}
+    .board-section li span{color:#666;font-size:14px;}
+    html{scrollbar-gutter:stable;}
+    .icon-btn{background:none;border:1px solid #000;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;}
+    .overlay{position:fixed;inset:0;background:rgba(255,255,255,.28);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:1000;}
+    .overlay.open{opacity:1;pointer-events:auto;}
+    .overlay__panel{position:absolute;top:0;left:0;width:50vw;max-width:900px;height:100%;background:#fff;transform:translateX(-100%);transition:transform .35s ease;will-change:transform;display:flex;flex-direction:column;}
+    .overlay.open .overlay__panel{transform:translateX(0);}
+    .overlay__top{display:flex;align-items:center;gap:24px;padding:20px;}
+    .overlay__close{background:none;border:1px solid;width:100px;height:50px;cursor:pointer;position:relative;border:none;margin-left:.3%;}
+    .overlay__close::before,.overlay__close::after{content:"";position:absolute;left:15px;right:10px;top:25px;height:2px;background:#000;}
+    .overlay__close::before{transform:rotate(45deg);}
+    .overlay__close::after{transform:rotate(-45deg);}
+    .overlay__menu{display:grid;grid-template-columns:180px auto;gap:24px;padding:40px 20px;font-size:16px;}
+    .overlay__menu a{text-decoration:none;color:#000;display:block;padding:8px 0;}
+    .overlay__menu strong{font-weight:700;}
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+    a{color:inherit;text-decoration:none;}
+    ul{margin:0;padding:0;list-style:none;}
+    .site-header{top:0;z-index:900;}
+    .site-header::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .4s ease;z-index:-1;pointer-events:none;}
+    .site-header:hover::before{background:rgba(255,255,255,.7);}
+    .site-header .inner{position:relative;z-index:1;display:flex;align-items:center;gap:24px;padding:16px 24px;border-bottom:1px solid #000;}
+    .title-didone{text-align:center;font-family:'Bodoni Moda','Didot','Bodoni 72','Times New Roman',serif;margin-left:45px;font-weight:400;letter-spacing:.02em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    .title-didone.ko{font-family:'Noto Serif KR','Bodoni Moda',serif;font-weight:300;}
+    :root{--z-black:#111;--z-white:#fff;--z-line:#e9e9e9;--z-muted:#6f6f6f;}
+    .euro-nav{width:240px;margin:0;background:var(--z-white);border:1px solid var(--z-line);overflow:hidden;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+    .euro-nav__group{border-top:1px solid var(--z-line);}
+    .euro-nav__group:first-of-type{border-top:0;}
+    .euro-nav__title{padding:16px 18px 14px;font-size:17px;margin:0;letter-spacing:0em;text-transform:uppercase;color:var(--z-black);border-bottom:1px solid var(--z-line);background:#000;color:#fff;font-weight:600;}
+    .euro-nav__list{margin:0;padding:3px 0;list-style:none;}
+    .euro-nav__item a{position:relative;display:block;padding:12px 20px;font-size:14px;line-height:1.4;color:var(--z-black);text-decoration:none;transition:color .25s ease,transform .2s ease;border-bottom:1px solid var(--z-line);}
+    .euro-nav__item:last-child a{border-bottom:0;}
+    .euro-nav__item a:hover{color:var(--z-black);transform:translateX(2px);}
+    .euro-nav__item a::after{content:"";position:absolute;left:20px;right:20px;bottom:8px;height:1px;background:var(--z-black);transform:scaleX(0);transform-origin:left center;transition:transform .25s ease;}
+    .euro-nav__item a:hover::after{transform:scaleX(1);}
+    .euro-nav__item.is-active a{font-size:20px;font-weight:600;}
+    .euro-nav__item.is-active a::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--z-black);}
+    .euro-nav__item a:focus-visible{outline:2px solid var(--z-black);outline-offset:2px;}
+    /* 아코디언 전환 (이 파일 하단의 JS와 매칭) */
+    .euro-nav__list{max-height:0;overflow:hidden;transition:max-height .15s ease;}
+    .euro-nav__group.open .euro-nav__list{max-height:500px;}
+</style>
+
   <main style=" display: flex; justify-content: center; border-top:1px solid #e2e2e2;">
     <div>
     <aside class="euro-nav" aria-label="관리자 사이드 메뉴" style="">

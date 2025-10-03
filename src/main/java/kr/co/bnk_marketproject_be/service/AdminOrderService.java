@@ -25,38 +25,38 @@ public class AdminOrderService {
 
     private final ModelMapper modelMapper;
 
-    public PageResponseAdminOrderDTO findAdminOrderAll(PageRequestDTO pageRequestDTO){
+    public PageResponseAdminOrderDTO findAdminOrderAll(PageRequestDTO pageRequestDTO) {
 
         Pageable pageable = pageRequestDTO.getPageable("id");
 
         Page<Tuple> pageTuple = null;
-        if(pageRequestDTO.getSearchType() != null){
+        if (pageRequestDTO.getSearchType() != null) {
             // 검색 글 검색
             pageTuple = adminOrderRepository.selectAdminOrderAllForSearch(pageRequestDTO, pageable);
-        }else{
+        } else {
             // 일반 글 목록
             pageTuple = adminOrderRepository.selectAdminOrderAllForList(pageRequestDTO, pageable);
         }
 
-        log.info("pageTuple={}",pageTuple);
+        log.info("pageTuple={}", pageTuple);
         List<Tuple> tupleList = pageTuple.getContent();
-        int total = (int)pageTuple.getTotalElements();
+        int total = (int) pageTuple.getTotalElements();
 
         List<OrdersDTO> dtoList = tupleList.stream()
                 .map(tuple -> {
                     Orders orders = tuple.get(0, Orders.class);
-                    String user_id = tuple.get(1, String.class);
+                    String userId = tuple.get(1, String.class);
                     String user_name = tuple.get(2, String.class);
                     String method = tuple.get(3, String.class);
-                    Long orders_count_long =  tuple.get(4, Long.class);
+                    Long orders_count_long = tuple.get(4, Long.class);
                     int orders_count = Math.toIntExact(orders_count_long); // int가 꼭 필요하면 변환
 
-                    orders.setUser_id(user_id);
+                    orders.setUserId(userId);
                     orders.setUser_name(user_name);
                     orders.setMethod(method);
                     orders.setOrders_count(orders_count);
 
-                    log.info("user_id={}",user_id);
+                    log.info("userId={}", userId);
                     log.info("user_name={}", user_name);
                     log.info("method={}", method);
                     log.info("orders_count={}", orders_count);

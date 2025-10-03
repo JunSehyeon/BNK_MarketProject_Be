@@ -34,7 +34,7 @@ public class AdminStore {
     @Transient
     private String name;
     @Transient
-    private String user_id;
+    private String userId;
     @Transient
     private String email;
     @Transient
@@ -47,8 +47,8 @@ public class AdminStore {
     public void setName(String name) {
         this.name = name;
     }
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
     public void setEmail(String email) {
         this.email = email;

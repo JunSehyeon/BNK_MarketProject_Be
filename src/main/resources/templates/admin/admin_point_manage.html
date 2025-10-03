@@ -79,7 +79,7 @@
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
                     <form th:action="@{/admin/point/search}" method="get" style="display: flex; ">
                         <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
-                            <option value="user_id">아이디</option>
+                            <option value="userId">아이디</option>
                             <option value="name">이름</option>
                         </select>
                         <input type="text" name="keyword" placeholder="키워드입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
@@ -106,7 +106,7 @@
                         style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
                   <td><input type="checkbox"></td>
                     <td>[[${pageResponseDTO.startNo - stat.index}]]</td>
-                    <td th:text="${admin.user_id}">abc1234</td>
+                    <td th:text="${admin.userId}">abc1234</td>
                     <td th:text="${admin.name}">정우성</td>
                     <td th:text="${admin.change_amount}">1,000</td>
                     <td th:text="${admin.balance}">15,000</td>

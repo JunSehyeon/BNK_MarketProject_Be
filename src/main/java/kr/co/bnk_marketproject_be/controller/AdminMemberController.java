@@ -1,18 +1,13 @@
 package kr.co.bnk_marketproject_be.controller;
 
-import kr.co.bnk_marketproject_be.dto.AdminMemberDTO;
 import kr.co.bnk_marketproject_be.dto.PageRequestDTO;
 import kr.co.bnk_marketproject_be.dto.PageResponseAdminMemberDTO;
-import kr.co.bnk_marketproject_be.dto.PageResponseDTO;
-import kr.co.bnk_marketproject_be.entity.AdminMember;
 import kr.co.bnk_marketproject_be.service.AdminMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

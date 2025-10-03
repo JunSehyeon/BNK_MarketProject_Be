@@ -20,7 +20,9 @@ public class CSNotice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int notice_id;
+
+    @Column(name = "NOTICE_ID")
+    private int noticeid;
     private String category;
     private String title;
 

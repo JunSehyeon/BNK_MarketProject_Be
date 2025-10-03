@@ -35,10 +35,10 @@ public class AdminPointRepositoryImpl implements AdminPointRepositoryCustom {
     @Override
     public Page<Tuple> selectAdminPointAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminPoint, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminPoint, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
                 .from(qAdminPoint)
                 .join(qUser)
-                .on(qAdminPoint.users_id.eq(qUser.user_id))
+                .on(qAdminPoint.users_id.eq(qUser.userId))
                 .where(qAdminPoint.boardType.eq("pointlist"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -65,8 +65,8 @@ public class AdminPointRepositoryImpl implements AdminPointRepositoryCustom {
 
         log.info("searchType:{}",  searchType);
         log.info("keyword:{}",  keyword);
-        if(searchType.equals("user_id")){
-            expression = qUser.user_id.contains(keyword);
+        if(searchType.equals("userId")){
+            expression = qUser.userId.contains(keyword);
         }else if(searchType.equals("name")){
             expression = qUser.name.contains(keyword);
         }else if(searchType.equals("email")){
@@ -78,10 +78,10 @@ public class AdminPointRepositoryImpl implements AdminPointRepositoryCustom {
         // 기본 조건: boardType = 'storelist'
         BooleanExpression boardTypeExpr = qAdminPoint.boardType.eq("pointlist");
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminPoint, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminPoint, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
                 .from(qAdminPoint)
                 .join(qUser)
-                .on(qAdminPoint.users_id.eq(qUser.user_id)) // 대표(명)과 사람이름 같으면
+                .on(qAdminPoint.users_id.eq(qUser.userId)) // 대표(명)과 사람이름 같으면
                 .where(boardTypeExpr.and(expression))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -93,7 +93,7 @@ public class AdminPointRepositoryImpl implements AdminPointRepositoryCustom {
                 .select(qAdminPoint.count())
                 .from(qAdminPoint)
                 .join(qUser)
-                .on(qAdminPoint.users_id.eq(qUser.user_id))
+                .on(qAdminPoint.users_id.eq(qUser.userId))
                 .where(boardTypeExpr.and(expression))
                 .fetchOne();
 

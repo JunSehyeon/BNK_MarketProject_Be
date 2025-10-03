@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CSNoticeDTO {
 
-    private int notice_id;
+    private int noticeid;
     private String category;
     private String title;
     private String content;

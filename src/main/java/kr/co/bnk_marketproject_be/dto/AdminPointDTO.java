@@ -20,6 +20,10 @@ public class AdminPointDTO {
     private String description;
     private String created_at;
 
+    public String getCreated_at() {
+        return created_at.substring(0, 19);
+    }
+
     // 추가 필드
     @Column(name = "BOARD_TYPE")
     private String boardType;
@@ -28,7 +32,7 @@ public class AdminPointDTO {
     @Transient
     private String name;
     @Transient
-    private String user_id;
+    private String userId;
     @Transient
     private String email;
     @Transient
@@ -41,8 +45,8 @@ public class AdminPointDTO {
     public void setName(String name) {
         this.name = name;
     }
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
     public void setEmail(String email) {
         this.email = email;
