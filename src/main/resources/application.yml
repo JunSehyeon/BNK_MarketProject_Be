@@ -8,6 +8,8 @@ spring:
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: kr.co.bnk_marketproject_be.dto
+
   configuration:
     map-underscore-to-camel-case: true
 
@@ -69,6 +71,13 @@ spring:
             enable: ture
           ssl:
             trust: smtp.gmail.com
+
+# 어드민 로고 업로드 경로 (배포용 세현 수정)
+app:
+  upload:
+    dir: /var/nichiya/uploads
+  base-url: http://localhost:8080/NICHIYA  #테스트용
+  #base-url: http://43.200.69.114:8080/NICHIYA
 
 mybatis:
   configuration:
