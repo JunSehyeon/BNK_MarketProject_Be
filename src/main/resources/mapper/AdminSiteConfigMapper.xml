@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.bnk_marketproject_be.mapper.AdminSiteConfigMapper">
+
+    <resultMap id="SiteConfigMap" type="kr.co.bnk_marketproject_be.dto.AdminSiteConfigDTO">
+        <id     property="id"           column="ID"/>
+        <result property="siteTitle"    column="SITE_TITLE"/>
+        <result property="siteSubtitle" column="SITE_SUBTITLE"/>
+        <result property="version"      column="VERSION"/>
+        <result property="updatedAt"    column="UPDATED_AT"/>
+        <result property="headerLogo" column="HEADER_LOGO"/>
+        <result property="footerLogo" column="FOOTER_LOGO"/>
+        <result property="favicon" column="FAVICON"/>
+        <result property="companyName"     column="COMPANY_NAME"/>
+        <result property="ceoName"         column="CEO_NAME"/>
+        <result property="bizRegNo"        column="BIZ_REG_NO"/>
+        <result property="mailOrderNo"     column="MAIL_ORDER_NO"/>
+        <result property="addrBase"        column="ADDR_BASE"/>
+        <result property="addrDetail"      column="ADDR_DETAIL"/>
+        <result property="csTel"           column="CS_TEL"/>
+        <result property="csHours"         column="CS_HOURS"/>
+        <result property="csEmail"         column="CS_EMAIL"/>
+        <result property="efinDisputeTel"  column="EFIN_DISPUTE_TEL"/>
+        <result property="copyrightText"   column="COPYRIGHT_TEXT"/>
+    </resultMap>
+
+    <select id="selectOne" resultMap="SiteConfigMap">
+        SELECT ID, SITE_TITLE, SITE_SUBTITLE, VERSION, UPDATED_AT,HEADER_LOGO,FOOTER_LOGO,FAVICON, COMPANY_NAME, CEO_NAME, BIZ_REG_NO, MAIL_ORDER_NO,
+               ADDR_BASE, ADDR_DETAIL,
+               CS_TEL, CS_HOURS, CS_EMAIL, EFIN_DISPUTE_TEL,
+               COPYRIGHT_TEXT
+        FROM SITE_CONFIG
+        ORDER BY ID
+            FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <insert id="insert" parameterType="kr.co.bnk_marketproject_be.dto.AdminSiteConfigDTO">
+        INSERT INTO SITE_CONFIG (ID, SITE_TITLE, SITE_SUBTITLE, VERSION, UPDATED_AT,HEADER_LOGO,FOOTER_LOGO,FAVICON,
+                                 COMPANY_NAME, CEO_NAME, BIZ_REG_NO, MAIL_ORDER_NO,
+                                 ADDR_BASE, ADDR_DETAIL,
+                                 CS_TEL, CS_HOURS, CS_EMAIL, EFIN_DISPUTE_TEL,
+                                 COPYRIGHT_TEXT)
+        VALUES (
+                       (SELECT COALESCE(MAX(ID),0)+1 FROM SITE_CONFIG),
+                       #{siteTitle},
+                       #{siteSubtitle},
+                       #{version},
+                       #{headerLogo},
+                       #{footerLogo},
+                       #{favicon},
+                       #{companyName},
+                       #{ceoName},
+                       #{bizRegNo},
+                       #{mailOrderNo},
+                       #{addrBase},
+                       #{addrDetail},
+                       #{csTel},
+                       #{csHours},
+                       #{csEmail},
+                       #{efinDisputeTel},
+                       #{copyrightText}
+                       SYSTIMESTAMP
+               )
+    </insert>
+
+    <update id="update" parameterType="kr.co.bnk_marketproject_be.dto.AdminSiteConfigDTO">
+        UPDATE SITE_CONFIG
+        <set>
+            <if test="siteTitle != null and siteTitle != ''">
+                SITE_TITLE = #{siteTitle},
+            </if>
+            <if test="siteSubtitle != null and siteSubtitle != ''">
+                SITE_SUBTITLE = #{siteSubtitle},
+            </if>
+            <if test="version != null and version != ''">
+                VERSION = #{version},
+            </if>
+            <if test="headerLogo != null and headerLogo != ''">
+                HEADER_LOGO = #{headerLogo},
+            </if>
+            <if test="footerLogo != null and footerLogo != ''">
+                FOOTER_LOGO = #{footerLogo},
+            </if>
+            <if test="favicon != null and favicon != ''">
+                FAVICON = #{favicon},
+            </if>
+            <!-- 신규 필드 -->
+            <if test="companyName    != null">COMPANY_NAME     = #{companyName},</if>
+            <if test="ceoName        != null">CEO_NAME         = #{ceoName},</if>
+            <if test="bizRegNo       != null">BIZ_REG_NO       = #{bizRegNo},</if>
+            <if test="mailOrderNo    != null">MAIL_ORDER_NO    = #{mailOrderNo},</if>
+            <if test="addrBase       != null">ADDR_BASE        = #{addrBase},</if>
+            <if test="addrDetail     != null">ADDR_DETAIL      = #{addrDetail},</if>
+            <if test="csTel          != null">CS_TEL           = #{csTel},</if>
+            <if test="csHours        != null">CS_HOURS         = #{csHours},</if>
+            <if test="csEmail        != null">CS_EMAIL         = #{csEmail},</if>
+            <if test="efinDisputeTel != null">EFIN_DISPUTE_TEL = #{efinDisputeTel},</if>
+            <if test="copyrightText  != null">COPYRIGHT_TEXT   = #{copyrightText},</if>
+            UPDATED_AT = SYSTIMESTAMP
+        </set>
+        WHERE ID = (SELECT MIN(ID) FROM SITE_CONFIG)
+    </update>
+
+
+</mapper>

@@ -8,6 +8,8 @@ spring:
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: kr.co.bnk_marketproject_be.dto
+
   configuration:
     map-underscore-to-camel-case: true
 
@@ -52,3 +54,20 @@ spring:
     open-in-view: false
     properties:
       hibernate.format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your@gmail.com
+    password: your-google-app-password
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+    default-encoding: UTF-8
+
+# 어드민 로고 업로드 경로 (배포용 세현 수정)
+app:
+  upload:
+    dir: /var/nichiya/uploads
+  base-url: http://localhost:8080/NICHIYA  #테스트용
+  #base-url: http://43.200.69.114:8080/NICHIYA

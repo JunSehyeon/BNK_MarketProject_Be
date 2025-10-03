@@ -35,7 +35,7 @@ public class AdminMemberRepositoryImpl implements AdminMemberRepositoryCustom {
     @Override
     public Page<Tuple> selectAdminMemberAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminMember, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminMember, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
                             .from(qAdminMember)
                             .join(qUser)
                             .on(qAdminMember.rep.eq(qUser.name))
@@ -66,7 +66,7 @@ public class AdminMemberRepositoryImpl implements AdminMemberRepositoryCustom {
         log.info("searchType:{}",  searchType);
         log.info("keyword:{}",  keyword);
         if(searchType.equals("user_id")){
-            expression = qUser.user_id.contains(keyword);
+            expression = qUser.userId.contains(keyword);
         }else if(searchType.equals("name")){
             expression = qUser.name.contains(keyword);
         }else if(searchType.equals("email")){
@@ -78,7 +78,7 @@ public class AdminMemberRepositoryImpl implements AdminMemberRepositoryCustom {
         // 기본 조건: boardType = 'storelist'
         BooleanExpression boardTypeExpr = qAdminMember.boardType.eq("memberlist");
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qAdminMember, qUser.name, qUser.user_id, qUser.email, qUser.phone, qUser.address, qUser.role)
+        List<Tuple> tupleList = jpaQueryFactory.select(qAdminMember, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
                 .from(qAdminMember)
                 .join(qUser)
                 .on(qAdminMember.rep.eq(qUser.name)) // 대표(명)과 사람이름 같으면

@@ -42,7 +42,7 @@ public class AdminOrderRepositoryImpl implements AdminOrderRepositoryCustom {
                 .from(QOrderItems.orderItems)
                 .where(QOrderItems.orderItems.orders_id.eq(qOrders.id));
 
-        List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.user_id, qUser.name, qPayments.method, itemCountExpr)
+        List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.userId, qUser.name, qPayments.method, itemCountExpr)
                 .from(qOrders)
                 .leftJoin(qUser)
                 .on(qOrders.users_id.eq(qUser.id))
@@ -75,7 +75,7 @@ public class AdminOrderRepositoryImpl implements AdminOrderRepositoryCustom {
         if (searchType.equals("order_code")) {
             expression = qOrders.order_code.contains(keyword);
         } else if (searchType.equals("user_id")) {
-            expression = qUser.user_id.contains(keyword);
+            expression = qUser.userId.contains(keyword);
         } else if (searchType.equals("name")) {
             expression = qUser.name.contains(keyword);
             log.info("expression:{}", expression.toString());
@@ -87,7 +87,7 @@ public class AdminOrderRepositoryImpl implements AdminOrderRepositoryCustom {
                 .from(QOrderItems.orderItems)
                 .where(QOrderItems.orderItems.orders_id.eq(qOrders.id));
 
-            List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.user_id, qUser.name, qPayments.method, itemCountExpr)
+            List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.userId, qUser.name, qPayments.method, itemCountExpr)
                     .from(qOrders)
                     .leftJoin(qUser)
                     .on(qOrders.users_id.eq(qUser.id))
