@@ -55,15 +55,22 @@ spring:
     properties:
       hibernate.format_sql: true
 
+
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your@gmail.com
-    password: your-google-app-password
+    username: machinemayou@gmail.com
+    password: xpdgopkyeyxqotpz
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-    default-encoding: UTF-8
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            required: true
+            enable: ture
+          ssl:
+            trust: smtp.gmail.com
 
 # 어드민 로고 업로드 경로 (배포용 세현 수정)
 app:
@@ -71,3 +78,7 @@ app:
     dir: /var/nichiya/uploads
   base-url: http://localhost:8080/NICHIYA  #테스트용
   #base-url: http://43.200.69.114:8080/NICHIYA
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: false
