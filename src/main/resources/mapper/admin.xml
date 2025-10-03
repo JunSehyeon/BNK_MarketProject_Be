@@ -69,34 +69,42 @@
                     <when test="pageRequestDTO.searchType == 'coupon_name'">
                         AND C.coupon_name LIKE '%' || #{pageRequestDTO.keyword} || '%'
                     </when>
-                    <when test="pageRequestDTO.searchType == 'user_name'">
-                        AND U.user_name LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    <when test="pageRequestDTO.searchType == 'user_id'">
+                        AND U.user_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
                     </when>
                 </choose>
             </if>
         </where>
     </sql>
 
-    <select id="selectAllCoupons" resultType="kr.co.bnk_marketproject_be.dto.CouponsDTO">
+    <select id="selectAllCouponsNow" resultType="kr.co.bnk_marketproject_be.dto.CouponsNowDTO">
         SELECT
-
+        A.*,
+        C.code,
+        C.discount_type as discount_type,
+        C.coupon_name as coupon_name,
+        C.discount_value as discount_value,
+        C.valid_from as valid_from,
+        C.valid_to as valid_to,
+        U.name,
+        U.user_id as user_id
         FROM coupons_now A
         JOIN coupons C
         on A.coupons_id = C.id
         JOIN users U
-        on A.users_id = U.user_id
+        on A.users_id = U.id
         <include refid="searchCouponsNowWhere"/>
         ORDER BY A.id DESC
         OFFSET #{pageRequestDTO.offset} ROWS
         FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
     </select>
 
-    <select id="selectCountTotal" resultType="int">
+    <select id="selectCountTotalCouponsNow" resultType="int">
         SELECT COUNT(*) FROM coupons_now A
         JOIN coupons C
         on A.coupons_id = C.id
         JOIN users U
-        on A.users_id = U.user_id
+        on A.users_id = U.id
         <include refid="searchCouponsNowWhere"/>
     </select>
 </mapper>
