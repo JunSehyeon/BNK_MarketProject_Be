@@ -30,6 +30,20 @@ public class CSNoticeService {
                 ));
     }
 
+    // 카테고리별 공지사항 리스트
+    public Page<CSNoticeDTO> getNoticeListByCategory(int page, String category) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("createdAt").descending());
+        return csNoticeRepository.findByCategory(category, pageable)
+                .map(n -> new CSNoticeDTO(
+                        n.getNoticeid(),
+                        n.getCategory(),
+                        n.getTitle(),
+                        n.getContent(),
+                        n.getStatus(),
+                        n.getCreatedAt()
+                ));
+    }
+
     // 공지사항 상세
     public CSNoticeDTO getNoticeDetail(Integer id) {
         CSNotice n = csNoticeRepository.findById(id)
