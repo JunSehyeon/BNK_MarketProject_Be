@@ -56,4 +56,55 @@
 
     <!--    개별로 작성할 부분(덩어리 구분) -->
 
+    <sql id="searchCouponsNowWhere">
+        <where>
+            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
+                <choose>
+                    <when test="pageRequestDTO.searchType == 'issue_id'">
+                        AND A.issue_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'coupons_id'">
+                        AND A.coupons_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'coupon_name'">
+                        AND C.coupon_name LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'user_id'">
+                        AND U.user_id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllCouponsNow" resultType="kr.co.bnk_marketproject_be.dto.CouponsNowDTO">
+        SELECT
+        A.*,
+        C.code,
+        C.discount_type as discount_type,
+        C.coupon_name as coupon_name,
+        C.discount_value as discount_value,
+        C.valid_from as valid_from,
+        C.valid_to as valid_to,
+        U.name,
+        U.user_id as user_id
+        FROM coupons_now A
+        JOIN coupons C
+        on A.coupons_id = C.id
+        JOIN users U
+        on A.users_id = U.id
+        <include refid="searchCouponsNowWhere"/>
+        ORDER BY A.id DESC
+        OFFSET #{pageRequestDTO.offset} ROWS
+        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+    </select>
+
+    <select id="selectCountTotalCouponsNow" resultType="int">
+        SELECT COUNT(*) FROM coupons_now A
+        JOIN coupons C
+        on A.coupons_id = C.id
+        JOIN users U
+        on A.users_id = U.id
+        <include refid="searchCouponsNowWhere"/>
+    </select>
 </mapper>
