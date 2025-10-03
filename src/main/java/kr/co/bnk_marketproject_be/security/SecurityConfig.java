@@ -47,6 +47,7 @@ public class SecurityConfig {
 //        http.csrf(CsrfConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable())  // ← 이거 추가안하면 로그인개발안됩니다....
                 .formLogin(form -> form  // 기본 /login 페이지 사용
                         .permitAll()
                 )

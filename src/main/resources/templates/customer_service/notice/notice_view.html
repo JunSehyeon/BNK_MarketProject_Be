@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>공지사항 보기</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!--헤더푸터 연결-->
-    <script>
-        fetch("../../main/footer.html")
-          .then(res => res.text())
-          .then(data => {
-            document.getElementById("footer").innerHTML = data;
-          });
-    </script>
+
     <style>
         html{ scrollbar-gutter: stable; }
         .icon-btn {
             background:none; border:1px solid #000; cursor:pointer;
             width:40px; height:40px; display:grid; place-items:center;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            background-color: #f8f8f8;  /* 리스트와 동일하게 */
+        }
+        #wrap {
+            width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         /* 1) 스크림(배경) - 화면 전체 덮음 + 블러 */
@@ -30,7 +33,7 @@
             background: rgba(255,255,255,0.28);      /* 반투명이어야 blur 보임 */
             backdrop-filter: blur(1px);
             -webkit-backdrop-filter: blur(1px); /* 사파리용 */
-            opacity: 0; 
+            opacity: 0;
             pointer-events: none;
             transition: opacity .25s ease;
             z-index: 1000;
@@ -114,14 +117,14 @@
             text-align:center;
             font-family: 'Bodoni Moda','Didot','Bodoni 72','Times New Roman',serif;
             margin-left:45px;
-            font-weight:400;                 
+            font-weight:400;
             letter-spacing:.02em;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         .title-didone.ko{font-family: 'Noto Serif KR','Bodoni Moda',serif; font-weight:300;}
     </style>
-    <header class="site-header">
+    <header th:replace="main/header :: header">
         <div style="margin-left:2%; width:98%; box-sizing: border-box; margin-top:2%; display:flex; height:230px;">
             <button style="border:none;" id="menuBtn" class="icon-btn" aria-controls="menuOverlay" aria-expanded="false" aria-label="메뉴 열기">
                 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
@@ -138,7 +141,7 @@
                     <li style="flex:1; min-width: 100px;">
                         <form action="" method="" style="width:100%;">
                             <input type="text" style="background: transparent;border:none; border-bottom:1px solid; padding-bottom:10px; width:80%;" value="검색"
-                            onfocus="this.style.outline='none';" 
+                            onfocus="this.style.outline='none';"
                             onblur="this.style.outline='none';">
                         </form>
                     </li>
@@ -224,63 +227,54 @@
         <div style="display: flex; margin-left:20%; margin-top:1%; width:100%;">
             <nav class="overlay__menu" style="width:100%;">
                 <div style="">
-                    <a href="#">히트상품</a>
-                    <a href="#">추천상품</a>
-                    <a href="#">최신상품</a>
-                    <a href="#">인기상품</a>
-                    <a href="#">할인상품</a>
+                    <a href="#"><b>공지사항</b></a>
                     <br><br>
-                    <a href="#" data-cat="fashion">패션 · 의류 · 뷰티</a>
-                    <a href="#" data-cat="digital">가전 · 디지털</a>
-                    <a href="#" data-cat="grocery">식품 · 생필품</a>
-                    <a href="#" data-cat="home">홈 · 문구 · 취미</a>
-                    <a href="#" data-cat="book">도서</a>
+                    <a href="#" data-cat="fashion">전체</a>
+                    <a href="#" data-cat="digital">고객서비스</a>
+                    <a href="#" data-cat="grocery">안전거래</a>
+                    <a href="#" data-cat="home">위해상품</a>
+                    <a href="#" data-cat="book">이벤트당첨</a>
                 </div>
                 <div id="subcol">
-                    <!-- 패션 패널 -->
+                    <!-- 전체 -->
                     <section class="panel" data-key="fashion">
-                        <h3>패션 · 의류 · 뷰티</h3>
+                        <h3>전체</h3>
                         <!-- 이 안은 자유롭게: 그리드/이미지/텍스트 무엇이든 -->
                         <ul class="menu-grid" style="">
-                        <li><a href="#">여성 의류</a></li>
-                        <li><a href="#">스킨케어</a></li>
+                        <li><a href="#">#</a></li>
                         <!-- … -->
                         </ul>
                     </section>
 
-                    <!-- 디지털 패널 -->
+                    <!-- 고객서비스 -->
                     <section class="panel" data-key="digital">
-                        <h3>가전 · 디지털</h3>
+                        <h3>고객서비스</h3>
                         <div class="menu-grid">
-                        <a href="#">생활가전</a>
-                        <a href="#">모바일 · PC</a>
+                        <a href="#">#</a>
                         </div>
                     </section>
 
-                    <!-- 식품 패널 -->
+                    <!-- 안전거래 -->
                     <section class="panel" data-key="grocery">
-                        <h3>식품 · 생필품</h3>
+                        <h3>안전거래</h3>
                         <div class="menu-grid">
-                            <a href="#">신선식품</a>
-                            <a href="#">생활용품</a>
+                            <a href="#">#</a>
                         </div>
                     </section>
 
-                    <!-- 홈/문구 패널 -->
+                    <!-- 위해상품 -->
                     <section class="panel" data-key="home">
-                        <h3>홈 · 문구 · 취미</h3>
+                        <h3>위해상품</h3>
                         <div class="menu-grid">
-                            <a href="#">가구 · 인테리어</a>
-                            <a href="#">문구 · 사무용품</a>
+                            <a href="#">#</a>
                         </div>
                     </section>
 
-                    <!-- 도서 패널 -->
+                    <!-- 이벤트당첨 -->
                     <section class="panel" data-key="book">
-                        <h3>도서</h3>
+                        <h3>이벤트당첨</h3>
                         <div class="menu-grid">
-                            <a href="#">소설 · 에세이</a>
-                            <a href="#">아동 · 교육</a>
+                            <a href="#">#</a>
                         </div>
                     </section>
                 </div>
@@ -363,11 +357,14 @@
 
         <div class="cs_view_content">
             <div class="title_area">
-                <h3 id="notice-title">공지사항 제목</h3>
-                <p class="date" id="notice-date">날짜</p>
+                <h3 id="notice-title" th:text="${notice.title}">공지사항 제목</h3>
+                <p class="date" id="notice-date"
+                   th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">날짜</p>
             </div>
-            <br class="view_area">
-            <p id="notice-content">공지사항 내용을 불러오는 중입니다.</p>
+
+            <div class="view_area">
+                <p id="notice-content" th:text="${notice.content}"></p>
+            </div>
         </div>
 
         <div class="btn_area">
@@ -377,6 +374,7 @@
 
     <script>
         // 샘플 데이터 (실제 데이터는 서버에서 받아와야 함)
+        /* DB 연동 하드코딩 주석처리
         const notices = [
             { id:1, category: "안내", title: "해외결제사 정기점검주의", date: "2025.09.20", content: `안녕하세요. NICHITA입니다.<br>NICHITA 해외직구 결제 시 일부 해외카드 결제가 지연되고 있어 이용하실 때 이 점 양해 부탁드립니다.<br><br><strong><span style="color:red;">※피싱 관련 피해신고</span></strong><br>▶ 경찰청 사이버범죄수사 국 (국번없이) 1182<br>▶ KISA 인터넷침해대응센터 (국번없이) 1118<br>감사합니다.` },
             { id:2, category: "고객서비스", title: "고객센터 운영시간 변경", date: "2025.09.22", content: "고객센터 운영시간이 변경되었습니다. 자세한 내용은 고객센터로 문의 바랍니다." },
@@ -384,6 +382,7 @@
             { id:4, category: "위해상품", title: "리콜 공지사항", date: "2025.09.24", content: "위해상품 리콜 공지사항입니다." },
             { id:5, category: "이벤트당첨", title: "이벤트 당첨자 발표", date: "2025.09.25", content: "이벤트 당첨자 명단이 발표되었습니다." },
         ];
+         */
 
         // URL에서 id, category 파라미터 받기
         const urlParams = new URLSearchParams(window.location.search);
@@ -416,6 +415,6 @@
             }
         });
     </script>
-    <div id="footer"></div>
+    <div th:replace="main/footer :: footer"></div>
 </body>
 </html>

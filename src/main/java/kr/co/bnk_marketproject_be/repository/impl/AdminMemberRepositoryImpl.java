@@ -36,14 +36,14 @@ public class AdminMemberRepositoryImpl implements AdminMemberRepositoryCustom {
     public Page<Tuple> selectAdminMemberAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
         List<Tuple> tupleList = jpaQueryFactory.select(qAdminMember, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
-                            .from(qAdminMember)
-                            .join(qUser)
-                            .on(qAdminMember.rep.eq(qUser.name))
-                            .where(qAdminMember.boardType.eq("memberlist"))
-                            .offset(pageable.getOffset())
-                            .limit(pageable.getPageSize())
-                            .orderBy(qAdminMember.id.desc())
-                            .fetch();
+                .from(qAdminMember)
+                .join(qUser)
+                .on(qAdminMember.rep.eq(qUser.name))
+                .where(qAdminMember.boardType.eq("memberlist"))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qAdminMember.id.desc())
+                .fetch();
 
         // 전체 게시물 개수
         long total = jpaQueryFactory
@@ -65,7 +65,7 @@ public class AdminMemberRepositoryImpl implements AdminMemberRepositoryCustom {
 
         log.info("searchType:{}",  searchType);
         log.info("keyword:{}",  keyword);
-        if(searchType.equals("user_id")){
+        if(searchType.equals("userId")){
             expression = qUser.userId.contains(keyword);
         }else if(searchType.equals("name")){
             expression = qUser.name.contains(keyword);

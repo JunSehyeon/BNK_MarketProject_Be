@@ -74,14 +74,14 @@
                 <hr style="border:none; border-top:1px solid gray; margin-top:0px;">
                 <div style="padding-left:10px;">
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
-                    <form action="" method="post" style="display: flex; ">
-                        <select name="select" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
-                            <option value="newNum">발급번호</option>
-                            <option value="couNum">쿠폰번호</option>
-                            <option value="couName">쿠폰명</option>
-                            <option value="who">사용자</option>
+                    <form th:action="@{/admin/couponsnow/search}" method="get" style="display: flex; ">
+                        <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                            <option value="issue_id">발급번호</option>
+                            <option value="coupons_id">쿠폰번호</option>
+                            <option value="coupon_name">쿠폰명</option>
+                            <option value="user_id">사용자</option>
                         </select>
-                        <input type="text" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                        <input type="text" name="keyword" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                         <input type="submit" value="검색" style="width:50px; height:28px; color:white; background-color: black; border:none; font-size: 12px !important;">
                     </form>
                 </div>
@@ -96,191 +96,135 @@
                         <th style="width:80px;">사용일</th>
                         <th style="width:59px;">관리</th>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012134</a></td>
-                        <td>10121211341</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>akwe121</td>
-                        <td style="color:red;">
+                    <tr th:each="admin, stat:${pageResponseDTO.dtoList}"
+                            style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
+                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;"
+                        th:text="${admin.issue_id}">10120012134</a></td>
+                        <td th:text="${admin.code}">10121211341</td>
+                        <td th:text="${admin.discount_type}">개별상품 할인</td>
+                        <td th:text="${admin.coupon_name}">10월 한달 감사 쿠폰</td>
+                        <td th:text="${admin.user_id}">akwe121</td>
+                        <td th:text="${admin.status}"
+                                style="color:red;">
                             미사용
                         </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
+                        <td th:text="${admin.used_at}">0000-00-00<br>00:00:00</td>
+                        <td><button class="stop-btn" style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
+                        <!-- ▼ 배송입력 모달 콘텐츠 템플릿 -->
+                        <template class="shipFormTemplate" th:inline="text">
+                            <div class="ship-form__wrap">
+                                <form>
+                                    <table class="ship-form__table">
+                                        <tbody>
+                                        <tr>
+                                            <th style="font-size:14px;">쿠폰번호</th>
+                                            <td style="font-size:14px;"
+                                                >[[${admin.code}]]</td>
+                                            <th style="font-size:14px;">발급처</th>
+                                            <td style="font-size:14px;"
+                                                >(주)다있어</td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px;">발급번호</th>
+                                            <td style="font-size:14px;"
+                                                >[[${admin.issue_id}]]</td>
+                                            <th style="font-size:14px;">사용여부</th>
+                                            <td data-field="status"
+                                                th:style="${admin.status}=='미사용' ? 'color:#dc2626;font-size:14px;'
+                                                            : (${admin.status}=='사용' ? 'color:green;font-size:14px;' : 'font-size:14px;')"
+                                                th:text="${admin.status}">[[${admin.status}]]</td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px;">쿠폰종류</th>
+                                            <td style="font-size:14px;"
+                                                >[[${admin.discount_type}]]</td>
+                                            <th style="font-size:14px;">발급대상</th>
+                                            <td style="font-size:14px;"
+                                                >[[${admin.user_id}]]</td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px;">쿠폰명</th>
+                                            <td style="font-size:14px;"
+                                                >[[${admin.coupon_name}]]</td>
+                                            <td></td><td></td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px;">혜택</th>
+                                            <td style="font-size:14px;"
+                                                >[[${#numbers.formatInteger(admin.discount_value,0)}]]원 할인</td>
+                                            <td></td><td></td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px;">사용기간</th>
+                                            <td style="font-size:14px;"
+                                                >
+                                                [[${#temporals.format(admin.valid_from,'yyyy-MM-dd')}]]
+                                                ~
+                                                [[${#temporals.format(admin.valid_to,'yyyy-MM-dd')}]]
+                                            </td>
+                                            <td></td><td></td>
+                                        </tr>
+                                        <tr>
+                                            <th style="font-size:14px; height:200px;">유의사항</th>
+                                            <td style="font-size:14px;"
+                                                >
+                                                <div>상품 중복 할인 쿠폰</div>
+                                                <div>- 상품 1개에 대해 사용 가능</div>
+                                                <div>- 판매자 즉시할인/상품할인 쿠폰과 중복 사용 가능</div>
+                                                <div style="margin-top:20px;">사용처</div>
+                                                <div>- (주)다있어</div>
+                                            </td>
+                                            <td></td><td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="ship-form__actions" style="display:flex; justify-content:center;">
+                                        <button type="button" class="btn-primary" id="shipSubmitBtn" style="background-color:black !important; font-weight:300; min-width:70px !important;">닫기</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </template>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012133</a></td>
-                        <td>10121211133</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>oopow12</td>
-                        <td style="color:red;">
-                            미사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012132</a></td>
-                        <td>10121211341</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>nappqw7</td>
-                        <td style="color:red;">
-                            미사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012131</a></td>
-                        <td>10121211343</td>
-                        <td>배송비 무료</td>
-                        <td>배송비 무료 쿠폰</td>
-                        <td>kqpoe332</td>
-                        <td style="color:#8bd8a7">
-                            사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;background-color: gray; color:white;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012130</a></td>
-                        <td>10121211342</td>
-                        <td>주문상품 할인</td>
-                        <td>회원가입 축하 쿠폰</td>
-                        <td>klwp12</td>
-                        <td style="color:#8bd8a7">
-                            사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;background-color: gray; color:white;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012134</a></td>
-                        <td>10121211341</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>akwe121</td>
-                        <td style="color:red;">
-                            미사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012133</a></td>
-                        <td>10121211133</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>oopow12</td>
-                        <td style="color:red;">
-                            미사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012132</a></td>
-                        <td>10121211341</td>
-                        <td>개별상품 할인</td>
-                        <td>10월 한달 감사 쿠폰</td>
-                        <td>nappqw7</td>
-                        <td style="color:red;">
-                            미사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012131</a></td>
-                        <td>10121211343</td>
-                        <td>배송비 무료</td>
-                        <td>배송비 무료 쿠폰</td>
-                        <td>kqpoe332</td>
-                        <td style="color:#8bd8a7">
-                            사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;background-color: gray; color:white;">중단</button></td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle; font-size: 11px;">
-                        <td><a href="#" class="coupon-link" data-coupon-no="10121211341" style="font-weight: 800;">10120012130</a></td>
-                        <td>10121211342</td>
-                        <td>주문상품 할인</td>
-                        <td>회원가입 축하 쿠폰</td>
-                        <td>klwp12</td>
-                        <td style="color:#8bd8a7">
-                            사용
-                        </td>
-                        <td>0000-00-00<br>00:00:00</td>
-                        <td><button style="height:30px; border: 1px solid #e2e2e2;background-color: gray; color:white;">중단</button></td>
-                    </tr>
+
                 </table>
-                <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
-                    <form action="" method="" style="">
-                        <input type="button" class="prev-page" value="< 이전">
+                    <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
+                        <input th:if="${pageResponseDTO.prev}"
+                               th:onclick="|location.href='@{/admin/couponsnow/list(pg=${pageResponseDTO.start - 1})}'|"
+                               type="button" class="prev-page" value="< 이전">
 
-                        <input type="button" value="1" style="border:1px solid #333; background-color: #333; color: white; height: 30px; width: 30px; margin-right:2px; line-height:1;">
-                        <input type="button" value="2" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; margin-right:2px; line-height:1;">
-                        <input type="button" value="3" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; line-height:1;">
+                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <input th:onclick="|location.href='@{/admin/couponsnow/list(pg=${num})}'|"
+                                   th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
+                                   type="button"
+                                   th:value="${num}" />
+                        </th:block>
 
-                        <input type="button" class="next-page" value="다음 >" style="">
-                    </form>
-                </div>
+                        <input th:if="${pageResponseDTO.next}"
+                               th:onclick="|location.href='@{/admin/couponsnow/list(pg=${pageResponseDTO.end + 1})}'|"
+                               type="button" class="next-page" value="다음 >" style="">
+                    </div>
+                    <style>
+                        .current{
+                            border:1px solid #333;
+                            background-color: #333;
+                            color: white;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                        .num {
+                            cursor: pointer;
+                            border:1px solid #ddd;
+                            color: #555;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                    </style>
                 <!-- 주문상세 콘텐츠 템플릿: '첫번째 사진' 영역 그대로 -->
-<!-- ▼ 배송입력 모달 콘텐츠 템플릿 -->
-<template id="shipFormTemplate">
-  <div class="ship-form__wrap">
-    <form>
-      <table class="ship-form__table">
-        <tbody>
-          <tr>
-            <th style="font-size:14px;">쿠폰번호</th>
-            <td style="font-size:14px;" data-field="couponNo"></td>
-            <th style="font-size:14px;">발급처</th>
-            <td style="font-size:14px;" data-field="issuer"></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px;">발급번호</th>
-            <td style="font-size:14px;" data-field="issueNo"></td>
-            <th style="font-size:14px;">사용여부</th>
-            <td style="font-size:14px;" data-field="status"></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px;">쿠폰종류</th>
-            <td style="font-size:14px;" data-field="type"></td>
-            <th style="font-size:14px;">발급대상</th>
-            <td style="font-size:14px;" data-field="user"></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px;">쿠폰명</th>
-            <td style="font-size:14px;" data-field="name"></td>
-            <td></td><td></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px;">혜택</th>
-            <td style="font-size:14px;" data-field="benefit"></td>
-            <td></td><td></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px;">사용기간</th>
-            <td style="font-size:14px;" data-field="period"></td>
-            <td></td><td></td>
-          </tr>
-          <tr>
-            <th style="font-size:14px; height:200px;">유의사항</th>
-            <td style="font-size:14px;" data-field="memo"></td>
-            <td></td><td></td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="ship-form__actions" style="display:flex; justify-content:center;">
-        <button type="button" class="btn-primary" id="shipSubmitBtn" style="background-color:black !important; font-weight:300; min-width:70px !important;">닫기</button>
-      </div>
-    </form>
-  </div>
-</template>
+
 <!-- ▼ 배송입력 모달 -->
 <div id="shipModal" class="order-modal__overlay ship-modal" aria-hidden="true">
   <div class="order-modal" role="dialog" aria-modal="true" aria-labelledby="shipModalTitle">
@@ -296,7 +240,6 @@
   </div>
 </div>
 
-</template>
 
             </div>
         </div>
@@ -683,34 +626,49 @@ function openShipModal(data){
   shipModalBody.innerHTML = '';
   shipModalBody.appendChild(shipTpl.content.cloneNode(true));
 
-  // 템플릿 안의 필드 채우기
-  const $ = sel => shipModalBody.querySelector(sel);
-  $('[data-field="couponNo"]').textContent = data.couponNo || '';
-  $('[data-field="issuer"]').textContent   = data.issuer   || '(주)다있어';
-  $('[data-field="issueNo"]').textContent  = data.issueNo  || '';
-  const statusEl = $('[data-field="status"]');
-  statusEl.textContent = data.status || '';
-  statusEl.style.color = (data.status === '미사용') ? 'red' : '#8bd8a7';
+    // ✅ 랜덤 발급처 배열
+    const issuers = [
+        '키즈셀러', '맨즈셀러', '우먼셀러', '스포츠셀러',
+        '코스메틱셀러', '향수셀러', '라이프스타일셀러',
+        '음향셀러', '탈것셀러'
+    ];
+    const randomIssuer = issuers[Math.floor(Math.random() * issuers.length)];
 
-  $('[data-field="type"]').textContent   = data.type   || '';
-  $('[data-field="user"]').textContent   = data.user   || '';
-  $('[data-field="name"]').textContent   = data.name   || '';
-  $('[data-field="benefit"]').textContent= data.benefit|| '—';
-  $('[data-field="period"]').textContent = data.period || '0000-00-00 ~ 0000-00-00';
-  $('[data-field="memo"]').innerHTML     = (data.memo || `
+    // 요소 선택 헬퍼
+    const $ = sel => shipModalBody.querySelector(sel);
+
+    // 쿠폰 정보 채우기
+    $('[data-field="couponNo"]').textContent = data.couponNo || '';
+    $('[data-field="issuer"]').textContent   = randomIssuer; // DB값 무시하고 랜덤
+    $('[data-field="issueNo"]').textContent  = data.issueNo  || '';
+
+    const statusEl = $('[data-field="status"]');
+    statusEl.textContent = data.status || '';
+    statusEl.style.color = (data.status === '미사용') ? 'red' : '#8bd8a7';
+
+    $('[data-field="type"]').textContent   = data.type   || '';
+    $('[data-field="user"]').textContent   = data.user   || '';
+    $('[data-field="name"]').textContent   = data.name   || '';
+    $('[data-field="benefit"]').textContent= data.benefit|| '—';
+    $('[data-field="period"]').textContent = data.period || '0000-00-00 ~ 0000-00-00';
+
+    // ✅ 유의사항에도 랜덤 발급처 반영
+    $('[data-field="memo"]').innerHTML = `
       <div>상품 중복 할인 쿠폰</div>
       <div>- 상품 1개에 대해 사용 가능</div>
       <div>- 판매자 즉시할인/상품할인 쿠폰과 중복 사용 가능</div>
       <div style="margin-top:20px;">사용처</div>
-      <div>- (주)다있어</div>`).trim();
+      <div>- ${randomIssuer}</div>
+  `;
 
-  // 닫기 버튼
-  const closeBtnInTpl = shipModalBody.querySelector('#shipSubmitBtn');
-  if (closeBtnInTpl) closeBtnInTpl.addEventListener('click', closeShipModal);
+    // 닫기 버튼 바인딩
+    const closeBtnInTpl = shipModalBody.querySelector('#shipSubmitBtn');
+    if (closeBtnInTpl) closeBtnInTpl.addEventListener('click', closeShipModal);
 
-  shipModalOverlay.classList.add('show');
-  shipModalOverlay.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
+    // 모달 열기
+    shipModalOverlay.classList.add('show');
+    shipModalOverlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
 }
 function closeShipModal(){
   const shipModalOverlay = document.getElementById('shipModal');
@@ -740,36 +698,56 @@ function closeShipModal(){
       closeShipModal();
     }
   });
-// 목록에서 클릭 시 해당 행의 값 수집
-document.addEventListener('click', function (e) {
-  const a = e.target.closest('a.coupon-link');
-  if (!a) return;
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest('a.coupon-link');
+            if (!a) return;
+            e.preventDefault();
 
-  e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
+            const tr = a.closest('tr');
+            const tpl = tr.querySelector('template.shipFormTemplate'); // 행 안의 템플릿
+            if (!tpl) return;
 
-  const tr  = a.closest('tr');
-  const tds = tr.querySelectorAll('td');
+            // 모달 내용 비우고 템플릿 복제
+            shipModalBody.innerHTML = '';
+            shipModalBody.appendChild(tpl.content.cloneNode(true));
 
-  // 테이블 컬럼 순서에 맞게 값 추출
-  const issueNo  = (tds[0].textContent || '').trim(); // 발급번호(첫 번째 컬럼)
-  const couponNo = (tds[1].textContent || '').trim(); // 쿠폰번호(두 번째 컬럼)
-  const type     = (tds[2].textContent || '').trim(); // 쿠폰종류
-  const name     = (tds[3].textContent || '').trim(); // 쿠폰명
-  const user     = (tds[4].textContent || '').trim(); // 사용자
-  const status   = (tds[5].textContent || '').trim(); // 상태
+            // 헤더 오른쪽에 발급번호(1열 a 텍스트) 표시
+            const issueNo = tr.querySelector('td:nth-child(1) a')?.textContent.trim() || '';
+            const headNoEl = document.getElementById('shipModalOrderNo');
+            if (headNoEl) headNoEl.textContent = issueNo;
 
-  // 모달에 전달
-  openShipModal({
-    issueNo,                 // ← 세 번째 이미지의 '발급번호'에 표시
-    couponNo,                // ← 두 번째 이미지 오른쪽 숫자(헤더 옆)에 표시
-    type, name, user, status,
-    issuer: '(주)다있어',
-    benefit: (name.includes('감사') ? '2,000 원 할인' : ''),
-    period:  '0000-00-00 ~ 0000-00-00'
-  });
-});
+            // 랜덤 셀러 치환
+            const issuers = [
+                '키즈셀러','맨즈셀러','우먼셀러','스포츠셀러',
+                '코스메틱셀러','향수셀러','라이프스타일셀러',
+                '음향셀러','탈것셀러'
+            ];
+            const randomIssuer = issuers[Math.floor(Math.random() * issuers.length)];
+            shipModalBody.innerHTML = shipModalBody.innerHTML.replaceAll('(주)다있어', randomIssuer);
+
+            // 상태 동기화
+            const STATUS_COLOR = { '사용': 'green', '미사용': '#dc2626', '중단': 'gray' };
+            const rowStatusTd = tr.querySelector('td:nth-child(6)');
+            const currentStatus = (rowStatusTd?.textContent || '').trim();
+            const modalStatusEl = shipModalBody.querySelector('[data-field="status"]')
+                || shipModalBody.querySelector('table.ship-form__table tr:nth-child(2) td:nth-child(4)');
+            if (modalStatusEl) {
+                modalStatusEl.textContent = currentStatus || '';
+                modalStatusEl.style.color = STATUS_COLOR[currentStatus] || '';
+            }
+
+            // 치환 후에 닫기 버튼 이벤트 바인딩
+            const closeBtnInTpl = shipModalBody.querySelector('#shipSubmitBtn');
+            if (closeBtnInTpl) closeBtnInTpl.addEventListener('click', closeShipModal);
+
+            // (선택) .ship-close 같은 버튼도 다시 바인딩
+            const closeBtn = shipModalBody.querySelector('.ship-close');
+            if (closeBtn) closeBtn.addEventListener('click', closeShipModal);
+
+            shipModalOverlay.classList.add('show');
+            shipModalOverlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        });
 (function(){
     const rows = document.querySelectorAll('table tr');
 
@@ -824,24 +802,7 @@ document.addEventListener('click', function (e) {
       }
     });
   })();
-  // 쿠폰번호 클릭 → 배송입력 모달만 열기
-document.addEventListener('click', function (e) {
-  const a = e.target.closest('a.coupon-link');
-  if (!a) return;
 
-  e.preventDefault();
-  e.stopPropagation();            // 다른 클릭 리스너로 전파 막기
-  e.stopImmediatePropagation();   // 같은 타깃의 다른 리스너도 중단
-
-  const couponNo = a.dataset.couponNo || a.textContent.trim();
-  openShipModal(couponNo, {
-    recipient: '홍길동',
-    zip: '12345',
-    addr1: '',
-    addr2: '',
-    etc: ''
-  });
-});
   // 쿠폰등록 모달 참조
   const couponRegModal   = document.getElementById('couponRegModal');
   const couponRegBody    = document.getElementById('couponRegBody');
@@ -899,6 +860,7 @@ document.addEventListener('click', function (e) {
     document.body.style.overflow='';
   }
 
+
   if (openCouponRegBtn) openCouponRegBtn.addEventListener('click', openCouponReg);
   couponRegClose.addEventListener('click', closeCouponReg);
   couponRegModal.addEventListener('click', (e)=>{ if(e.target === couponRegModal) closeCouponReg(); });
@@ -954,5 +916,99 @@ document.addEventListener('click', function (e) {
     }
   });
 })();
+        (function () {
+            // === 설정: 상태별 색상 ===
+            const STATUS_COLOR = {
+                '사용':   'green',
+                '미사용': '#dc2626',   // 빨강
+                '중단':   'gray'
+            };
+
+            // 행 초기화: 상태색 입히고, 버튼 활성/비활성 결정
+            function initRow(tr){
+                // 상태 셀: 6번째 컬럼(현재 테이블 구조 기준)
+                const statusTd = tr.querySelector('td:nth-child(6)');
+                if (!statusTd) return;
+
+                const statusText = (statusTd.textContent || '').trim();
+
+                // 색상 적용
+                const color = STATUS_COLOR[statusText] || '';
+                if (color) statusTd.style.color = color;
+
+                // 관리 버튼
+                // 권장: .stop-btn 사용
+                let stopBtn = tr.querySelector('button.stop-btn');
+                // HTML 수정이 어렵다면 ↓ 이 라인을 주석 해제하고 위 라인은 주석 처리
+                // let stopBtn = tr.querySelector('td:last-child button');
+
+                if (!stopBtn) return;
+
+                // 상태별 버튼 상태
+                // 사용/중단 → 비활성, 미사용 → 활성
+                if (statusText === '사용' || statusText === '중단') {
+                    disableBtn(stopBtn);
+                } else {
+                    enableBtn(stopBtn);
+                }
+            }
+
+            function disableBtn(btn){
+                btn.disabled = true;
+                btn.style.backgroundColor = 'gray';
+                btn.style.color = 'white';
+                btn.style.cursor = 'not-allowed';
+            }
+
+            function enableBtn(btn){
+                btn.disabled = false;
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+                btn.style.cursor = 'pointer';
+            }
+
+            // 테이블 전체 초기화
+            function initTable(){
+                document.querySelectorAll('table tr').forEach(tr => initRow(tr));
+            }
+
+            // 최초 1회
+            initTable();
+
+            // 이벤트 위임: 중단 버튼 클릭 처리(테이블 하나만 대상)
+            const table = document.querySelector('table');
+            if (table) {
+                table.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button.stop-btn')
+                        || e.target.closest('td:last-child button'); // fallback
+                    if (!btn || !table.contains(btn)) return;
+
+                    // 현재 행
+                    const tr = btn.closest('tr');
+                    const statusTd = tr.querySelector('td:nth-child(6)');
+                    if (!statusTd) return;
+
+                    const statusText = (statusTd.textContent || '').trim();
+
+                    // 사용/중단이면 이미 비활성 대상
+                    if (statusText === '사용' || statusText === '중단') return;
+
+                    // 미사용만 중단 처리
+                    if (statusText === '미사용') {
+                        e.preventDefault();
+                        if (!confirm('해당 발급을 중단하시겠습니까?')) return;
+
+                        // 상태 변경
+                        statusTd.textContent = '중단';
+                        statusTd.style.color = STATUS_COLOR['중단'];
+
+                        // 버튼 비활성
+                        disableBtn(btn);
+
+                        alert('발급이 중단되었습니다.');
+                    }
+                });
+            }
+        })();
     </script>
 <div th:replace="~{admin/_footer.html}"></div>

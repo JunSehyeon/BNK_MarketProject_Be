@@ -36,14 +36,14 @@ public class AdminStoreRepositoryImpl implements AdminStoreRepositoryCustom {
     public Page<Tuple> selectAdminStoreAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
         List<Tuple> tupleList = jpaQueryFactory.select(qAdminStore, qUser.name, qUser.userId, qUser.email, qUser.phone, qUser.address, qUser.role)
-                            .from(qAdminStore)
-                            .join(qUser)
-                            .on(qAdminStore.rep.eq(qUser.name))
-                            .where(qAdminStore.boardType.eq("storelist"))
-                            .offset(pageable.getOffset())
-                            .limit(pageable.getPageSize())
-                            .orderBy(qAdminStore.id.desc())
-                            .fetch();
+                .from(qAdminStore)
+                .join(qUser)
+                .on(qAdminStore.rep.eq(qUser.name))
+                .where(qAdminStore.boardType.eq("storelist"))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qAdminStore.id.desc())
+                .fetch();
 
         // 전체 게시물 개수
         long total = jpaQueryFactory

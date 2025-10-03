@@ -78,7 +78,7 @@
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
                     <form th:action="@{/admin/member/search}" method="get" style="display: flex; ">
                         <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
-                            <option value="user_id">아이디</option>
+                            <option value="userId">아이디</option>
                             <option value="name">이름</option>
                             <option value="email">이메일</option>
                             <option value="phone">휴대폰</option>
@@ -111,7 +111,7 @@
                 th:each="admin, stat:${pageResponseDTO.dtoList}">
                   <td><input type="checkbox"></td>
                   <td>[[${pageResponseDTO.startNo - stat.index}]]</td>
-                  <td th:text="${admin.user_id}">xxx...</td>
+                  <td th:text="${admin.userId}">xxx...</td>
                   <td th:text="${admin.rep}">정우성</td>
                   <td th:text="${admin.gender}">M</td>
                   <td >
@@ -147,18 +147,19 @@
                 </div>
                     <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
                         <input th:if="${pageResponseDTO.prev}"
-                               th:onclick="|location.href='@{/admin/member/list(pg=${pageResponseDTO.start - 1})}'|"
+                               th:onclick="|location.href='@{/admin/member/search(pg=${pageResponseDTO.start - 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                type="button" class="prev-page" value="< 이전">
 
-                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                            <input th:onclick="|location.href='@{/admin/member/list(pg=${num})}'|"
+                        <th:block th:if="${pageResponseDTO.end >= pageResponseDTO.start}"
+                                  th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <input th:onclick="|location.href='@{/admin/member/search(pg=${num}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                    th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
                                    type="button"
                                    th:value="${num}" />
                         </th:block>
 
                         <input th:if="${pageResponseDTO.next}"
-                               th:onclick="|location.href='@{/admin/member/list(pg=${pageResponseDTO.end + 1})}'|"
+                               th:onclick="|location.href='@{/admin/member/search(pg=${pageResponseDTO.end + 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}'|"
                                type="button" class="next-page" value="다음 >" style="">
                     </div>
             </div>

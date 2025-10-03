@@ -47,7 +47,7 @@ public class AdminProductRepositoryImpl implements AdminProductRepositoryCustom 
                 .leftJoin(qSeller)
                 .on(qProducts.sellers_id.eq(qSeller.id))
                 .leftJoin(qUser)
-                .on(qSeller.seller_id.eq(qUser.userId))
+                .on(qSeller.sellerId.eq(qUser.userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qProducts.id.desc())
@@ -80,36 +80,36 @@ public class AdminProductRepositoryImpl implements AdminProductRepositoryCustom 
             expression = qUser.name.contains(keyword);
             log.info("expression:{}", expression.toString());
         }
-            List<Tuple> tupleList = jpaQueryFactory.select(qProductImages.url, qProducts, qUser.name)
-                    .from(qProducts)
-                    .leftJoin(qProductImages)
-                    .on(qProducts.id.eq(qProductImages.products_id))
-                    .leftJoin(qSeller)
-                    .on(qProducts.sellers_id.eq(qSeller.id))
-                    .leftJoin(qUser)
-                    .on(qSeller.seller_id.eq(qUser.userId))
-                    .where(expression)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qProducts.id.desc())
-                    .fetch();
+        List<Tuple> tupleList = jpaQueryFactory.select(qProductImages.url, qProducts, qUser.name)
+                .from(qProducts)
+                .leftJoin(qProductImages)
+                .on(qProducts.id.eq(qProductImages.products_id))
+                .leftJoin(qSeller)
+                .on(qProducts.sellers_id.eq(qSeller.id))
+                .leftJoin(qUser)
+                .on(qSeller.sellerId.eq(qUser.userId))
+                .where(expression)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qProducts.id.desc())
+                .fetch();
 
-            // 전체 게시물 개수
-            long total = jpaQueryFactory
-                    .select(qProducts.count())
-                    .from(qProducts)
-                    .leftJoin(qProductImages)
-                    .on(qProducts.id.eq(qProductImages.products_id))
-                    .leftJoin(qSeller)
-                    .on(qProducts.sellers_id.eq(qSeller.id))
-                    .leftJoin(qUser)
-                    .on(qSeller.seller_id.eq(qUser.userId))
-                    .where(expression)
-                    .fetchOne();
+        // 전체 게시물 개수
+        long total = jpaQueryFactory
+                .select(qProducts.count())
+                .from(qProducts)
+                .leftJoin(qProductImages)
+                .on(qProducts.id.eq(qProductImages.products_id))
+                .leftJoin(qSeller)
+                .on(qProducts.sellers_id.eq(qSeller.id))
+                .leftJoin(qUser)
+                .on(qSeller.sellerId.eq(qUser.userId))
+                .where(expression)
+                .fetchOne();
 
-            log.info("total:{}", total);
-            log.info("tuplelist:{}", tupleList.toString());
-            return new PageImpl<Tuple>(tupleList, pageable, total);
+        log.info("total:{}", total);
+        log.info("tuplelist:{}", tupleList.toString());
+        return new PageImpl<Tuple>(tupleList, pageable, total);
 
     }
 }

@@ -65,7 +65,7 @@ public class AdminPointRepositoryImpl implements AdminPointRepositoryCustom {
 
         log.info("searchType:{}",  searchType);
         log.info("keyword:{}",  keyword);
-        if(searchType.equals("user_id")){
+        if(searchType.equals("userId")){
             expression = qUser.userId.contains(keyword);
         }else if(searchType.equals("name")){
             expression = qUser.name.contains(keyword);

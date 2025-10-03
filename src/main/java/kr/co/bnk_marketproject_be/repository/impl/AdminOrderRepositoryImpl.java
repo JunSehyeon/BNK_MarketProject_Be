@@ -74,7 +74,7 @@ public class AdminOrderRepositoryImpl implements AdminOrderRepositoryCustom {
         log.info("keyword:{}", keyword);
         if (searchType.equals("order_code")) {
             expression = qOrders.order_code.contains(keyword);
-        } else if (searchType.equals("user_id")) {
+        } else if (searchType.equals("userId")) {
             expression = qUser.userId.contains(keyword);
         } else if (searchType.equals("name")) {
             expression = qUser.name.contains(keyword);
@@ -87,32 +87,33 @@ public class AdminOrderRepositoryImpl implements AdminOrderRepositoryCustom {
                 .from(QOrderItems.orderItems)
                 .where(QOrderItems.orderItems.orders_id.eq(qOrders.id));
 
-            List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.userId, qUser.name, qPayments.method, itemCountExpr)
-                    .from(qOrders)
-                    .leftJoin(qUser)
-                    .on(qOrders.users_id.eq(qUser.id))
-                    .leftJoin(qPayments)
-                    .on(qPayments.orders_id.eq(qOrders.id))
-                    .where(expression)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .orderBy(qOrders.id.desc())
-                    .fetch();
+        List<Tuple> tupleList = jpaQueryFactory.select(qOrders, qUser.userId, qUser.name, qPayments.method, itemCountExpr)
+                .from(qOrders)
+                .leftJoin(qUser)
+                .on(qOrders.users_id.eq(qUser.id))
+                .leftJoin(qPayments)
+                .on(qPayments.orders_id.eq(qOrders.id))
+                .where(expression)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(qOrders.id.desc())
+                .fetch();
 
-            // 전체 게시물 개수
-            long total = jpaQueryFactory
-                    .select(qOrders.count())
-                    .from(qOrders)
-                    .leftJoin(qUser)
-                    .on(qOrders.users_id.eq(qUser.id))
-                    .leftJoin(qPayments)
-                    .on(qPayments.orders_id.eq(qOrders.id))
-                    .where(expression)
-                    .fetchOne();
+        // 전체 게시물 개수
+        long total = jpaQueryFactory
+                .select(qOrders.count())
+                .from(qOrders)
+                .leftJoin(qUser)
+                .on(qOrders.users_id.eq(qUser.id))
+                .leftJoin(qPayments)
+                .on(qPayments.orders_id.eq(qOrders.id))
+                .where(expression)
+                .fetchOne();
 
-            log.info("total:{}", total);
-            log.info("tuplelist:{}", tupleList.toString());
-            return new PageImpl<Tuple>(tupleList, pageable, total);
+        log.info("total:{}", total);
+        log.info("tuplelist:{}", tupleList.toString());
+        return new PageImpl<Tuple>(tupleList, pageable, total);
 
     }
 }
+
