@@ -20,6 +20,7 @@ public interface AdminMapper {
 
     // 항상 동일(total 세기)
     public int selectCountTotal(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
+    public int selectCountTotalCouponsNow(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
 
 }
