@@ -1,3 +1,4 @@
+
 package kr.co.bnk_marketproject_be.controller;
 
 import kr.co.bnk_marketproject_be.dto.CSNoticeDTO;
@@ -20,19 +21,33 @@ public class CSNoticeController {
 
     private final CSNoticeService csNoticeService;
 
-    // 공지사항 리스트
     @GetMapping("/notice/list")
-    public String noticeList(@RequestParam(defaultValue = "0") int page, Model model) {
-        Page<CSNoticeDTO> dtoPage = csNoticeService.getNoticeList(page);
+    public String noticeList(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String category,
+            Model model) {
+
+        Page<CSNoticeDTO> dtoPage;
+
+        if (category == null || category.isEmpty()) {
+            dtoPage = csNoticeService.getNoticeList(page);
+        } else {
+            dtoPage = csNoticeService.getNoticeListByCategory(page, category);
+        }
+
+        long totalCount = dtoPage.getTotalElements();
         model.addAttribute("dtoPage", dtoPage);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("category", category); // 선택된 카테고리 뷰에서 표시용
+
         return "customer_service/notice/notice_list";
     }
 
-    // 공지사항 상세
     @GetMapping("/notice/view/{id}")
     public String noticeView(@PathVariable Integer id, Model model) {
         CSNoticeDTO dto = csNoticeService.getNoticeDetail(id);
         model.addAttribute("notice", dto);
         return "customer_service/notice/notice_view";
     }
+
 }
