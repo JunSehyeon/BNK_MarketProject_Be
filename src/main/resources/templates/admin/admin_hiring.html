@@ -74,15 +74,14 @@
                 <hr style="border:none; border-top:1px solid gray; margin-top:0px;">
                 <div style="padding-left:10px;">
                 <div style="display: flex; align-items: center; margin-top: 25px; margin-bottom:20px;">
-                    <form action="" method="post" style="display: flex; ">
-                        <select name="select" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
-                            <option value="num">번호</option>
-                            <option value="who">채용부서</option>
-                            <option value="who">채용형태</option>
-                            <option value="who">제목</option>
-                            <option value="name">검색</option>
+                    <form th:action="@{/admin/employ/search}" method="get" style="display: flex; ">
+                        <select name="searchType" id="" style="width:82px; height:28px; padding-left:5px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                            <option value="id">번호</option>
+                            <option value="department">채용부서</option>
+                            <option value="form">채용형태</option>
+                            <option value="title">제목</option>
                         </select>
-                        <input type="text" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
+                        <input type="text" name="keyword" placeholder="검색어입력" style="width:140px; height:28px; padding-left:10px; margin-right:3px; border:1px solid #bfbfbf; font-size: 10px !important;">
                         <input type="submit" value="검색" style="width:50px; height:28px; color:white; background-color: black; border:none; font-size: 12px !important;">
                     </form>
                 </div>
@@ -91,44 +90,38 @@
                         <th style="width:40px">
                           <input type="checkbox" id="checkAll"/>
                         </th>
-                        <th style="">번호</th>
-                        <th style="">채용부서</th>
-                        <th style="">경력사항</th>
-                        <th style="">채용형태</th>
-                        <th style="">제목</th>
-                        <th style="">작성자</th>
-                        <th style="">상태</th>
-                        <th style="">모집기간</th>
+                        <th style="width:50px !important;">번호</th>
+                        <th style="width:90px !important;">채용부서</th>
+                        <th style="width:120px;">경력사항</th>
+                        <th style="width:66px;">채용형태</th>
+                        <th style="width:180px;">제목</th>
+                        <th style="width:82px;">작성자</th>
+                        <th style="width:50px;">상태</th>
+                        <th style="width:103px;">모집기간</th>
                         <th style="">작성일</th>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
+                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;"
+                        th:each="admin, stat:${pageResponseDTO.dtoList}">
                         <th style="width: 40px;">
                           <input type="checkbox" id="checkeach">
                         </th>
-                        <td><a href="#" style="font-weight: 800;">120</a></td>
-                        <td>IT</td>
-                        <td>신입</td>
-                        <td>정규직</td>
-                        <td>프론트앤드 신입 채용</td>
-                        <td>관리자</td>
-                        <td style="color:#8bd8a7">모집중</td>
-                        <td>0000-00-00 ~ 0000-00-00</td>
-                        <td>0000-00-00</td>
+                        <td><a href="#" style="font-weight: 800;"
+                               th:text="${admin.id}">120</a></td>
+                        <td th:text="${admin.department}">IT</td>
+                        <td th:text="${admin.career}">신입</td>
+                        <td th:text="${admin.form}">정규직</td>
+                        <td th:text="${admin.title}">프론트앤드 신입 채용</td>
+                        <td th:text="${admin.user_name}">관리자</td>
+                        <td style="color:#8bd8a7"
+                            th:text="${admin.status}"
+                            th:style="${admin.status == '모집중' ? 'color:#70d29c;' : 'color:gray;'}">모집중</td>
+                        <td>
+                            <span th:text="${#temporals.format(admin.recruit_from, 'yyyy-MM-dd')}"></span> <br>~
+                            <span th:text="${#temporals.format(admin.recruit_to, 'yyyy-MM-dd')}"></span>
+                        </td>
+                        <td th:utext="${#temporals.format(admin.created_at, 'yyyy-MM-dd')} + '<br>' + ${#temporals.format(admin.created_at, 'HH:mm:ss')}"></td>
                     </tr>
-                    <tr style="border-bottom:1px solid #e2e2e2; height:70px;vertical-align: middle;">
-                        <th style="width: 40px;">
-                          <input type="checkbox" id="checkeach">
-                        </th>
-                        <td><a href="#" style="font-weight: 800;">118</a></td>
-                        <td>운영</td>
-                        <td>무관</td>
-                        <td>계약직</td>
-                        <td>단기 아르바이트 모집</td>
-                        <td>관리자</td>
-                        <td style="color:gray;">종료</td>
-                        <td>0000-00-00 ~ 0000-00-00</td>
-                        <td>0000-00-00</td>
-                    </tr>
+
                 </table>
                 <div style="display: flex; justify-content: space-between;">
                   <input type="button" value="선택삭제" style="width: 80px; height: 40px; background-color: #000; color: #ffffff; margin-top: 30px;">
@@ -158,10 +151,11 @@
           <td>
             <select id="jobDept" name="department" style="width:220px;height:34px;">
               <option value="">채용부서 선택</option>
-              <option value="IT">IT</option>
-              <option value="HR">HR</option>
-              <option value="Sales">영업</option>
-              <option value="Marketing">마케팅</option>
+              <option value="it">IT</option>
+              <option value="ad">광고사업</option>
+              <option value="run">경영</option>
+              <option value="design">디자인</option>
+              <option value="study">연구개발</option>
             </select>
           </td>
         </tr>
@@ -172,9 +166,9 @@
             <select id="jobCareer" name="career" style="width:220px;height:34px;">
               <option value="">경력사항 선택</option>
               <option value="new">신입</option>
-              <option value="junior">주니어(1~3년)</option>
-              <option value="mid">미들(3~7년)</option>
-              <option value="senior">시니어(7년+)</option>
+              <option value="unrelated">무관</option>
+              <option value="four">경력 4년 ~ 15년</option>
+              <option value="two">경력 2년 ~ 15년</option>
             </select>
           </td>
         </tr>
@@ -182,12 +176,12 @@
         <tr>
           <td>채용형태</td>
           <td>
-            <select id="jobType" name="employmentType" style="width:220px;height:34px;">
+            <select id="jobType" name="form" style="width:220px;height:34px;">
               <option value="">채용형태 선택</option>
-              <option value="fulltime">정규직</option>
+              <option value="regular">정규직</option>
               <option value="contract">계약직</option>
+              <option value="freelancer">프리랜서</option>
               <option value="intern">인턴</option>
-              <option value="parttime">파트타임</option>
             </select>
           </td>
         </tr>
@@ -218,7 +212,7 @@
           취소
         </button>
         <button type="submit"
-                style="min-width:120px; height:38px; border:0; background:#2f7ee6; color:#fff; font-weight:500;">
+                style="min-width:120px; height:38px; border:0; background:black; color:#fff; font-weight:500;">
           등록
         </button>
       </div>
@@ -260,7 +254,7 @@
     }
     /* 상단 바 */
     .modal-header {
-      background: #2f7ee6; color:#fff;
+      background: black; color:#fff;
       padding: 4px 16px; font-weight: 700;
       display: flex; align-items: center; justify-content: space-between;
     }
@@ -329,15 +323,42 @@
     .rating label:hover ~ label::before { content: '★'; }
   </style>
 
-                <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;"> 
-                  <form> 
-                    <input type="button" class="prev-page" value="< 이전"> 
-                    <input type="button" value="1" style="border:1px solid #333; background-color: #333; color: white; height: 30px; width: 30px; margin-right:2px; line-height:1;"> 
-                    <input type="button" value="2" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; margin-right:2px; line-height:1;"> 
-                    <input type="button" value="3" style="cursor: pointer; border:1px solid #ddd; color: #555; height: 30px; width: 30px; line-height:1;"> 
-                    <input type="button" class="next-page" value="다음 >"> 
-                  </form> 
-                </div>
+                    <div style=" height: 100px; margin-top:40px; display: flex; justify-content: center;">
+                        <input th:if="${pageResponseDTO.prev}"
+                               th:onclick="|location.href='@{/admin/employ/list(pg=${pageResponseDTO.start - 1})}'|"
+                               type="button" class="prev-page" value="< 이전">
+
+                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <input th:onclick="|location.href='@{/admin/employ/list(pg=${num})}'|"
+                                   th:class="${num == pageResponseDTO.pg ? 'current' : 'num'}"
+                                   type="button"
+                                   th:value="${num}" />
+                        </th:block>
+
+                        <input th:if="${pageResponseDTO.next}"
+                               th:onclick="|location.href='@{/admin/employ/list(pg=${pageResponseDTO.end + 1})}'|"
+                               type="button" class="next-page" value="다음 >" style="">
+                    </div>
+                    <style>
+                        .current{
+                            border:1px solid #333;
+                            background-color: #333;
+                            color: white;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                        .num {
+                            cursor: pointer;
+                            border:1px solid #ddd;
+                            color: #555;
+                            height: 30px;
+                            width: 30px;
+                            margin-right:7px;
+                            line-height:1;
+                        }
+                    </style>
     </main>
 
     <style>

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class PageResponseAdminCouponsNowDTO {
+public class PageResponseAdminEmployDTO {
 
-    private List<CouponsNowDTO> dtoList;
+    private List<AdminEmployDTO> dtoList;
 
     private String boardType; // 게시판 종류
     private int pg;
@@ -24,7 +24,7 @@ public class PageResponseAdminCouponsNowDTO {
     private String keyword;
 
     @Builder
-    public PageResponseAdminCouponsNowDTO(PageRequestDTO pageRequestDTO, List<CouponsNowDTO> dtoList, int total) {
+    public PageResponseAdminEmployDTO(PageRequestDTO pageRequestDTO, List<AdminEmployDTO> dtoList, int total) {
 
         this.boardType = pageRequestDTO.getBoardType();
         this.pg = pageRequestDTO.getPg();
