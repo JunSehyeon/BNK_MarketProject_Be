@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class PageResponseAdminEmployDTO {
+public class PageResponseAdminAnnouncementDTO {
 
-    private List<AdminEmployDTO> dtoList;
+    private List<AdminAnnouncementDTO> dtoList;
 
     private String boardType; // 게시판 종류
     private int pg;
@@ -19,18 +19,21 @@ public class PageResponseAdminEmployDTO {
     private int startNo;
     private int start, end;
     private boolean prev, next; // 이전, 다음 버튼
+    private String board_type2;
 
     private String searchType;
     private String keyword;
 
     @Builder
-    public PageResponseAdminEmployDTO(PageRequestDTO pageRequestDTO, List<AdminEmployDTO> dtoList, int total) {
+    public PageResponseAdminAnnouncementDTO(PageRequestDTO pageRequestDTO, List<AdminAnnouncementDTO> dtoList, int total) {
 
         this.boardType = pageRequestDTO.getBoardType();
         this.pg = pageRequestDTO.getPg();
         this.size = pageRequestDTO.getSize();
         this.total = total;
         this.dtoList = dtoList;
+
+        this.board_type2 = pageRequestDTO.getBoard_type2();
 
         this.startNo = total - ((pg - 1) * size);
         this.end = (int)(Math.ceil(this.pg / 10.0)) * 10;

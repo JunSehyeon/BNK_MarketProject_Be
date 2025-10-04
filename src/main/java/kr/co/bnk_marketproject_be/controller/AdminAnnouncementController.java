@@ -1,8 +1,10 @@
 package kr.co.bnk_marketproject_be.controller;
 
+import kr.co.bnk_marketproject_be.dto.AdminAnnouncementDTO;
 import kr.co.bnk_marketproject_be.dto.PageRequestDTO;
-import kr.co.bnk_marketproject_be.dto.PageResponseAdminEmployDTO;
-import kr.co.bnk_marketproject_be.service.AdminEmployService;
+import kr.co.bnk_marketproject_be.dto.PageResponseAdminAnnouncementDTO;
+import kr.co.bnk_marketproject_be.dto.PageResponseAdminAnnouncementDTO;
+import kr.co.bnk_marketproject_be.service.AdminAnnouncementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,33 +15,80 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class AdminEmployController {
+public class AdminAnnouncementController {
 
-    private final AdminEmployService adminCouponsNowService;
+    private final AdminAnnouncementService adminAnnouncementService;
 
-    @GetMapping("/admin/employ/list")
+    @GetMapping("/admin/announcement/list")
     public String list(Model model, PageRequestDTO pageRequestDTO) {
-        PageResponseAdminEmployDTO pageResponseAdminEmployDTO = adminCouponsNowService.selectAdminEmployAll(pageRequestDTO);
+        PageResponseAdminAnnouncementDTO pageResponseAdminAnnouncementDTO = adminAnnouncementService.selectAllAdminAnnouncement(pageRequestDTO);
 
-        log.info("pageResponseAdminEmployDTO={}", pageResponseAdminEmployDTO);
-        model.addAttribute("pageResponseDTO", pageResponseAdminEmployDTO);
+        log.info("pageResponseAdminAnnouncementDTO={}", pageResponseAdminAnnouncementDTO);
+        model.addAttribute("pageResponseDTO", pageResponseAdminAnnouncementDTO);
 
-        return "admin/admin_hiring";
+        return "admin/admin_announce_list";
     }
 
-    @GetMapping("/admin/employ/search")
+    @GetMapping("/admin/announcement/search")
     public String searchList(Model model, PageRequestDTO pageRequestDTO) {
         log.info("pageRequestDTO={}", pageRequestDTO);
 
-        PageResponseAdminEmployDTO pageResponseAdminEmployDTO = adminCouponsNowService.selectAdminEmployAll(pageRequestDTO);
-        model.addAttribute("pageResponseDTO", pageResponseAdminEmployDTO);
+        PageResponseAdminAnnouncementDTO pageResponseAdminAnnouncementDTO = adminAnnouncementService.selectAllAdminAnnouncement(pageRequestDTO);
+        model.addAttribute("pageResponseDTO", pageResponseAdminAnnouncementDTO);
 
-        return "admin/admin_hiring_searchList";
+        return "admin/admin_announce_searchList";
     }
 
-    @GetMapping("/admin/employ/delete")
+    // view 파일 출력
+    @GetMapping("/admin/announcement/view")
+    public String view(int id, Model model) {
+        log.info("id={}", id);
+        adminAnnouncementService.increaseHits(id);
+        AdminAnnouncementDTO adminAnnouncementDTO = adminAnnouncementService.getAdminAnnouncement(id);
+        model.addAttribute("adminAnnouncementDTO", adminAnnouncementDTO);
+        return "admin/admin_announce_view";
+    }
+
+    // list - [ 삭제 ] 및 view - 삭제 버튼 활성화
+    @GetMapping("/admin/announcement/delete")
     public String delete(int id) {
-        adminCouponsNowService.delete(id);
-        return "redirect:/admin/employ/list";
+        log.info("id={}", id);
+        adminAnnouncementService.deleteAdminAnnouncement(id);
+
+        return "redirect:/admin/announcement/list";
     }
+
+    @GetMapping("/admin/announcement/write")
+    public String writeList(Model model) {
+        return "admin/admin_announce_write";
+    }
+
+    @PostMapping("/admin/announcement/write")
+    public String write(AdminAnnouncementDTO adminAnnouncementDTO) {
+        log.info("adminAnnouncementDTO={}", adminAnnouncementDTO);
+
+        adminAnnouncementService.register(adminAnnouncementDTO);
+        return "redirect:/admin/announcement/list";
+    }
+
+    // modify - list - [ 수정 ] 및 view - 수정 버튼 활성화
+    @GetMapping("/admin/announcement/modify/list")
+    public String modifyList(int id, Model model) {
+        log.info("id={}", id);
+
+        AdminAnnouncementDTO adminAnnouncementDTO = adminAnnouncementService.getAdminAnnouncement(id);
+        model.addAttribute("adminAnnouncementDTO", adminAnnouncementDTO);
+        return "admin/admin_announce_correction";
+    }
+
+    // modify 실행
+    @PostMapping("/admin/announcement/modify/list")
+    public String modify(AdminAnnouncementDTO adminAnnouncementDTO, Model model) {
+        log.info("adminAnnouncementDTO={}", adminAnnouncementDTO);
+
+        adminAnnouncementService.modifyAdminAnnouncement(adminAnnouncementDTO);
+        model.addAttribute("adminAnnouncementDTO", adminAnnouncementDTO);
+        return "admin/admin_announce_view";
+    }
+
 }
