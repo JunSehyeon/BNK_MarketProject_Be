@@ -208,7 +208,7 @@
 
 <script>
     /* 헤더/푸터 include (기존 유지) */
-    fetch("../main/header.html")
+    fetch("/NICHIYA/main/header.html")
         .then(res => res.text())
         .then(data => {
             document.getElementById("header").innerHTML = data;
@@ -220,7 +220,7 @@
             });
         });
 
-    fetch("../main/footer.html")
+    fetch("/NICHIYA/main/footer.html")
         .then(res => res.text())
         .then(data => { document.getElementById("footer").innerHTML = data; });
 </script>
