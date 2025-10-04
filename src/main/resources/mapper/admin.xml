@@ -154,4 +154,46 @@
         on A.user_name = U.name
         <include refid="searchEmployWhere"/>
     </select>
+
+    <!--    개별로 작성할 부분(덩어리 구분) -->
+
+    <sql id="searchAnnouncementWhere">
+        <where>
+            AND A.board_type = 'notice'
+            <if test="pageRequestDTO.board_type2 != null and pageRequestDTO.board_type2 != ''">
+                <choose>
+                    <when test="pageRequestDTO.board_type2 == 'all'">
+                        AND A.board_type2 = 'all'
+                    </when>
+                    <when test="pageRequestDTO.board_type2 == 'memberservice'">
+                        AND A.board_type2 = 'memberservice'
+                    </when>
+                    <when test="pageRequestDTO.board_type2 == 'safe'">
+                        AND A.board_type2 = 'safe'
+                    </when>
+                    <when test="pageRequestDTO.board_type2 == 'danger'">
+                        AND A.board_type2 = 'danger'
+                    </when>
+                    <when test="pageRequestDTO.board_type2 == 'event'">
+                        AND A.board_type2 = 'event'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllAdminAnnouncement" resultType="kr.co.bnk_marketproject_be.dto.AdminAnnouncementDTO">
+        SELECT
+        *
+        FROM board A
+        <include refid="searchAnnouncementWhere"/>
+        ORDER BY A.created_at DESC
+        OFFSET #{pageRequestDTO.offset} ROWS
+        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+    </select>
+
+    <select id="selectCountTotalAdminAnnouncement" resultType="int">
+        SELECT COUNT(*) FROM board A
+        <include refid="searchAnnouncementWhere"/>
+    </select>
 </mapper>

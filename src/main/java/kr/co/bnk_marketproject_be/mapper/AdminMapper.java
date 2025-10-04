@@ -1,9 +1,6 @@
 package kr.co.bnk_marketproject_be.mapper;
 
-import kr.co.bnk_marketproject_be.dto.AdminEmployDTO;
-import kr.co.bnk_marketproject_be.dto.CouponsDTO;
-import kr.co.bnk_marketproject_be.dto.CouponsNowDTO;
-import kr.co.bnk_marketproject_be.dto.PageRequestDTO;
+import kr.co.bnk_marketproject_be.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,11 +13,13 @@ public interface AdminMapper {
     public List<CouponsDTO> selectAllCoupons(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public List<CouponsNowDTO> selectAllCouponsNow(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public List<AdminEmployDTO> selectAllAdminEmploy(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
+    public List<AdminAnnouncementDTO> selectAllAdminAnnouncement(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
     // 항상 동일(total 세기)
     public int selectCountTotal(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public int selectCountTotalCouponsNow(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public int selectCountTotalAdminEmploy(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
+    public int selectCountTotalAdminAnnouncement(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
     // 관리자_고객센터_채용하기 선택삭제 구현
     public void deleteAdminEmploy(int id);
