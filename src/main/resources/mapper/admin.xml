@@ -107,4 +107,51 @@
         on A.users_id = U.id
         <include refid="searchCouponsNowWhere"/>
     </select>
+
+    <!--    개별로 작성할 부분(덩어리 구분) -->
+
+    <sql id="searchEmployWhere">
+        <where>
+            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
+                <choose>
+                    <when test="pageRequestDTO.searchType == 'id'">
+                        AND A.id LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'department'">
+                        AND A.department LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'form'">
+                        AND A.form LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'title'">
+                        AND A.title LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllAdminEmploy" resultType="kr.co.bnk_marketproject_be.dto.AdminEmployDTO">
+        SELECT
+        A.*,
+        U.name as user_name
+        FROM employ A
+        JOIN users U
+        on A.user_name = U.name
+        <include refid="searchEmployWhere"/>
+        ORDER BY A.id DESC
+        OFFSET #{pageRequestDTO.offset} ROWS
+        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+    </select>
+
+    <delete id="deleteAdminEmploy">
+        DELETE FROM employ where id=#{id}
+    </delete>
+
+    <select id="selectCountTotalAdminEmploy" resultType="int">
+        SELECT COUNT(*) FROM employ A
+        JOIN users U
+        on A.user_name = U.name
+        <include refid="searchEmployWhere"/>
+    </select>
 </mapper>
