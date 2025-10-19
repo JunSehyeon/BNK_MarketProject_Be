@@ -55,7 +55,7 @@ public class CSQnaController {
             Model model,
             CSNoticeDTO dto) {
 
-        CSNoticeDTO qna = qnaService.getQnaview(id);
+        CSNoticeDTO qna = qnaService.getQnaView(id);
         qna.setLook(dto.getLook());
         log.info("qna={}", qna);
         CSNoticeDTO comment = qnaService.selectCommentView(id.intValue());

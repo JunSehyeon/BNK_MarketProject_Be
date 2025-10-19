@@ -24,7 +24,7 @@ public interface CSQnaMapper {
     );
 
     // QnA 상세
-    CSNoticeDTO selectQnaview(@Param("id") Long id);
+    CSNoticeDTO selectQnaView(@Param("id") Long id);
 
     // QnA 댓글 조회
     CSNoticeDTO selectCommentView(@Param("bid") int bid);

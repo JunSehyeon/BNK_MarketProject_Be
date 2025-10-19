@@ -111,7 +111,7 @@
     </select>
 
     <!-- view -->
-    <select id="selectQnaview" parameterType="long" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
+    <select id="selectQnaView" parameterType="long" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
             id,
             board_type AS boardType,
@@ -123,6 +123,14 @@
             created_at AS createdAt
         FROM board
         WHERE id = #{id}
+    </select>
+
+    <select id="selectCommentView" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
+        select c.cid, c.content
+        from board b
+                 LEFT JOIN comments c
+                           on b.id = c.bid
+        WHERE c.bid = #{bid}
     </select>
 
     <!-- write -->

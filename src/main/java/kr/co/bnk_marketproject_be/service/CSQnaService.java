@@ -23,8 +23,8 @@ public class CSQnaService {
         return qnaMapper.selectTotalCount(userid, boardType2, boardType3);
     }
 
-    public CSNoticeDTO getQnaview(Long id) {
-        return qnaMapper.selectQnaview(id);
+    public CSNoticeDTO getQnaView(Long id) {
+        return qnaMapper.selectQnaView(id);
     }
 
     public CSNoticeDTO selectCommentView(int bid){
