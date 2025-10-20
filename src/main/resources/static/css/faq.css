@@ -1,4 +1,3 @@
-/* FAQ 리스트 전체 */
 .cs_faq_list_wrap {
     overflow: hidden;
     padding: 0 20px;
@@ -7,7 +6,6 @@
     margin: 0 auto;
 }
 
-/* 제목 링크 (기존 .faq_q 대체) */
 .cs_faq_list_wrap .faq_item .faq_title {
     background: #fff;
     border-radius: 6px;
@@ -25,7 +23,6 @@
     margin-bottom: 5px;
 }
 
-/* 앞에 Q. 붙이기 */
 .cs_faq_list_wrap .faq_item .faq_title::before {
     content: "Q.";
     color: #007bff;
@@ -33,7 +30,6 @@
     margin-right: 5px;
 }
 
-/* hover 시 효과 */
 .cs_faq_list_wrap .faq_item .faq_title:hover {
     color: #007bff;
     background-color: #f8f8f8;

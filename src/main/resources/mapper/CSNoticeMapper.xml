@@ -5,7 +5,7 @@
 
 <mapper namespace="kr.co.bnk_marketproject_be.mapper.CSNoticeMapper">
 
-    <!-- 공지사항 목록 -->
+    <!-- 공지사항 list -->
     <select id="selectNoticeList" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
             SELECT
             ID AS id,
@@ -22,7 +22,7 @@
         OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
     </select>
 
-    <!-- 공지사항 개수 -->
+    <!-- 공지사항 count -->
     <select id="countNotices" resultType="int">
         SELECT COUNT(*)
         FROM BOARD
@@ -32,7 +32,7 @@
         </if>
     </select>
 
-    <!-- 공지사항 상세 -->
+    <!-- 공지사항 view -->
     <select id="selectNoticeDetail" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
             ID AS id,

@@ -64,7 +64,7 @@
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
 
-    <!-- QnA 총 개수 (페이지네이션용) -->
+    <!-- 페이지네이션용 -->
     <select id="selectTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM board b
@@ -125,14 +125,6 @@
         WHERE id = #{id}
     </select>
 
-    <select id="selectCommentView" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
-        select c.cid, c.content
-        from board b
-                 LEFT JOIN comments c
-                           on b.id = c.bid
-        WHERE c.bid = #{bid}
-    </select>
-
     <!-- write -->
     <insert id="insertQna" parameterType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         <selectKey keyProperty="id" resultType="long" order="BEFORE">
@@ -169,4 +161,5 @@
                            on b.id = c.bid
         WHERE c.bid = #{bid}
     </select>
+
 </mapper>

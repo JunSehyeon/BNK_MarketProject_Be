@@ -38,7 +38,6 @@ public class CSFaqService {
     public CSNoticeDTO getFaqView(Long id) {
         return faqMapper.selectFaqView(id);
     }
-
 }
 
 

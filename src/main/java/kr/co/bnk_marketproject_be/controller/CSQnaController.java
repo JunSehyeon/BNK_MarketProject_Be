@@ -85,7 +85,6 @@ public class CSQnaController {
                 if (amp > 0) boardType2 = boardType2.substring(0, amp);
             }
         }
-
         model.addAttribute("qna", new CSNoticeDTO());
         model.addAttribute("boardType2", boardType2);
         model.addAttribute("boardType3", boardType3);
