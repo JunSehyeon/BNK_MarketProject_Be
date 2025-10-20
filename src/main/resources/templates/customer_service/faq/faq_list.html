@@ -1,361 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8" />
     <title>자주하는 질문 (FAQ)</title>
-    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/faq.css}"/>
 </head>
-
-<style>
-    /* ============ 공통 버튼 ============ */
-    .icon-btn {
-        background:none;
-        border:1px solid #000;
-        cursor:pointer;
-        width:40px;
-        height:40px;
-        display:grid;
-        place-items:center;
-    }
-    .title-didone{
-        text-align:center;
-        font-family: 'Bodoni Moda','Didot','Bodoni 72','Times New Roman',serif;
-        margin-left:45px;
-        font-weight:400;
-        letter-spacing:.02em;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-    .title-didone.ko{font-family: 'Noto Serif KR','Bodoni Moda',serif; font-weight:300;}
-
-    /* 1) 스크림(배경) - 화면 전체 덮음 + 블러 */
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(255,255,255,0.28);
-        backdrop-filter: blur(1px);
-        -webkit-backdrop-filter: blur(1px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity .25s ease;
-        z-index: 1000;
-    }
-    .overlay.open {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* 2) 왼쪽에서 나오는 패널 */
-    .overlay__panel {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50vw;
-        max-width: 900px;
-        height: 100%;
-        background: white;
-        transform: translateX(-100%);
-        transition: transform .35s ease;
-        will-change: transform;
-        display: flex;
-        flex-direction: column;
-    }
-    .overlay.open .overlay__panel {
-        transform: translateX(0);
-    }
-
-    /* 상단 닫기 버튼과 로고 영역 */
-    .overlay__top {
-        display:flex;
-        align-items:center;
-        gap:24px;
-        padding:20px;
-    }
-    .overlay__close {
-        background:none;
-        border:none;
-        width:100px;
-        height:50px;
-        cursor:pointer;
-        position:relative;
-        margin-left:0.3%;
-    }
-    .overlay__close::before,
-    .overlay__close::after {
-        content:"";
-        position:absolute;
-        left:15px;
-        right:10px;
-        top:25px;
-        height:2px;
-        background:#000;
-    }
-    .overlay__close::before {
-        transform:rotate(45deg);
-    }
-    .overlay__close::after {
-        transform:rotate(-45deg);
-    }
-
-    /* 메뉴 그리드 */
-    .overlay__menu {
-        display:grid;
-        grid-template-columns: 180px auto;
-        gap:24px;
-        padding:40px 20px;
-        font-size:16px;
-    }
-    .overlay__menu a {
-        text-decoration:none;
-        color:#000;
-        display:block;
-        padding:8px 0;
-    }
-    .overlay__menu strong {
-        font-weight:700;
-    }
-    .overlay__menu a[data-cat].is-active {
-        font-weight:700;
-        text-decoration: underline;
-    }
-
-    /* 메뉴 오른쪽 서브패널 관련 */
-    .sub {
-        opacity: 0;
-        transform: translateY(6px);
-        pointer-events: none;
-        transition: opacity .28s ease, transform .28s ease;
-        display: none;
-    }
-    .sub.show {
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    #subcol {
-        grid-row: span 2;
-        height:900px;
-        position: relative;
-        padding: 0;
-    }
-    #subcol .sub {
-        padding:0;
-        margin:0;
-    }
-    #subcol .panel {
-        position: absolute;
-        inset: 0;
-        padding: 20px;
-        overflow: auto;
-        opacity: 0;
-        transform: translateY(6px);
-        transition: opacity .35s ease, transform .35s ease;
-        visibility: hidden;
-        pointer-events: none;
-    }
-    #subcol .panel.show {
-        opacity: 1;
-        transform: none;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    .menu-grid {
-        display: grid;
-        grid-template-columns: repeat(2, auto);
-        column-gap: 50px;
-        row-gap: 6px;
-        padding: 0;
-        margin: 0;
-        justify-content: start;
-    }
-    .menu-grid li {
-        list-style: none;
-    }
-
-    /* FAQ 전용 영역 스타일 */
-    body {
-        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-        font-size: 14px;
-        color: #333;
-        line-height: 1.5;
-        background-color: #f8f8f8;
-    }
-    a{ color:inherit; text-decoration:none; }
-    .faq-item {
-        border-bottom: 1px solid #ccc;
-        padding: 10px 0;
-    }
-    .faq-item .faq-title {
-        width: 100%;
-        text-align: left;
-        padding: 15px;
-        background-color: #fff;
-        border: none;
-        font-size: 15px;
-        font-weight: bold;
-        color: #333;
-        cursor: pointer;
-        position: relative;
-    }
-    .faq-item .faq-content {
-        display: none;
-        padding: 20px 15px;
-        background-color: #f9f9f9;
-        font-size: 13px;
-        line-height: 1.6;
-        color: #555;
-    }
-    .btn_area {
-        margin-top: 20px;
-        text-align: center;
-    }
-    .btn_more {
-        padding: 10px 20px;
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    .faq-title::before {
-        content: "Q.";
-        color: #007bff;
-        font-weight: bold;
-        margin-left: 6px;
-        margin-right: 6px;
-    }
-
-    body {
-        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-        font-size: 14px;
-        color: #333;
-        line-height: 1.5;
-        background-color: #f8f8f8;
-    }
-
-    h1 {
-        font-size: 24px;
-        font-weight: bold;
-        color: #000;
-        margin-bottom: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    table th, table td {
-        padding: 15px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
-
-    table th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-    }
-
-    .btn_area {
-        text-align: right;
-        margin-top: 20px;
-    }
-
-    .btn_area .btn_write, .btn_area .btn_cancel, .btn_area .btn_submit, .btn_area .btn_list, .btn_area .btn_more {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 14px;
-        text-decoration: none;
-        border: 1px solid #ccc;
-        background-color: #eee;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .btn_area .btn_write {
-        background-color: #555;
-        color: #fff;
-        border-color: #555;
-    }
-
-    .btn_area .btn_submit {
-        background-color: #007bff;
-        color: #fff;
-        border-color: #007bff;
-    }
-
-    .faq_section h2 {
-        font-size: 20px;
-        font-weight: bold;
-        color: #555;
-        margin-bottom: 15px;
-    }
-
-    .faq_item .faq_q {
-        width: 100%;
-        text-align: left;
-        padding: 15px;
-        background-color: #fff;
-        border: none;
-        font-size: 15px;
-        font-weight: bold;
-        color: #333;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .faq_item .faq_q:before {
-        content: 'Q.';
-        color: #007bff;
-        font-weight: bold;
-        margin-right: 5px;
-    }
-
-    .faq_item .faq_q:after {
-        content: '+';
-        position: absolute;
-        right: 15px;
-        font-size: 20px;
-        font-weight: normal;
-    }
-
-    .faq_item.open .faq_q:after {
-        content: '-';
-    }
-
-    .faq_item .faq_a {
-        display: none;
-        padding: 20px 15px;
-        background-color: #f9f9f9;
-        font-size: 13px;
-        line-height: 1.6;
-        color: #555;
-    }
-
-    .faq_item.open .faq_a {
-        display: block;
-    }
-
-    .btn_area {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    .btn_more {
-        padding: 10px 20px;
-        background-color: #007BFF; /* 파란색 */
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-</style>
 <body>
 <header th:replace="~{main/header :: header}"></header>
 
+<!-- 왼쪽 패널 -->
 <aside id="menuOverlay" class="overlay" aria-hidden="true">
     <div class="overlay__panel">
         <div class="overlay__top">
@@ -433,7 +86,8 @@
                     <section class="panel" data-key="travel">
                         <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공')}"><h3>여행/숙박/항공</h3></a>
                         <ul class="menu-grid">
-                            <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='예약')}">예약</a></li>
+                            <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='숙박')}">숙박</a></li>
+                            <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='항공')}">항공</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='변경/취소')}">변경/취소</a></li>
                         </ul>
                     </section>
@@ -452,162 +106,164 @@
     </div>
 </aside>
 
-<!-- FAQ 카테고리 -->
-<div class="cs_sub_nav">
-    <!-- 1차 카테고리 -->
-    <ul class="faq-category">
-        <li th:classappend="${boardType == '회원'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='회원')}">회원</a>
-        </li>
-        <li th:classappend="${boardType == '쿠폰/이벤트'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트')}">쿠폰/이벤트</a>
-        </li>
-        <li th:classappend="${boardType == '주문/결제'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='주문/결제')}">주문/결제</a>
-        </li>
-        <li th:classappend="${boardType == '배송'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='배송')}">배송</a>
-        </li>
-        <li th:classappend="${boardType == '취소/반품/교환'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='취소/반품/교환')}">취소/반품/교환</a>
-        </li>
-        <li th:classappend="${boardType == '여행/숙박/항공'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공')}">여행/숙박/항공</a>
-        </li>
-        <li th:classappend="${boardType == '안전거래'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='안전거래')}">안전거래</a>
-        </li>
-    </ul>
+<div class="cs_faq_list_wrap">
+    <!-- FAQ 카테고리 -->
+    <div class="cs_sub_nav" style="border-bottom: none">
+        <!-- 1차 카테고리 -->
+        <ul class="faq-category">
+            <li th:classappend="${boardType == '회원'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='회원')}">회원</a>
+            </li>
+            <li th:classappend="${boardType == '쿠폰/이벤트'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트')}">쿠폰/이벤트</a>
+            </li>
+            <li th:classappend="${boardType == '주문/결제'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='주문/결제')}">주문/결제</a>
+            </li>
+            <li th:classappend="${boardType == '배송'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='배송')}">배송</a>
+            </li>
+            <li th:classappend="${boardType == '취소/반품/교환'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='취소/반품/교환')}">취소/반품/교환</a>
+            </li>
+            <li th:classappend="${boardType == '여행/숙박/항공'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공')}">여행/숙박/항공</a>
+            </li>
+            <li th:classappend="${boardType == '안전거래'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='안전거래')}">안전거래</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 회원 -->
-    <ul class="faq-subcategory" th:if="${boardType == '회원'}">
-        <li th:classappend="${subType == '로그인'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='회원', subType='로그인')}">로그인</a>
-        </li>
-        <li th:classappend="${subType == '가입'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='회원', subType='가입')}">가입</a>
-        </li>
-        <li th:classappend="${subType == '탈퇴 후'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='회원', subType='탈퇴 후')}">탈퇴</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 회원 -->
+        <ul class="faq-subcategory" th:if="${boardType == '회원'}">
+            <li th:classappend="${subType == '로그인'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='회원', subType='로그인')}">로그인</a>
+            </li>
+            <li th:classappend="${subType == '가입'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='회원', subType='가입')}">가입</a>
+            </li>
+            <li th:classappend="${subType == '탈퇴 후'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='회원', subType='탈퇴 후')}">탈퇴</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 쿠폰/이벤트 -->
-    <ul class="faq-subcategory" th:if="${boardType == '쿠폰/이벤트'}">
-        <li th:classappend="${subType == '쿠폰발급'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰발급')}">쿠폰발급</a>
-        </li>
-        <li th:classappend="${subType == '쿠폰사용'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰사용')}">쿠폰사용</a>
-        </li>
-        <li th:classappend="${subType == '이벤트참여'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='이벤트참여')}">이벤트참여</a>
-        </li>
-        <li th:classappend="${subType == '당첨확인'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='당첨확인')}">당첨확인</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 쿠폰/이벤트 -->
+        <ul class="faq-subcategory" th:if="${boardType == '쿠폰/이벤트'}">
+            <li th:classappend="${subType == '쿠폰발급'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰발급')}">쿠폰발급</a>
+            </li>
+            <li th:classappend="${subType == '쿠폰사용'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰사용')}">쿠폰사용</a>
+            </li>
+            <li th:classappend="${subType == '이벤트참여'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='이벤트참여')}">이벤트참여</a>
+            </li>
+            <li th:classappend="${subType == '당첨확인'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='당첨확인')}">당첨확인</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 주문/결제 -->
-    <ul class="faq-subcategory" th:if="${boardType == '주문/결제'}">
-        <li th:classappend="${subType == '주문방법'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='주문방법')}">주문방법</a>
-        </li>
-        <li th:classappend="${subType == '결제수단'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제수단')}">결제수단</a>
-        </li>
-        <li th:classappend="${subType == '결제오류'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제오류')}">결제오류</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 주문/결제 -->
+        <ul class="faq-subcategory" th:if="${boardType == '주문/결제'}">
+            <li th:classappend="${subType == '주문방법'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='주문방법')}">주문방법</a>
+            </li>
+            <li th:classappend="${subType == '결제수단'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제수단')}">결제수단</a>
+            </li>
+            <li th:classappend="${subType == '결제오류'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제오류')}">결제오류</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 배송 -->
-    <ul class="faq-subcategory" th:if="${boardType == '배송'}">
-        <li th:classappend="${subType == '배송조회'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='배송', subType='배송조회')}">배송조회</a>
-        </li>
-        <li th:classappend="${subType == '배송비'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='배송', subType='배송비')}">배송비</a>
-        </li>
-        <li th:classappend="${subType == '해외배송'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='배송', subType='해외배송')}">해외배송</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 배송 -->
+        <ul class="faq-subcategory" th:if="${boardType == '배송'}">
+            <li th:classappend="${subType == '배송조회'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='배송', subType='배송조회')}">배송조회</a>
+            </li>
+            <li th:classappend="${subType == '배송비'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='배송', subType='배송비')}">배송비</a>
+            </li>
+            <li th:classappend="${subType == '해외배송'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='배송', subType='해외배송')}">해외배송</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 취소/반품/교환 -->
-    <ul class="faq-subcategory" th:if="${boardType == '취소/반품/교환'}">
-        <li th:classappend="${subType == '주문 취소'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='주문 취소')}">주문취소</a>
-        </li>
-        <li th:classappend="${subType == '반품'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='반품')}">반품</a>
-        </li>
-        <li th:classappend="${subType == '교환'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='교환')}">교환</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 취소/반품/교환 -->
+        <ul class="faq-subcategory" th:if="${boardType == '취소/반품/교환'}">
+            <li th:classappend="${subType == '주문 취소'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='주문 취소')}">주문취소</a>
+            </li>
+            <li th:classappend="${subType == '반품'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='반품')}">반품</a>
+            </li>
+            <li th:classappend="${subType == '교환'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='교환')}">교환</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 여행/숙박/항공 -->
-    <ul class="faq-subcategory" th:if="${boardType == '여행/숙박/항공'}">
-        <li th:classappend="${subType == '예약'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='예약')}">예약</a>
-        </li>
-        <li th:classappend="${subType == '변경/취소'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='변경/취소')}">변경/취소</a>
-        </li>
-    </ul>
+        <!-- 2차 카테고리: 여행/숙박/항공 -->
+        <ul class="faq-subcategory" th:if="${boardType == '여행/숙박/항공'}">
+            <li th:classappend="${subType == '숙박'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='숙박')}">숙박</a>
+            </li>
+            <li th:classappend="${subType == '항공'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='항공')}">항공</a>
+            </li>
+            <li th:classappend="${subType == '변경/취소'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='변경/취소')}">변경/취소</a>
+            </li>
+        </ul>
 
-    <!-- 2차 카테고리: 안전거래 -->
-    <ul class="faq-subcategory" th:if="${boardType == '안전거래'}">
-        <li th:classappend="${subType == '안전결제'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='안전거래', subType='안전결제')}">안전결제</a>
-        </li>
-        <li th:classappend="${subType == '사기주의'} ? 'on'">
-            <a th:href="@{/cs/faq/list(boardType='안전거래', subType='사기주의')}">사기주의</a>
-        </li>
-    </ul>
-</div>
+        <!-- 2차 카테고리: 안전거래 -->
+        <ul class="faq-subcategory" th:if="${boardType == '안전거래'}">
+            <li th:classappend="${subType == '안전결제'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='안전거래', subType='안전결제')}">안전결제</a>
+            </li>
+            <li th:classappend="${subType == '사기주의'} ? 'on'">
+                <a th:href="@{/cs/faq/list(boardType='안전거래', subType='사기주의')}">사기주의</a>
+            </li>
+        </ul>
+    </div>
 
-<!-- 제목 -->
-<h2 th:if="${subType != null and subType != ''}"
-    th:text="${boardType + ' · ' + subType}"
-    style="font-size:23px; font-weight:bold; margin: 0; margin-top: 10px; margin-left: 20px">
-</h2>
+    <!-- 제목 -->
+    <h2 th:if="${subType != null and subType != ''}"
+        th:text="${boardType + ' · ' + subType}"
+        style="font-size:23px; font-weight:bold; margin-bottom: 15px; margin-top: 10px;">
+    </h2>
 
-<h2 th:unless="${subType != null and subType != ''}"
-    th:switch="${boardType}"
-    style="font-size:23px; font-weight:bold; margin: 0; margin-top: 10px; margin-left: 20px">
-    <span th:case="'회원'">회원</span>
-    <span th:case="'쿠폰/이벤트'">쿠폰 · 이벤트</span>
-    <span th:case="'주문/결제'">주문 · 결제</span>
-    <span th:case="'배송'">배송</span>
-    <span th:case="'취소/반품/교환'">취소 · 반품 · 교환</span>
-    <span th:case="'여행/숙박/항공'">여행 · 숙박 · 항공</span>
-    <span th:case="'안전거래'">안전거래</span>
-    <span th:case="*">전체</span>
-</h2>
+    <h2 th:unless="${subType != null and subType != ''}"
+        th:switch="${boardType}"
+        style="font-size:23px; font-weight:bold; margin-bottom: 15px; margin-top: 10px;">
+        <span th:case="'회원'">회원</span>
+        <span th:case="'쿠폰/이벤트'">쿠폰 · 이벤트</span>
+        <span th:case="'주문/결제'">주문 · 결제</span>
+        <span th:case="'배송'">배송</span>
+        <span th:case="'취소/반품/교환'">취소 · 반품 · 교환</span>
+        <span th:case="'여행/숙박/항공'">여행 · 숙박 · 항공</span>
+        <span th:case="'안전거래'">안전거래</span>
+        <span th:case="*">전체</span>
+    </h2>
 
-
-<!-- FAQ 리스트 -->
-<div class="faq-container" style="margin: 20px">
-    <div th:each="faq : ${faqList}" class="faq-item">
-        <a th:href="@{/cs/faq/view(id=${faq.id})}"
-           th:text="${faq.title}"
-           class="faq-title"
-           style="display:block; padding:10px 0; text-decoration:none; color:#333;">
-        </a>
+    <!-- FAQ 리스트 -->
+    <div class="faq_list_area">
+        <div th:each="faq : ${faqList}" class="faq_item">
+            <a th:href="@{/cs/faq/view(id=${faq.id})}"
+               th:text="${faq.title}"
+               class="faq_title">
+            </a>
+        </div>
     </div>
 </div>
 
-<!-- 더보기 버튼 -->
-<div class="btn_area">
+<div class="btn_area" style="text-align: center;">
     <button class="btn_more" id="btn-more" style="border-radius:0 !important; height:45px;">더보기</button>
     <button class="btn_less" id="btn-less" style="display:none; height:45px; border-radius:0; padding:10px 20px; font-size:14px; border:1px solid #ccc; background-color:#eee; color:#333; cursor:pointer;">간단히보기</button>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const items = document.querySelectorAll(".faq-item");
+        const items = Array.from(document.querySelectorAll(".faq_item"));
         const moreBtn = document.getElementById("btn-more");
         const lessBtn = document.getElementById("btn-less");
 
@@ -615,36 +271,70 @@
         const step = 3;
         const max = 10;
 
-        function render() {
-            items.forEach((item, i) => {
-                item.style.display = i < visible ? "block" : "none";
+        items.forEach(item => {
+            item.style.opacity = 0;
+            item.style.transition = "opacity .3s ease";
+            item.style.display = "none";
+        });
+
+        [moreBtn, lessBtn].forEach(btn => {
+            btn.style.opacity = 0;
+            btn.style.transition = "opacity .3s ease";
+        });
+
+        function showItems(count) {
+            requestAnimationFrame(() => {
+                items.forEach((item, i) => {
+                    if (i < count) {
+                        item.style.display = "block";
+                        requestAnimationFrame(() => (item.style.opacity = 1));
+                    } else {
+                        item.style.opacity = 0;
+                        setTimeout(() => (item.style.display = "none"), 200);
+                    }
+                });
             });
-            moreBtn.style.display = visible < Math.min(items.length, max) ? "inline-block" : "none";
-            lessBtn.style.display = visible >= Math.min(items.length, max) ? "inline-block" : "none";
+        }
+
+        function fadeToggle(element, show) {
+            if (show) {
+                element.style.display = "inline-block";
+                requestAnimationFrame(() => (element.style.opacity = 1));
+            } else {
+                element.style.opacity = 0;
+                setTimeout(() => (element.style.display = "none"), 200);
+            }
+        }
+
+        function updateButtons() {
+            const canShowMore = visible < Math.min(items.length, max);
+            const canShowLess = visible > 3;
+
+            fadeToggle(moreBtn, canShowMore);
+            fadeToggle(lessBtn, canShowLess);
         }
 
         moreBtn.addEventListener("click", () => {
             visible = Math.min(visible + step, max, items.length);
-            render();
+            showItems(visible);
+            updateButtons();
         });
 
         lessBtn.addEventListener("click", () => {
             visible = 3;
-            render();
+            showItems(visible);
+            updateButtons();
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
-        render();
+        // 초기 렌더링
+        setTimeout(() => {
+            showItems(visible);
+            updateButtons();
+        }, 100);
     });
-
-    // Q/A 토글 기능
-    function toggleContent(btn) {
-        const content = btn.nextElementSibling;
-        content.style.display = content.style.display === "block" ? "none" : "block";
-    }
 </script>
 
-<!-- 구분선 -->
 <script>
     // --- 요소 가져오기 ---
     const body     = document.body;

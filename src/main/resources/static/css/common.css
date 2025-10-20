@@ -40,6 +40,15 @@ table th {
     background-color: #f4f4f4;
     font-weight: bold;
 }
+table a {
+    color: inherit;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
 
 .btn_area {
     text-align: right;
@@ -47,6 +56,9 @@ table th {
 }
 
 .btn_area .btn_write, .btn_area .btn_cancel, .btn_area .btn_submit, .btn_area .btn_list, .btn_area .btn_more {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 6px;
     display: inline-block;
     padding: 10px 20px;
     font-size: 14px;
@@ -55,6 +67,7 @@ table th {
     background-color: #eee;
     color: #333;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .btn_area .btn_write {
@@ -290,5 +303,194 @@ table th {
 .cs_sub_nav ul li a:hover {
   background-color: gray;
   color: white;
+}
+
+/* ============ 공통 버튼 ============
+   ========= 고객 센터 패널 통합 ========= */
+.icon-btn {
+    background:none;
+    border:1px solid #000;
+    cursor:pointer;
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+}
+.title-didone{
+    text-align:center;
+    font-family: 'Bodoni Moda','Didot','Bodoni 72','Times New Roman',serif;
+    margin-left:45px;
+    font-weight:400;
+    letter-spacing:.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.title-didone.ko{font-family: 'Noto Serif KR','Bodoni Moda',serif; font-weight:300;}
+
+/* 1) 스크림(배경) - 화면 전체 덮음 + 블러 */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.28);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 1000;
+}
+.overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 2) 왼쪽에서 나오는 패널 */
+.overlay__panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50vw;
+    max-width: 900px;
+    height: 100%;
+    background: white;
+    transform: translateX(-100%);
+    transition: transform .35s ease;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+}
+.overlay.open .overlay__panel {
+    transform: translateX(0);
+}
+
+/* 상단 닫기 버튼과 로고 영역 */
+.overlay__top {
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:20px;
+}
+.overlay__close {
+    background:none;
+    border:none;
+    width:100px;
+    height:50px;
+    cursor:pointer;
+    position:relative;
+    margin-left:0.3%;
+}
+.overlay__close::before,
+.overlay__close::after {
+    content:"";
+    position:absolute;
+    left:15px;
+    right:10px;
+    top:25px;
+    height:2px;
+    background:#000;
+}
+.overlay__close::before {
+    transform:rotate(45deg);
+}
+.overlay__close::after {
+    transform:rotate(-45deg);
+}
+
+/* 메뉴 그리드 */
+.overlay__menu {
+    display:grid;
+    grid-template-columns: 180px auto;
+    gap:24px;
+    padding:40px 20px;
+    font-size:16px;
+}
+.overlay__menu a {
+    text-decoration:none;
+    color:#000;
+    display:block;
+    padding:8px 0;
+}
+.overlay__menu strong {
+    font-weight:700;
+}
+.overlay__menu a[data-cat].is-active {
+    font-weight:700;
+    text-decoration: underline;
+}
+
+/* 메뉴 오른쪽 서브패널 관련 */
+.sub {
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity .28s ease, transform .28s ease;
+    display: none;
+}
+.sub.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#subcol {
+    grid-row: span 2;
+    height:900px;
+    position: relative;
+    padding: 0;
+}
+#subcol .sub {
+    padding:0;
+    margin:0;
+}
+#subcol .panel {
+    position: absolute;
+    inset: 0;
+    padding: 20px;
+    overflow: auto;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .35s ease, transform .35s ease;
+    visibility: hidden;
+    pointer-events: none;
+}
+#subcol .panel.show {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 50px;
+    row-gap: 6px;
+    padding: 0;
+    margin: 0;
+    justify-content: start;
+}
+.menu-grid li {
+    list-style: none;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* notice css plus */
+.cs_notice_wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    box-shadow: none;
+    padding: 20px;
+    border-radius: 8px;
 }
 

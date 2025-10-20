@@ -5,23 +5,25 @@
 
 <mapper namespace="kr.co.bnk_marketproject_be.mapper.CSFaqMapper">
 
-    <!-- FAQ 목록 (기본) -->
-    <select id="selectFaqList" parameterType="map" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
+    <!-- FAQ List -->
+    <select id="selectFaqList"
+            resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
         id,
         board_type AS boardType,
         title
         FROM board
         WHERE board_type = 'faq'
-        <if test="boardType != null and boardType != ''">
+        <if test="boardType != null and boardType != '' and boardType != 'faq'">
             AND title LIKE '%' || #{boardType} || '%'
         </if>
         ORDER BY id DESC
-        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+        OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
     </select>
 
-    <!-- FAQ 목록 (카테고리별 + 2차 분류 필터 적용) -->
-    <select id="selectFaqListByType" parameterType="map" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
+    <!-- FAQ List Category -->
+    <select id="selectFaqListByType"
+            resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
         id,
         board_type AS boardType,
@@ -29,8 +31,8 @@
         FROM board
         WHERE board_type = 'faq'
 
-        <!-- 1차 카테고리 -->
-        <if test="boardType != null and boardType != ''">
+        <!-- 1차 -->
+        <if test="boardType != null and boardType != '' and boardType != 'faq'">
             <choose>
                 <when test="boardType == '회원'">
                     AND (title LIKE '%회원%' OR title LIKE '%로그인%' OR title LIKE '%가입%' OR title LIKE '%탈퇴%')
@@ -48,15 +50,23 @@
                     AND (title LIKE '%취소%' OR title LIKE '%반품%' OR title LIKE '%교환%')
                 </when>
                 <when test="boardType == '여행/숙박/항공'">
-                    AND (title LIKE '%여행%' OR title LIKE '%숙박%' OR title LIKE '%항공%' OR title LIKE '%예약%' OR title LIKE '%변경%' OR title LIKE '%취소%')
+                    AND (
+                    title LIKE '%여행%'
+                    OR title LIKE '%숙박%'
+                    OR title LIKE '%항공%'
+                    OR title LIKE '%숙소%'
+                    OR title LIKE '%항공권%'
+                    OR title LIKE '%여행상품%'
+                    OR (title LIKE '%예약%' AND (title LIKE '%숙박%' OR title LIKE '%항공%'))
+                    )
                 </when>
                 <when test="boardType == '안전거래'">
-                    AND (title LIKE '%안전결제%' OR title LIKE '%사기주의%' )
+                    AND (title LIKE '%안전결제%' OR title LIKE '%사기주의%')
                 </when>
             </choose>
         </if>
 
-        <!-- 2차 카테고리 (subType) -->
+        <!-- 2차 -->
         <if test="subType != null and subType != ''">
             AND title LIKE '%' || #{subType} || '%'
         </if>
@@ -66,7 +76,9 @@
     </select>
 
     <!-- FAQ view -->
-    <select id="selectFaqView" parameterType="long" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
+    <select id="selectFaqView"
+            parameterType="long"
+            resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
             id,
             board_type AS boardType,

@@ -9,13 +9,13 @@
     <!-- QnA 목록 -->
     <select id="selectQnaList" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
         SELECT
-        b.id,
-        b.board_type AS boardType,
-        b.board_type2 AS boardType2,
-        b.board_type3 AS boardType3,
-        b.title,
-        b.user_id AS userid,
-        b.created_at AS createdAt,
+            b.id,
+            b.board_type AS boardType,
+            b.board_type2 AS boardType2,
+            b.board_type3 AS boardType3,
+            b.title,
+            b.user_id AS userid,
+            b.created_at AS createdAt,
         CASE WHEN c.bid IS NOT NULL OR b.look = 1 THEN 1 ELSE 0 END AS look
         FROM board b
         LEFT JOIN comments c ON b.id = c.bid
@@ -140,15 +140,15 @@
         </selectKey>
 
         INSERT INTO board (
-        id,
-        board_type,
-        board_type2,
-        board_type3,
-        title,
-        content,
-        user_id,
-        look,
-        hits
+            id,
+            board_type,
+            board_type2,
+            board_type3,
+            title,
+            content,
+            user_id,
+            look,
+            hits
         ) VALUES (
         #{id},
         'inquiry',
@@ -160,7 +160,6 @@
         0,
         0 <!-- hits값 고정 -->
         )
-
     </insert>
 
     <select id="selectCommentView" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">

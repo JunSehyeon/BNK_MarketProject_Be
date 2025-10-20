@@ -7,14 +7,14 @@
 
     <!-- 공지사항 목록 -->
     <select id="selectNoticeList" resultType="kr.co.bnk_marketproject_be.dto.CSNoticeDTO">
-        SELECT
-        ID AS id,
-        BOARD_TYPE AS boardType,
-        TITLE AS title,
-        CONTENT AS content,
-        CREATED_AT AS createdAt
-        FROM BOARD
-        WHERE UPPER(BOARD_TYPE) = 'NOTICE'
+            SELECT
+            ID AS id,
+            BOARD_TYPE AS boardType,
+            TITLE AS title,
+            CONTENT AS content,
+            CREATED_AT AS createdAt
+            FROM BOARD
+            WHERE UPPER(BOARD_TYPE) = 'NOTICE'
         <if test="boardType != null and boardType != ''">
             AND TITLE LIKE '%' || #{boardType} || '%'
         </if>

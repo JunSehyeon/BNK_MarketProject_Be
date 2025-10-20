@@ -20,15 +20,18 @@ public class CSFaqService {
         Map<String,Object> params = new HashMap<>();
         params.put("offset", offset);
         params.put("limit", limit);
+
         return faqMapper.selectFaqList(params);
     }
 
-    public List<CSNoticeDTO> getFaqListByType(String boardType, int offset, int limit) {
+    public List<CSNoticeDTO> getFaqListByType(String boardType, String subType, int offset, int limit) {
         Map<String,Object> params = new HashMap<>();
+
         params.put("boardType", boardType);
         params.put("offset", offset);
         params.put("limit", limit);
-        return faqMapper.selectFaqListByType(params);
+
+        return faqMapper.selectFaqListByType(boardType, subType, offset, limit);
     }
 
     // Faq view
