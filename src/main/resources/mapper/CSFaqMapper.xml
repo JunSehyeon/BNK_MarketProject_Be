@@ -87,4 +87,5 @@
         FROM board
         WHERE id = #{id}
     </select>
+    
 </mapper>

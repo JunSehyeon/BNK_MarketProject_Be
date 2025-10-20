@@ -41,7 +41,7 @@ public class CSFaqController {
     public String faqview(@RequestParam("id") Long id, Model model) {
         CSNoticeDTO faq = faqService.getFaqView(id);
         model.addAttribute("faq", faq);
-        return "customer_service/faq/faq_view";
 
+        return "customer_service/faq/faq_view";
     }
 }

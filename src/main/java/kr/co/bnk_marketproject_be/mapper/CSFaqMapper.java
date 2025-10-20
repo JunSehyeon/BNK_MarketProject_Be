@@ -16,6 +16,5 @@ public interface CSFaqMapper {
                                           @Param("offset") int offset,
                                           @Param("limit") int limit);
     CSNoticeDTO selectFaqView(Long id);
-
 }
 
