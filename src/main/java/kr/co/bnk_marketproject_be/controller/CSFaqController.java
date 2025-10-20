@@ -43,5 +43,6 @@ public class CSFaqController {
         model.addAttribute("faq", faq);
 
         return "customer_service/faq/faq_view";
+
     }
 }

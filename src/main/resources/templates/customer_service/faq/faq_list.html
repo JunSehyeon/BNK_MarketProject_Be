@@ -19,22 +19,42 @@
         <div style="display:flex; margin-left:20%; margin-top:1%; width:100%;">
             <nav class="overlay__menu" style="width:100%;">
                 <div>
-                    <a th:href="@{/cs/notice/list}"><b>공지사항</b></a>
-                    <a th:href="@{/cs/faq/list}"><b>자주묻는질문</b></a>
-                    <a th:href="@{/cs/qna/list}"><b>QNA</b></a><br>
-                    <a href="#" data-cat="member">회원</a>
-                    <a href="#" data-cat="coupon">쿠폰/이벤트</a>
-                    <a href="#" data-cat="order">주문/결제</a>
-                    <a href="#" data-cat="delivery">배송</a>
-                    <a href="#" data-cat="return">취소/반품/교환</a>
-                    <a href="#" data-cat="travel">여행/숙박/항공</a>
-                    <a href="#" data-cat="safe">안전거래</a>
+                    <div>
+                        <a th:href="@{/cs/notice/list}">공지사항</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/faq/list}" class="nav-current"><b>자주묻는질문</b></a>
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <a th:href="@{/cs/qna/list}">QNA</a><br>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="member">회원</a>
+                    </div>
+                    <div style="">
+                        <a href="#" data-cat="coupon">쿠폰/이벤트</a>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="order">주문/결제</a>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="delivery">배송</a>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="return">취소/반품/교환</a>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="travel">여행/숙박/항공</a>
+                    </div>
+                    <div>
+                        <a href="#" data-cat="safe">안전거래</a>
+                    </div>
                 </div>
                 <div id="subcol">
                     <!-- 회원 -->
                     <section class="panel" data-key="member">
                         <a th:href="@{/cs/faq/list(boardType='회원')}"><h3>회원</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='회원', subType='로그인')}">로그인</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='회원', subType='가입')}">가입</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='회원', subType='탈퇴')}">탈퇴</a></li>
@@ -44,7 +64,7 @@
                     <!-- 쿠폰/이벤트 -->
                     <section class="panel" data-key="coupon">
                         <a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트')}"><h3>쿠폰/이벤트</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰발급')}">쿠폰발급</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='쿠폰사용')}">쿠폰사용</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='쿠폰/이벤트', subType='이벤트참여')}">이벤트참여</a></li>
@@ -55,7 +75,7 @@
                     <!-- 주문/결제 -->
                     <section class="panel" data-key="order">
                         <a th:href="@{/cs/faq/list(boardType='주문/결제')}"><h3>주문/결제</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='주문/결제', subType='주문방법')}">주문방법</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제수단')}">결제수단</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='주문/결제', subType='결제오류')}">결제오류</a></li>
@@ -65,7 +85,7 @@
                     <!-- 배송 -->
                     <section class="panel" data-key="delivery">
                         <a th:href="@{/cs/faq/list(boardType='배송')}"><h3>배송</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='배송', subType='배송조회')}">배송조회</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='배송', subType='배송비')}">배송비</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='배송', subType='해외배송')}">해외배송</a></li>
@@ -75,7 +95,7 @@
                     <!-- 취소/반품/교환 -->
                     <section class="panel" data-key="return">
                         <a th:href="@{/cs/faq/list(boardType='취소/반품/교환')}"><h3>취소/반품/교환</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='주문취소')}">주문취소</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='반품')}">반품</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='취소/반품/교환', subType='교환')}">교환</a></li>
@@ -85,9 +105,9 @@
                     <!-- 여행/숙박/항공 -->
                     <section class="panel" data-key="travel">
                         <a th:href="@{/cs/faq/list(boardType='여행/숙박/항공')}"><h3>여행/숙박/항공</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='숙박')}">숙박</a></li>
-                            <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='항공')}">항공</a></li>
+                            <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='예약')}">예약</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='여행/숙박/항공', subType='변경/취소')}">변경/취소</a></li>
                         </ul>
                     </section>
@@ -95,7 +115,7 @@
                     <!-- 안전거래 -->
                     <section class="panel" data-key="safe">
                         <a th:href="@{/cs/faq/list(boardType='안전거래')}"><h3>안전거래</h3></a>
-                        <ul class="menu-grid">
+                        <ul class="menu-grid" style="margin-top:20px;">
                             <li><a th:href="@{/cs/faq/list(boardType='안전거래', subType='안전결제')}">안전결제</a></li>
                             <li><a th:href="@{/cs/faq/list(boardType='안전거래', subType='사기주의')}">사기주의</a></li>
                         </ul>
