@@ -18,15 +18,31 @@
         <div style="display: flex; margin-left:20%; margin-top:1%; width:100%;">
             <nav class="overlay__menu" style="width:100%;">
                 <div style="">
-                    <a th:href="@{/cs/notice/list}"><b>공지사항</b></a>
-                    <a th:href="@{/cs/faq/list}"><b>자주묻는질문</b></a>
-                    <a th:href="@{/cs/qna/list}"><b>Qna</b></a>
+                    <div>
+                        <a th:href="@{/cs/notice/list}" class="nav-current"><b>공지사항</b></a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/faq/list}">자주묻는질문</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/qna/list}">QnA</a>
+                    </div>
                     <br>
-                    <a th:href="@{/cs/notice/list}">전체</a>
-                    <a th:href="@{/cs/notice/list(boardType='서비스')}">고객서비스</a>
-                    <a th:href="@{/cs/notice/list(boardType='안전거래')}">안전거래</a>
-                    <a th:href="@{/cs/notice/list(boardType='판매중지')}">위해상품</a>
-                    <a th:href="@{/cs/notice/list(boardType='당첨자')}">이벤트당첨</a>
+                    <div>
+                        <a th:href="@{/cs/notice/list}">전체</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/notice/list(boardType='서비스')}">고객서비스</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/notice/list(boardType='안전거래')}">안전거래</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/notice/list(boardType='판매중지')}">위해상품</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/cs/notice/list(boardType='당첨자')}">이벤트당첨</a>
+                    </div>
                 </div>
                 <div style=""></div>
             </nav>
@@ -35,9 +51,8 @@
 </aside>
 
 <div class="cs_notice_wrap">
-    <!-- 제목 -->
-    <h1>NOTICE</h1>
-    <div class="cs_sub_nav" style="border-bottom: none">
+    <h1 style="margin-left: 20px">NOTICE</h1>
+    <div class="cs_sub_nav" style="margin: 10px; border-bottom: none">
         <ul>
             <li th:classappend="${boardType == null or boardType == '' or boardType == '전체'} ? 'on'">
                 <a th:href="@{/cs/notice/list}">전체</a>
@@ -58,7 +73,7 @@
     </div>
 
     <!-- 제목  -->
-    <h2 style="font-size:23px; font-weight:bold; margin-top:20px"
+    <h2 style="font-size:23px; font-weight:bold; margin:20px"
         th:switch="${boardType}">
         <span th:case="'서비스'">고객서비스</span>
         <span th:case="'안전거래'">안전거래</span>
@@ -67,61 +82,57 @@
         <span th:case="*">전체</span>
     </h2>
 
-<div class="cs_list_table" style="margin-bottom: 20px">
-            <p class="total_count">
-                총 <span class="count" th:text="${totalCount}"></span>건
-            </p>
+    <div class="cs_list_table" style="margin-left: 20px; margin-right: 20px; margin-bottom: 20px">
+        <p class="total_count">
+            총 <span class="count" th:text="${totalCount}"></span>건
+        </p>
 
-            <table style="border-top: 2px solid #ddd">
-                <colgroup>
-                    <col style="width: auto;">
-                    <col style="width: 25%;">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>등록일</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="n : ${dtoPage}">
-                    <td>
-                        <a th:href="@{/cs/notice/view/{id}(id=${n.id}, boardType=${boardType})}" th:text="${n.title}"></a>
-                    </td>
-                    <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd')}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <table style="border-top: 2px solid #ddd">
+            <colgroup>
+                <col style="width: auto;">
+                <col style="width: 25%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="n : ${dtoPage}">
+                <td>
+                    <a th:href="@{/cs/notice/view/{id}(id=${n.id}, boardType=${boardType})}" th:text="${n.title}"></a>
+                </td>
+                <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd')}"></td>
+            </tr>
+            </tbody>
+        </table>
 
-            <!-- 페이지네이션 -->
-            <div class="pagination"
-                 th:with="
+        <!-- 페이지네이션 -->
+        <div class="pagination"
+             th:with="
                             start=${T(java.lang.Math).floor(currentPage / 5) * 5},
                             end=${(start + 4) < (totalPages - 1) ? (start + 4) : (totalPages - 1)}">
 
-                <!-- 이전 버튼 -->
-                <a th:href="@{/cs/notice/list(
+            <!-- 이전 버튼 -->
+            <a th:href="@{/cs/notice/list(
                                 page=${currentPage > 0 ? currentPage - 1 : 0},
-                                boardType=${boardType}
-                            )}">
-                    이전
-                </a>
+                                boardType=${boardType})}">이전
+            </a>
 
-                <!-- 페이지 번호 5개씩 출력 -->
-                <span th:each="i : ${#numbers.sequence(start, end)}">
+            <!-- 페이지 번호 5개씩 출력 -->
+            <span th:each="i : ${#numbers.sequence(start, end)}">
                             <a th:href="@{/cs/notice/list(page=${i}, boardType=${boardType})}"
                                th:text="${i + 1}"
                                th:classappend="${i == currentPage} ? 'on'"></a>
                         </span>
 
-                <!-- 다음 버튼 -->
-                <a th:href="@{/cs/notice/list(
+            <!-- 다음 버튼 -->
+            <a th:href="@{/cs/notice/list(
                                 page=${currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1},
-                                boardType=${boardType}
-                            )}">
-                    다음
-                </a>
-            </div>
+                                boardType=${boardType})}">다음
+            </a>
+        </div>
     </div>
 </div>
 
