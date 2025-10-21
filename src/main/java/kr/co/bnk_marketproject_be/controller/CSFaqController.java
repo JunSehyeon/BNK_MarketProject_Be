@@ -27,13 +27,7 @@ public class CSFaqController {
             boardType = "faq";
         }
 
-        List<CSNoticeDTO> faqList = faqService.getFaqListByType(boardType, 0, 100);
-
-        if (subType != null && !subType.isEmpty()) {
-            faqList = faqList.stream()
-                    .filter(faq -> faq.getTitle() != null && faq.getTitle().contains(subType))
-                    .collect(Collectors.toList());
-        }
+        List<CSNoticeDTO> faqList = faqService.getFaqListByType(boardType, subType,0, 10);
 
         model.addAttribute("boardType", boardType);
         model.addAttribute("subType", subType);
@@ -47,6 +41,7 @@ public class CSFaqController {
     public String faqview(@RequestParam("id") Long id, Model model) {
         CSNoticeDTO faq = faqService.getFaqView(id);
         model.addAttribute("faq", faq);
+
         return "customer_service/faq/faq_view";
 
     }
